@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
         if (GameManager.Instance.CurrentState != GameManager.GameState.Playing)
         {
             rb.velocity = Vector2.zero;
+            moveInput = Vector2.zero;
             return;
         }
 
@@ -38,6 +39,9 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (GameManager.Instance.CurrentState != GameManager.GameState.Playing)
+            return;
+
         Move();
     }
 
