@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour
     private SkillData[] currentOffer;
 
     public System.Action<SkillData[]> OnLevelUpOffered;
+    public System.Action<SkillData, int> OnSkillSelected;
     public System.Action<int> OnLevelChanged;
     public System.Action<float, float> OnExpChanged;
 
@@ -69,8 +70,9 @@ public class LevelManager : MonoBehaviour
 
     public void SelectSkill(SkillData skill)
     {
-        skillLevels[skill] = GetSkillLevel(skill) + 1;
-        // TODO Week 2: 실제 스킬 효과 적용
+        int newLevel = GetSkillLevel(skill) + 1;
+        skillLevels[skill] = newLevel;
+        OnSkillSelected?.Invoke(skill, newLevel);
         GameManager.Instance.ResumeGame();
     }
 

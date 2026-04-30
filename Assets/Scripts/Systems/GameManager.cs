@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -51,7 +50,9 @@ public class GameManager : MonoBehaviour
     public void ChangeState(GameState newState)
     {
         
-     CurrentState = newState;
+        CurrentState = newState;
+
+        // 이벤트 던짐
         OnGameStateChanged?.Invoke(newState);
 
         switch (newState)

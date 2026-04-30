@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class ExpOrb : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class ExpOrb : MonoBehaviour
     [SerializeField] private float moveSpeed = 6f;
 
     private Transform player;
+    private IObjectPool<ExpOrb> pool;
+
+    public void SetPool(IObjectPool<ExpOrb> pool) => this.pool = pool;
 
     void OnEnable()
     {
@@ -29,6 +33,6 @@ public class ExpOrb : MonoBehaviour
         if (!col.CompareTag("Player")) return;
 
         LevelManager.Instance.AddExp(expAmount);
-        gameObject.SetActive(false);
+        pool.Release(this);
     }
 }

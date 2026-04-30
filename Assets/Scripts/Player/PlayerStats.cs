@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
@@ -10,8 +8,9 @@ public class PlayerStats : MonoBehaviour
     public float moveSpeed = 5f;
     public float attackPower = 10f;
     public float attackSpeed = 1f;      // 공격 쿨타임 배율 (1 = 기본)
+    public float hpRegenPerSecond = 0f; // 세포 재생 패시브로 증가
 
-    // 압력 시스템용 (2주차에 연결)
+    // 압력 시스템용 (3주차에 연결)
     [HideInInspector] public float pressureResistance = 0f; // 0 ~ 0.5
 
     // 이벤트
@@ -21,6 +20,15 @@ public class PlayerStats : MonoBehaviour
     void Awake()
     {
         currentHp = maxHp;
+    }
+
+    void Update()
+    {
+        if (hpRegenPerSecond > 0f &&
+            GameManager.Instance.CurrentState == GameManager.GameState.Playing)
+        {
+            Heal(hpRegenPerSecond * Time.deltaTime);
+        }
     }
 
     public void TakeDamage(float amount)
@@ -36,6 +44,8 @@ public class PlayerStats : MonoBehaviour
 
     public void Heal(float amount)
     {
+        if (currentHp >= maxHp) return;
+
         currentHp = Mathf.Clamp(currentHp + amount, 0f, maxHp);
         OnHpChanged?.Invoke(currentHp, maxHp);
     }

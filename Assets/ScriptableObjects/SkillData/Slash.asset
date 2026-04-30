@@ -15,4 +15,46 @@ MonoBehaviour:
   skillName: 
   description: 
   skillType: 0
+  skillID: 0
   maxLevel: 4
+  levelStats:
+  - attackPowerDelta: 3
+    attackSpeedDelta: 0
+    rangeDelta: 0.3
+    moveSpeedDelta: 0
+    maxHpDelta: 0
+    hpRegenDelta: 0
+    knockbackEnabled: 0
+    piercingEnabled: 0
+    extraProjectiles: 0
+    cooldownDelta: 0
+  - attackPowerDelta: 3
+    attackSpeedDelta: 0
+    rangeDelta: 0.3
+    moveSpeedDelta: 0
+    maxHpDelta: 0
+    hpRegenDelta: 0
+    knockbackEnabled: 0
+    piercingEnabled: 0
+    extraProjectiles: 0
+    cooldownDelta: 0
+  - attackPowerDelta: 0
+    attackSpeedDelta: 0.3
+    rangeDelta: 0
+    moveSpeedDelta: 0
+    maxHpDelta: 0
+    hpRegenDelta: 0
+    knockbackEnabled: 0
+    piercingEnabled: 0
+    extraProjectiles: 0
+    cooldownDelta: 0
+  - attackPowerDelta: 0
+    attackSpeedDelta: 0
+    rangeDelta: 0
+    moveSpeedDelta: 0
+    maxHpDelta: 0
+    hpRegenDelta: 0
+    knockbackEnabled: 1
+    piercingEnabled: 0
+    extraProjectiles: 0
+    cooldownDelta: 0

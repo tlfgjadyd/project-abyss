@@ -107,3 +107,6 @@ InitTestScene*.unity*
 
 # TextMesh Pro
 /[Aa]ssets/TextMesh Pro/
+
+# .vscode setting
+/.vscode/

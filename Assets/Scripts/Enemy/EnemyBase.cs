@@ -1,16 +1,19 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class EnemyBase : MonoBehaviour, IDamageable
 {
     [SerializeField] private EnemyData data;
-    [SerializeField] private GameObject expOrbPrefab;
 
     public EnemyData Data => data;
+    public bool IsStunned { get; private set; }
 
     private float currentHp;
     private float contactTimer;
     private bool isDead;
+    private HitEffect hitEffect;
+    private Coroutine stunCoroutine;
 
     public System.Action<EnemyBase> OnDeath;
 
@@ -19,6 +22,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
         var rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
         rb.freezeRotation = true;
+        hitEffect = GetComponent<HitEffect>();
     }
 
     void OnEnable()
@@ -26,6 +30,8 @@ public class EnemyBase : MonoBehaviour, IDamageable
         currentHp = data.maxHp;
         isDead = false;
         contactTimer = 0f;
+        IsStunned = false;
+        stunCoroutine = null;
     }
 
     public void TakeDamage(float amount)
@@ -33,8 +39,25 @@ public class EnemyBase : MonoBehaviour, IDamageable
         if (isDead) return;
 
         currentHp -= amount;
+        hitEffect?.PlayFlash();
+
         if (currentHp <= 0f)
             Die();
+    }
+
+    public void Stun(float duration)
+    {
+        if (isDead) return;
+        if (stunCoroutine != null) StopCoroutine(stunCoroutine);
+        stunCoroutine = StartCoroutine(StunRoutine(duration));
+    }
+
+    IEnumerator StunRoutine(float duration)
+    {
+        IsStunned = true;
+        yield return new WaitForSeconds(duration);
+        IsStunned = false;
+        stunCoroutine = null;
     }
 
     void OnCollisionStay2D(Collision2D col)
@@ -54,12 +77,9 @@ public class EnemyBase : MonoBehaviour, IDamageable
     void Die()
     {
         isDead = true;
+        IsStunned = false;
 
-        if (expOrbPrefab != null)
-        {
-            var orb = Instantiate(expOrbPrefab, transform.position, Quaternion.identity);
-            orb.GetComponent<ExpOrb>().expAmount = data.expAmount;
-        }
+        ExpOrbPool.Instance?.Spawn(transform.position, data.expAmount);
 
         OnDeath?.Invoke(this);
         gameObject.SetActive(false);

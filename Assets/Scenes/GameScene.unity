@@ -191,6 +191,10 @@ GameObject:
   - component: {fileID: 136577155}
   - component: {fileID: 136577154}
   - component: {fileID: 136577156}
+  - component: {fileID: 136577157}
+  - component: {fileID: 136577158}
+  - component: {fileID: 136577160}
+  - component: {fileID: 136577159}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -242,6 +246,7 @@ MonoBehaviour:
   moveSpeed: 5
   attackPower: 10
   attackSpeed: 1
+  hpRegenPerSecond: 0
   pressureResistance: 0
 --- !u!70 &136577152
 CapsuleCollider2D:
@@ -335,6 +340,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 3
   angle: 100
+  knockbackEnabled: 0
+  knockbackForce: 5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -390,6 +397,77 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &136577157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7610d671f7455b745af8f5cce01563fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testMode: 0
+--- !u!114 &136577158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01b63de87bcf004c87e8c7ff2efcf89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRadius: 6
+  cooldown: 1.5
+  projectileCount: 1
+  isPiercing: 0
+  projectilePrefab: {fileID: 5798157152639586941, guid: 0bf52b6c00a89bf45acb487962c4b6d0, type: 3}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &136577159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9282d7a7d43c344488a2f13b610a2b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRadius: 5
+  cooldown: 2
+  chainRadius: 2.5
+  chainDamageRatio: 0.6
+  maxChainTargets: 3
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &136577160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ee5cbffa870d8d418a08acf01cea3f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 2.5
+  cooldown: 4
+  stunDuration: 0.5
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &237105867
 GameObject:
   m_ObjectHideFlags: 0
@@ -1261,6 +1339,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 680863623}
   m_CullTransparentMesh: 1
+--- !u!1 &769729816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 769729818}
+  - component: {fileID: 769729817}
+  m_Layer: 0
+  m_Name: ExporbPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &769729817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769729816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49473b01364428b41b29511bdf4868be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  expOrbPrefab: {fileID: 8668050277182666108, guid: ee50c7e597e64484dad375c4705f25dd, type: 3}
+  defaultCapacity: 30
+  maxSize: 100
+--- !u!4 &769729818
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769729816}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.102416, y: -4.9622283, z: -0.19311474}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &845797514
 GameObject:
   m_ObjectHideFlags: 0
@@ -3203,3 +3328,4 @@ SceneRoots:
   - {fileID: 1568885039}
   - {fileID: 1423104709}
   - {fileID: 1361632214}
+  - {fileID: 769729818}

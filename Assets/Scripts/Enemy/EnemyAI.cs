@@ -31,6 +31,12 @@ public class EnemyAI : MonoBehaviour
 
         if (player == null) return;
 
+        if (enemy.IsStunned)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
         Vector2 dir = ((Vector2)player.position - (Vector2)transform.position).normalized;
         rb.velocity = dir * enemy.Data.moveSpeed;
     }
