@@ -6,17 +6,20 @@ public class EnemySpawner : MonoBehaviour
     public class Wave
     {
         public GameObject enemyPrefab;
+        [Tooltip("스폰 간격 (초)")]
         public float interval = 2f;
         public int poolSize = 20;
+        [Tooltip("스테이지 시작 후 이 시간(초)이 지나야 스폰 시작")]
+        public float startTime = 0f;
     }
 
     [SerializeField] private Wave[] waves;
     [SerializeField] private float spawnRadius = 12f;
+    [SerializeField] private int maxActiveEnemies = 50;
 
     private Transform player;
     private float[] timers;
-
-    // 간단한 오브젝트 풀 (wave별)
+    private float elapsedTime;
     private GameObject[][] pools;
 
     void Start()
@@ -24,7 +27,7 @@ public class EnemySpawner : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
         timers = new float[waves.Length];
-        pools = new GameObject[waves.Length][];
+        pools  = new GameObject[waves.Length][];
 
         for (int i = 0; i < waves.Length; i++)
         {
@@ -33,10 +36,6 @@ public class EnemySpawner : MonoBehaviour
             {
                 pools[i][j] = Instantiate(waves[i].enemyPrefab);
                 pools[i][j].SetActive(false);
-
-                var eb = pools[i][j].GetComponent<EnemyBase>();
-                if (eb != null)
-                    eb.OnDeath += OnEnemyDeath;
             }
         }
     }
@@ -46,8 +45,15 @@ public class EnemySpawner : MonoBehaviour
         if (GameManager.Instance.CurrentState != GameManager.GameState.Playing)
             return;
 
+        elapsedTime += Time.deltaTime;
+
+        if (GetActiveEnemyCount() >= maxActiveEnemies)
+            return;
+
         for (int i = 0; i < waves.Length; i++)
         {
+            if (elapsedTime < waves[i].startTime) continue;
+
             timers[i] -= Time.deltaTime;
             if (timers[i] <= 0f)
             {
@@ -81,8 +87,12 @@ public class EnemySpawner : MonoBehaviour
         return null;
     }
 
-    void OnEnemyDeath(EnemyBase enemy)
+    int GetActiveEnemyCount()
     {
-        // 경험치 드롭은 Day 5~6 LevelManager 연결 시 추가
+        int count = 0;
+        foreach (var pool in pools)
+            foreach (var obj in pool)
+                if (obj != null && obj.activeInHierarchy) count++;
+        return count;
     }
 }

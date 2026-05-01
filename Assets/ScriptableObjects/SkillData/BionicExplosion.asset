@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616f92b966a21df4589314081626c791, type: 3}
   m_Name: BionicExplosion
   m_EditorClassIdentifier: 
-  skillName: 
-  description: 
+  skillName: BionicExplosion
+  description: "\uC0DD\uCCB4\uD3ED\uBC1C"
   skillType: 0
   skillID: 2
   maxLevel: 4
