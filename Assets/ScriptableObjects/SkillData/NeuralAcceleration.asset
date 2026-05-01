@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616f92b966a21df4589314081626c791, type: 3}
   m_Name: NeuralAcceleration
   m_EditorClassIdentifier: 
-  skillName: 
-  description: 
+  skillName: NeuralAcceleration
+  description: "\uC2E0\uACBD\uAC00\uC18D"
   skillType: 1
   skillID: 6
   maxLevel: 4
@@ -28,6 +28,7 @@ MonoBehaviour:
     piercingEnabled: 0
     extraProjectiles: 0
     cooldownDelta: 0
+    stunDurationDelta: 0
   - attackPowerDelta: 0
     attackSpeedDelta: 0.3
     rangeDelta: 0
@@ -38,6 +39,7 @@ MonoBehaviour:
     piercingEnabled: 0
     extraProjectiles: 0
     cooldownDelta: 0
+    stunDurationDelta: 0
   - attackPowerDelta: 0
     attackSpeedDelta: 0.3
     rangeDelta: 0
@@ -48,6 +50,7 @@ MonoBehaviour:
     piercingEnabled: 0
     extraProjectiles: 0
     cooldownDelta: 0
+    stunDurationDelta: 0
   - attackPowerDelta: 0
     attackSpeedDelta: 0
     rangeDelta: 0
@@ -58,3 +61,4 @@ MonoBehaviour:
     piercingEnabled: 0
     extraProjectiles: 0
     cooldownDelta: 0
+    stunDurationDelta: 0
