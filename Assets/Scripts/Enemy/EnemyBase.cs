@@ -80,6 +80,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
         IsStunned = false;
 
         ExpOrbPool.Instance?.Spawn(transform.position, data.expAmount);
+        BioEnergyManager.Instance?.AddEnergy(data.energyDrop);
 
         OnDeath?.Invoke(this);
         gameObject.SetActive(false);
