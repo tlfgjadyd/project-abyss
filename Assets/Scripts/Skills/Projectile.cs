@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -15,6 +16,10 @@ public class Projectile : MonoBehaviour
     private IObjectPool<Projectile> pool;
     private Vector2 direction;
     private float timer;
+    private bool isReturned;
+
+    // 관통 시 같은 적 중복 타격 방지
+    private readonly HashSet<Collider2D> hitEnemies = new HashSet<Collider2D>();
 
     void Awake()
     {
@@ -26,6 +31,9 @@ public class Projectile : MonoBehaviour
     void OnEnable()
     {
         timer = lifetime;
+        isReturned = false;
+        hitEnemies.Clear();
+        rb.velocity = Vector2.zero;
     }
 
     public void SetPool(IObjectPool<Projectile> pool) => this.pool = pool;
@@ -48,9 +56,17 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (!col.CompareTag("Enemy")) return;
+        if (isReturned) return;
 
-        col.GetComponent<IDamageable>()?.TakeDamage(damage);
+        // IDamageable 여부로 적 판정 — Enemy 태그 불필요
+        var damageable = col.GetComponent<IDamageable>();
+        if (damageable == null) return;
+
+        // 관통 시 동일 적 중복 타격 방지
+        if (hitEnemies.Contains(col)) return;
+        hitEnemies.Add(col);
+
+        damageable.TakeDamage(damage);
         col.GetComponent<Rigidbody2D>()?.AddForce(direction * hitKnockback, ForceMode2D.Impulse);
 
         if (!isPiercing)
@@ -59,6 +75,8 @@ public class Projectile : MonoBehaviour
 
     void Return()
     {
+        if (isReturned) return;
+        isReturned = true;
         rb.velocity = Vector2.zero;
         pool?.Release(this);
     }

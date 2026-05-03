@@ -11,6 +11,10 @@ public class HUDController : MonoBehaviour
     [Header("Exp")]
     [SerializeField] private Slider expSlider;
 
+    [Header("Bio Energy")]
+    [SerializeField] private Slider energySlider;
+    [SerializeField] private TMP_Text energyText;   // "120 / 200" (선택)
+
     [Header("Info")]
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private TMP_Text timerText;
@@ -31,11 +35,13 @@ public class HUDController : MonoBehaviour
         LevelManager.Instance.OnExpChanged    += UpdateExp;
         LevelManager.Instance.OnLevelChanged  += UpdateLevel;
         GameManager.Instance.OnTimerUpdated   += UpdateTimer;
+        BioEnergyManager.Instance.OnEnergyChanged += UpdateEnergy;
 
         // 초기값 적용
         UpdateLevel(LevelManager.Instance.CurrentLevel);
         UpdateExp(LevelManager.Instance.CurrentExp, LevelManager.Instance.ExpToNextLevel);
         UpdateTimer(GameManager.Instance.TimeRemaining);
+        UpdateEnergy(BioEnergyManager.Instance.CurrentEnergy, BioEnergyManager.Instance.MaxEnergy);
     }
 
     void OnDestroy()
@@ -50,6 +56,8 @@ public class HUDController : MonoBehaviour
         }
         if (GameManager.Instance != null)
             GameManager.Instance.OnTimerUpdated -= UpdateTimer;
+        if (BioEnergyManager.Instance != null)
+            BioEnergyManager.Instance.OnEnergyChanged -= UpdateEnergy;
     }
 
     // ── 업데이트 ────────────────────────────────
@@ -76,5 +84,11 @@ public class HUDController : MonoBehaviour
         int min = Mathf.FloorToInt(remaining / 60f);
         int sec = Mathf.FloorToInt(remaining % 60f);
         timerText.text = $"{min:00}:{sec:00}";
+    }
+
+    void UpdateEnergy(float current, float max)
+    {
+        if (energySlider != null) energySlider.value = max > 0f ? current / max : 0f;
+        if (energyText != null)   energyText.text    = $"{Mathf.FloorToInt(current)} / {Mathf.FloorToInt(max)}";
     }
 }

@@ -11,4 +11,5 @@ public class EnemyData : ScriptableObject
 
     [Header("Drop")]
     public float expAmount = 10f;
+    public float energyDrop = 5f;
 }
