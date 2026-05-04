@@ -30,7 +30,8 @@ public class LevelManager : MonoBehaviour
 
     public void AddExp(float amount)
     {
-        CurrentExp += amount;
+        float multiplier = PressureSystem.Instance != null ? PressureSystem.Instance.ExpMultiplier : 1f;
+        CurrentExp += amount * multiplier;
         OnExpChanged?.Invoke(CurrentExp, ExpToNextLevel);
 
         while (CurrentExp >= ExpToNextLevel)

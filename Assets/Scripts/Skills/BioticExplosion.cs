@@ -27,7 +27,7 @@ public class BioticExplosion : MonoBehaviour
         if (cooldownTimer > 0f) return;
 
         Explode();
-        cooldownTimer = cooldown / stats.attackSpeed;
+        cooldownTimer = cooldown / stats.EffectiveAttackSpeed;
     }
 
     void Explode()
