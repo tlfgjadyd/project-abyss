@@ -33,7 +33,7 @@ public class PlayerCombat : MonoBehaviour
 
         Vector2 dir = ((Vector2)target.position - (Vector2)transform.position).normalized;
         slash.Execute(dir, stats.attackPower);
-        cooldownTimer = 1f / stats.attackSpeed;
+        cooldownTimer = 1f / stats.EffectiveAttackSpeed;
     }
 
     Transform FindNearestEnemy()

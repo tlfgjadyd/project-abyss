@@ -32,7 +32,7 @@ public class ElectricEngine : MonoBehaviour
         if (primary == null) return;
 
         Fire(primary);
-        cooldownTimer = cooldown / stats.attackSpeed;
+        cooldownTimer = cooldown / stats.EffectiveAttackSpeed;
     }
 
     Transform FindNearestEnemy()

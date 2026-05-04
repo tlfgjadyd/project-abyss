@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
     // 외부에서 방향 참조용 (PlayerCombat에서 사용)
     public Vector2 FaceDirection => lastMoveDir;
 
+    // 대시 중 일반 이동 정지
+    public bool IsDashing { get; set; }
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -42,6 +45,8 @@ public class PlayerController : MonoBehaviour
         if (GameManager.Instance.CurrentState != GameManager.GameState.Playing)
             return;
 
+        if (IsDashing) return;
+
         Move();
     }
 
@@ -57,6 +62,6 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-        rb.velocity = moveInput * stats.moveSpeed;
+        rb.velocity = moveInput * stats.EffectiveMoveSpeed;
     }
 }

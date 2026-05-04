@@ -18,6 +18,7 @@ public class HUDController : MonoBehaviour
     [Header("Info")]
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private TMP_Text timerText;
+    [SerializeField] private TMP_Text pressureText;  // "압력: 45%" (선택)
 
     [Header("Refs")]
     [SerializeField] private PlayerStats playerStats;
@@ -37,11 +38,15 @@ public class HUDController : MonoBehaviour
         GameManager.Instance.OnTimerUpdated   += UpdateTimer;
         BioEnergyManager.Instance.OnEnergyChanged += UpdateEnergy;
 
+        if (PressureSystem.Instance != null)
+            PressureSystem.Instance.OnPressureChanged += UpdatePressure;
+
         // 초기값 적용
         UpdateLevel(LevelManager.Instance.CurrentLevel);
         UpdateExp(LevelManager.Instance.CurrentExp, LevelManager.Instance.ExpToNextLevel);
         UpdateTimer(GameManager.Instance.TimeRemaining);
         UpdateEnergy(BioEnergyManager.Instance.CurrentEnergy, BioEnergyManager.Instance.MaxEnergy);
+        UpdatePressure(PressureSystem.Instance != null ? PressureSystem.Instance.CurrentPressure : 0f);
     }
 
     void OnDestroy()
@@ -58,6 +63,8 @@ public class HUDController : MonoBehaviour
             GameManager.Instance.OnTimerUpdated -= UpdateTimer;
         if (BioEnergyManager.Instance != null)
             BioEnergyManager.Instance.OnEnergyChanged -= UpdateEnergy;
+        if (PressureSystem.Instance != null)
+            PressureSystem.Instance.OnPressureChanged -= UpdatePressure;
     }
 
     // ── 업데이트 ────────────────────────────────
@@ -90,5 +97,12 @@ public class HUDController : MonoBehaviour
     {
         if (energySlider != null) energySlider.value = max > 0f ? current / max : 0f;
         if (energyText != null)   energyText.text    = $"{Mathf.FloorToInt(current)} / {Mathf.FloorToInt(max)}";
+    }
+
+    void UpdatePressure(float pressure)
+    {
+        if (pressureText == null) return;
+        int percent = Mathf.RoundToInt(pressure * 100f);
+        pressureText.text = percent > 0 ? $"압력 {percent}%" : "";
     }
 }

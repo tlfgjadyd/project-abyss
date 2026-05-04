@@ -43,7 +43,7 @@ public class PoisonNeedle : MonoBehaviour
         if (target == null) return;
 
         Fire(target);
-        cooldownTimer = cooldown / stats.attackSpeed;
+        cooldownTimer = cooldown / stats.EffectiveAttackSpeed;
     }
 
     Transform FindNearestEnemy()
