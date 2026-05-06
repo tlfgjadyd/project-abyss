@@ -16,3 +16,4 @@ MonoBehaviour:
   description: "\uB3CC\uACA9"
   skillType: 1
   energyCost: 60
+  copySkillID: 2

@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9f1d721dd07a564a9d963246139ffba, type: 3}
-  m_Name: CopySkill_HealingFactor
+  m_Script: {fileID: 11500000, guid: 4117441ceae6c434eaae79a5fc7bb2e3, type: 3}
+  m_Name: Mutation_Mimicry
   m_EditorClassIdentifier: 
-  skillName: HealingFactor
-  description: "\uD790\uB9C1\uD329\uD130"
-  skillType: 1
-  energyCost: 30
-  copySkillID: 3
+  mutationName: "\uC758\uD0DC \uAE30\uAD00"
+  description: 
+  mutationID: 2

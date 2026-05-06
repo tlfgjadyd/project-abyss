@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616f92b966a21df4589314081626c791, type: 3}
   m_Name: AcceleratedMutation
   m_EditorClassIdentifier: 
-  skillName: AcceleratedMMutation
+  skillName: AcceleratedMutation
   description: "\uAC00\uC18D\uBCC0\uC774"
   skillType: 1
   skillID: 5
