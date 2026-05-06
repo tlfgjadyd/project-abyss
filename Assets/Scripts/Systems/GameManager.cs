@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance {get; private set;}
 
     // game start
-    public enum GameState{Playing, Paused, LevelUp, GameOver, StageClear}
+    public enum GameState{Playing, Paused, LevelUp, Mutation, GameOver, StageClear}
     public GameState CurrentState{get;private set;}
 
     // Stage Timer
@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
 
             case GameState.Paused:
             case GameState.LevelUp:
+            case GameState.Mutation:
                 Time.timeScale = 0f;
                 TimerRunning = false;
                 break;
@@ -109,6 +110,8 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()  => ChangeState(GameState.Paused);
     public void ResumeGame() => ChangeState(GameState.Playing);
+
+    public void TriggerMutation() => ChangeState(GameState.Mutation);
 
     public void TriggerLevelUp()
     {

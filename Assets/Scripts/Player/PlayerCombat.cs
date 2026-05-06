@@ -54,6 +54,9 @@ public class PlayerCombat : MonoBehaviour
         return nearest;
     }
 
+    /// <summary>과성장 촉수 돌연변이 — 감지 범위에 배율 적용</summary>
+    public void ScaleDetectionRadius(float multiplier) => detectionRadius *= multiplier;
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

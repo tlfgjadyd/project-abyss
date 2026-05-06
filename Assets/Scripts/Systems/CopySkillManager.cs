@@ -13,6 +13,9 @@ public class CopySkillManager : MonoBehaviour
     [Tooltip("체크 시 Player의 BerserkSkill→Q, DashSkill→E, HealingFactorSkill→Space 자동 할당")]
     [SerializeField] private bool testMode = false;
 
+    /// <summary>의태 기관 돌연변이 — true 시 카피 스킬 에너지 소모 없음</summary>
+    public bool FreeCopySkills { get; set; }
+
     // 슬롯 변경 시 UI 갱신용 이벤트 (slot index, data)
     public System.Action<int, CopySkillData> OnSlotChanged;
 
@@ -76,7 +79,7 @@ public class CopySkillManager : MonoBehaviour
 
         if (!skill.CanExecute()) return;
 
-        float cost = skill.data != null ? skill.data.energyCost : 0f;
+        float cost = (FreeCopySkills || skill.data == null) ? 0f : skill.data.energyCost;
 
         if (!BioEnergyManager.Instance.CanConsume(cost))
         {

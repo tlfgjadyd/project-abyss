@@ -41,6 +41,9 @@ public class PlayerStats : MonoBehaviour
     // 돌진 무적 등 외부에서 설정
     public bool IsInvincible { get; set; }
 
+    /// <summary>의태 기관 돌연변이 — true 시 모든 HP 회복 차단</summary>
+    [HideInInspector] public bool healingBlocked = false;
+
     public void TakeDamage(float amount)
     {
         if (currentHp <= 0f) return;
@@ -55,6 +58,7 @@ public class PlayerStats : MonoBehaviour
 
     public void Heal(float amount)
     {
+        if (healingBlocked) return;
         if (currentHp >= maxHp) return;
 
         currentHp = Mathf.Clamp(currentHp + amount, 0f, maxHp);
