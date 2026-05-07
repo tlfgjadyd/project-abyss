@@ -6,6 +6,8 @@ using UnityEngine;
 /// </summary>
 public class BossSpawner : MonoBehaviour
 {
+    public static event System.Action OnBossSpawned;
+
     [Header("보스 설정")]
     [SerializeField] private GameObject   bossPrefab;
     [Tooltip("스테이지 시작 후 보스가 등장하는 시간 (초)")]
@@ -51,7 +53,7 @@ public class BossSpawner : MonoBehaviour
         {
             currentBoss.OnBossDeath += OnBossDied;
             BossHPBar.Instance?.Show(currentBoss);
-            Debug.Log($"[BossSpawner] {currentBoss.Data.bossName} 등장!");
+            OnBossSpawned?.Invoke();
         }
     }
 

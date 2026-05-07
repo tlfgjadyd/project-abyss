@@ -7,6 +7,7 @@ public class CopySkillSelectCardUI : MonoBehaviour
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text descText;
     [SerializeField] private TMP_Text typeText;
+    [SerializeField] private TMP_Text energyCostText;
     [SerializeField] private Button   button;
 
     private CopySkillData data;
@@ -17,9 +18,10 @@ public class CopySkillSelectCardUI : MonoBehaviour
         data       = skillData;
         targetSlot = slot;
 
-        if (nameText != null) nameText.text = skillData.skillName;
-        if (descText != null) descText.text = skillData.description;
-        if (typeText != null) typeText.text = skillData.skillType.ToString();
+        if (nameText       != null) nameText.text       = skillData.skillName;
+        if (descText       != null) descText.text       = skillData.description;
+        if (typeText       != null) typeText.text       = skillData.skillType.ToString();
+        if (energyCostText != null) energyCostText.text = $"{skillData.energyCost:0}E";
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClick);

@@ -20,6 +20,10 @@ public class HUDController : MonoBehaviour
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text pressureText;  // "압력: 45%" (선택)
 
+    [Header("Feedback")]
+    [SerializeField] private TMP_Text energyInsufficientText;  // "에너지 부족!" 표시
+    [SerializeField] private TMP_Text bossWarningText;         // "BOSS INCOMING!" 표시
+
     [Header("Refs")]
     [SerializeField] private PlayerStats playerStats;
 
@@ -40,6 +44,12 @@ public class HUDController : MonoBehaviour
 
         if (PressureSystem.Instance != null)
             PressureSystem.Instance.OnPressureChanged += UpdatePressure;
+
+        BioEnergyManager.Instance.OnEnergyInsufficient += OnEnergyInsufficient;
+        BossSpawner.OnBossSpawned += OnBossSpawned;
+
+        if (energyInsufficientText != null) energyInsufficientText.gameObject.SetActive(false);
+        if (bossWarningText        != null) bossWarningText.gameObject.SetActive(false);
 
         // 초기값 적용
         UpdateLevel(LevelManager.Instance.CurrentLevel);
@@ -62,9 +72,14 @@ public class HUDController : MonoBehaviour
         if (GameManager.Instance != null)
             GameManager.Instance.OnTimerUpdated -= UpdateTimer;
         if (BioEnergyManager.Instance != null)
-            BioEnergyManager.Instance.OnEnergyChanged -= UpdateEnergy;
+        {
+            BioEnergyManager.Instance.OnEnergyChanged     -= UpdateEnergy;
+            BioEnergyManager.Instance.OnEnergyInsufficient -= OnEnergyInsufficient;
+        }
         if (PressureSystem.Instance != null)
             PressureSystem.Instance.OnPressureChanged -= UpdatePressure;
+
+        BossSpawner.OnBossSpawned -= OnBossSpawned;
     }
 
     // ── 업데이트 ────────────────────────────────
@@ -104,5 +119,25 @@ public class HUDController : MonoBehaviour
         if (pressureText == null) return;
         int percent = Mathf.RoundToInt(pressure * 100f);
         pressureText.text = percent > 0 ? $"압력 {percent}%" : "";
+    }
+
+    void OnEnergyInsufficient()
+    {
+        if (energyInsufficientText != null)
+            StartCoroutine(ShowFeedbackText(energyInsufficientText, "에너지 부족!", 1.5f));
+    }
+
+    void OnBossSpawned()
+    {
+        if (bossWarningText != null)
+            StartCoroutine(ShowFeedbackText(bossWarningText, "BOSS INCOMING!", 3f));
+    }
+
+    System.Collections.IEnumerator ShowFeedbackText(TMP_Text target, string message, float duration)
+    {
+        target.text = message;
+        target.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(duration);
+        target.gameObject.SetActive(false);
     }
 }

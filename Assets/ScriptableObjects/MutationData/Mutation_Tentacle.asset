@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mutationName: "\uACFC\uC131\uC7A5 \uCD09\uC218"
   description: 
+  penaltyDescription: "\uC774\uB3D9\uC18D\uB3C4 -30%"
   mutationID: 1
