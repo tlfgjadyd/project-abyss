@@ -16,6 +16,7 @@ public class BioEnergyManager : MonoBehaviour
 
     // current, max
     public System.Action<float, float> OnEnergyChanged;
+    public System.Action OnEnergyInsufficient;
 
     void Awake()
     {

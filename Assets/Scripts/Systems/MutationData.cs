@@ -12,5 +12,6 @@ public class MutationData : ScriptableObject
 {
     public string mutationName;
     [TextArea] public string description;
+    [TextArea] public string penaltyDescription;
     public MutationID mutationID;
 }

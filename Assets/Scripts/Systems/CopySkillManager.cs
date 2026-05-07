@@ -83,8 +83,7 @@ public class CopySkillManager : MonoBehaviour
 
         if (!BioEnergyManager.Instance.CanConsume(cost))
         {
-            Debug.Log($"[CopySkill] 에너지 부족 — {cost}E 필요 / 현재 {BioEnergyManager.Instance.CurrentEnergy}E");
-            // TODO: UI 부족 피드백 (게이지 흔들림 등)
+            BioEnergyManager.Instance.OnEnergyInsufficient?.Invoke();
             return;
         }
 
