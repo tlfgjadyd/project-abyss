@@ -17,6 +17,22 @@ public class CopySkillSelectPanel : MonoBehaviour
 
     public void Show(BossData bossData)
     {
+        if (bossData == null)
+        {
+            Debug.LogError("[CopySkillSelectPanel] bossData가 null입니다.");
+            return;
+        }
+        if (bossData.copySkillOptions == null || bossData.copySkillOptions.Length == 0)
+        {
+            Debug.LogError($"[CopySkillSelectPanel] '{bossData.bossName}'의 copySkillOptions가 비어있습니다.");
+            return;
+        }
+        if (cards == null || cards.Length == 0)
+        {
+            Debug.LogError("[CopySkillSelectPanel] cards 배열이 비어있습니다. 인스펙터에서 카드 슬롯을 할당하세요.");
+            return;
+        }
+
         gameObject.SetActive(true);
         GameManager.Instance.PauseGame();
 

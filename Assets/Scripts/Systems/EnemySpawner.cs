@@ -95,4 +95,23 @@ public class EnemySpawner : MonoBehaviour
                 if (obj != null && obj.activeInHierarchy) count++;
         return count;
     }
+
+    /// <summary>
+    /// 풀의 모든 활성 적을 비활성화한다.
+    /// 보스 클리어 등 화면 정리가 필요한 시점에 호출.
+    /// </summary>
+    public void DespawnAll()
+    {
+        if (pools == null) return;
+
+        foreach (var pool in pools)
+        {
+            if (pool == null) continue;
+            foreach (var obj in pool)
+            {
+                if (obj != null && obj.activeInHierarchy)
+                    obj.SetActive(false);
+            }
+        }
+    }
 }

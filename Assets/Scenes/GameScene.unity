@@ -510,7 +510,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 100
   currentHp: 0
-  moveSpeed: 5
+  moveSpeed: 20
   attackPower: 10
   attackSpeed: 1
   hpRegenPerSecond: 0
@@ -679,7 +679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7610d671f7455b745af8f5cce01563fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testMode: 0
+  testMode: 1
 --- !u!114 &136577158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6583,7 +6583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossPrefab: {fileID: 4177956351103701311, guid: 0e0e12b9f3ec5c3418f5eb634811e4e5, type: 3}
-  bossSpawnTime: 480
+  bossSpawnTime: 20
   spawnOffset: 10
   enemySpawner: {fileID: 1197450468}
 --- !u!1 &1271655546

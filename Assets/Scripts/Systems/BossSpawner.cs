@@ -59,6 +59,10 @@ public class BossSpawner : MonoBehaviour
 
     void OnBossDied(BossBase boss)
     {
+        // 화면 정리: 잔존 일반 적 전체 비활성화
+        if (enemySpawner != null)
+            enemySpawner.DespawnAll();
+
         BossHPBar.Instance?.Hide();
         CopySkillSelectPanel.Instance?.Show(boss.Data);
     }
