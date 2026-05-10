@@ -112,4 +112,5 @@ InitTestScene*.unity*
 /.vscode/
 
 
-
+# font
+Assets/Fonts/*SDF.asset
