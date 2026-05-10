@@ -9,6 +9,9 @@ public class PoisonNeedle : MonoBehaviour
     public int projectileCount = 1;     // Lv4: 3
     public bool isPiercing = false;     // Lv4
 
+    /// <summary>돌연변이 등에서 곱셈으로 적용. 기본 1.0</summary>
+    [HideInInspector] public float damageMultiplier = 1f;
+
     [Header("Refs")]
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private LayerMask enemyLayer;
@@ -36,6 +39,8 @@ public class PoisonNeedle : MonoBehaviour
         if (GameManager.Instance.CurrentState != GameManager.GameState.Playing)
             return;
 
+        if (stats.IsStunned) return;
+
         cooldownTimer -= Time.deltaTime;
         if (cooldownTimer > 0f) return;
 
@@ -44,6 +49,7 @@ public class PoisonNeedle : MonoBehaviour
 
         Fire(target);
         cooldownTimer = cooldown / stats.EffectiveAttackSpeed;
+        PlayerSkillEvents.OnSkillUsed?.Invoke();
     }
 
     Transform FindNearestEnemy()
@@ -82,7 +88,7 @@ public class PoisonNeedle : MonoBehaviour
     {
         var proj = pool.Get();
         proj.transform.position = transform.position;
-        proj.damage = stats.attackPower;
+        proj.damage = stats.attackPower * damageMultiplier;
         proj.isPiercing = isPiercing;
         proj.Fire(direction);
     }

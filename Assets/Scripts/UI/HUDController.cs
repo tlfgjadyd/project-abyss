@@ -19,6 +19,7 @@ public class HUDController : MonoBehaviour
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text pressureText;  // "압력: 45%" (선택)
+    [SerializeField] private Slider   pressureSlider; // 압력 게이지 (선택)
 
     [Header("Feedback")]
     [SerializeField] private TMP_Text energyInsufficientText;  // "에너지 부족!" 표시
@@ -116,6 +117,8 @@ public class HUDController : MonoBehaviour
 
     void UpdatePressure(float pressure)
     {
+        if (pressureSlider != null) pressureSlider.value = Mathf.Clamp01(pressure);
+
         if (pressureText == null) return;
         int percent = Mathf.RoundToInt(pressure * 100f);
         pressureText.text = percent > 0 ? $"압력 {percent}%" : "";

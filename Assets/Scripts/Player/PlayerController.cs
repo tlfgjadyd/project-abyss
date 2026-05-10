@@ -47,6 +47,12 @@ public class PlayerController : MonoBehaviour
 
         if (IsDashing) return;
 
+        if (stats.IsStunned)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
         Move();
     }
 

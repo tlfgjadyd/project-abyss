@@ -14,6 +14,9 @@ public class BioEnergyManager : MonoBehaviour
     public float CurrentEnergy { get; private set; }
     public float MaxEnergy => maxEnergy;
 
+    /// <summary>감각 붕괴 돌연변이 등에서 외부 설정. 적 처치 시 받는 에너지에 곱셈으로 적용. 기본 1.0</summary>
+    public float ChargeRateMultiplier { get; set; } = 1f;
+
     // current, max
     public System.Action<float, float> OnEnergyChanged;
     public System.Action OnEnergyInsufficient;
@@ -35,7 +38,7 @@ public class BioEnergyManager : MonoBehaviour
 
     public void AddEnergy(float amount)
     {
-        CurrentEnergy = Mathf.Min(CurrentEnergy + amount, maxEnergy);
+        CurrentEnergy = Mathf.Min(CurrentEnergy + amount * ChargeRateMultiplier, maxEnergy);
         OnEnergyChanged?.Invoke(CurrentEnergy, maxEnergy);
     }
 

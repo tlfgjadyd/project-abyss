@@ -23,6 +23,8 @@ public class PlayerCombat : MonoBehaviour
         if (GameManager.Instance.CurrentState != GameManager.GameState.Playing)
             return;
 
+        if (stats.IsStunned) return;
+
         cooldownTimer -= Time.deltaTime;
         if (cooldownTimer > 0f)
             return;

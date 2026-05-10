@@ -41,6 +41,9 @@ public class PlayerStats : MonoBehaviour
     // 돌진 무적 등 외부에서 설정
     public bool IsInvincible { get; set; }
 
+    /// <summary>감각 붕괴 돌연변이 등에서 외부 설정. true 시 이동/공격 정지.</summary>
+    public bool IsStunned { get; set; }
+
     /// <summary>의태 기관 돌연변이 — true 시 모든 HP 회복 차단</summary>
     [HideInInspector] public bool healingBlocked = false;
 

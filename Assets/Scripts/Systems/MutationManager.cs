@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,12 +9,22 @@ public class MutationManager : MonoBehaviour
 
     [Header("Settings")]
     [Tooltip("돌연변이 선택이 뜨는 레벨 (오름차순으로 설정)")]
-    [SerializeField] private int[] triggerLevels = { 5, 10 };
+    [SerializeField] private int[] triggerLevels = { 7, 12 };
     [SerializeField] private MutationData[] mutationPool;
+
+    [Header("Mimicry Organ — 정기 무적")]
+    [SerializeField] private float mimicryInvincibilityInterval = 60f;
+    [SerializeField] private float mimicryInvincibilityDuration = 3f;
+
+    [Header("Sensory Collapse — 스킬 사용 시 스턴")]
+    [Tooltip("스킬 사용 1회당 스턴 발동 확률 (0.05 = 5%)")]
+    [SerializeField] private float sensoryStunChance   = 0.05f;
+    [SerializeField] private float sensoryStunDuration = 0.5f;
 
     private readonly HashSet<MutationID> activeMutations = new();
     private MutationData[] pendingOffer;
     private bool hasPendingMutation = false;
+    private bool sensoryCollapseActive = false;
 
     /// <summary>돌연변이 2장 제시 시 발동 (MutationPanel이 구독)</summary>
     public System.Action<MutationData[]> OnMutationOffered;
@@ -28,6 +39,7 @@ public class MutationManager : MonoBehaviour
     {
         LevelManager.Instance.OnLevelChanged    += OnLevelChanged;
         GameManager.Instance.OnGameStateChanged += OnStateChanged;
+        PlayerSkillEvents.OnSkillUsed           += OnPlayerSkillUsed;
     }
 
     void OnDestroy()
@@ -36,6 +48,7 @@ public class MutationManager : MonoBehaviour
             LevelManager.Instance.OnLevelChanged -= OnLevelChanged;
         if (GameManager.Instance != null)
             GameManager.Instance.OnGameStateChanged -= OnStateChanged;
+        PlayerSkillEvents.OnSkillUsed -= OnPlayerSkillUsed;
     }
 
     // ── 트리거 체크 ──────────────────────────────
@@ -94,12 +107,20 @@ public class MutationManager : MonoBehaviour
                 ApplyOverload(stats);
                 break;
 
-            case MutationID.OvgrownTentacle:
-                ApplyOvgrownTentacle(stats, player);
+            case MutationID.OvergrownTentacle:
+                ApplyOvergrownTentacle(stats, player);
                 break;
 
             case MutationID.MimicryOrgan:
                 ApplyMimicryOrgan(stats);
+                break;
+
+            case MutationID.SensoryCollapse:
+                ApplySensoryCollapse(stats);
+                break;
+
+            case MutationID.ToxicOverload:
+                ApplyToxicOverload(stats, player);
                 break;
         }
     }
@@ -120,7 +141,7 @@ public class MutationManager : MonoBehaviour
     }
 
     /// <summary>과성장 촉수 — 전 스킬 범위 ×1.5, 이동속도 -30%</summary>
-    void ApplyOvgrownTentacle(PlayerStats stats, GameObject player)
+    void ApplyOvergrownTentacle(PlayerStats stats, GameObject player)
     {
         stats.moveSpeed *= 0.7f;
 
@@ -147,14 +168,82 @@ public class MutationManager : MonoBehaviour
         Debug.Log($"[Mutation] 과성장 촉수 — 이동속도 {stats.moveSpeed:F1} / 범위 ×{scale}");
     }
 
-    /// <summary>의태 기관 — 카피 스킬 에너지 소모 0, HP 회복 완전 차단</summary>
+    /// <summary>의태 기관 — 이속 ×2, 1분마다 3초 무적 / 공격력 ×0.5</summary>
     void ApplyMimicryOrgan(PlayerStats stats)
     {
-        stats.healingBlocked = true;
-        if (CopySkillManager.Instance != null)
-            CopySkillManager.Instance.FreeCopySkills = true;
+        stats.moveSpeed   *= 2f;
+        stats.attackPower *= 0.5f;
+        StartCoroutine(MimicryInvincibilityRoutine(stats));
 
-        Debug.Log("[Mutation] 의태 기관 — 회복 차단 / 카피 스킬 무료");
+        Debug.Log($"[Mutation] 의태 기관 — 이속 {stats.moveSpeed:F1} / 공격력 {stats.attackPower:F1} / {mimicryInvincibilityInterval}s마다 {mimicryInvincibilityDuration}s 무적");
+    }
+
+    IEnumerator MimicryInvincibilityRoutine(PlayerStats stats)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(mimicryInvincibilityInterval);
+            if (stats == null) yield break;
+
+            stats.IsInvincible = true;
+            yield return new WaitForSeconds(mimicryInvincibilityDuration);
+            if (stats == null) yield break;
+            stats.IsInvincible = false;
+        }
+    }
+
+    /// <summary>감각 붕괴 — 공격속도 ×2, 에너지 충전 ×1.5 / 스킬 사용 시 5~10% 확률 0.5초 스턴</summary>
+    void ApplySensoryCollapse(PlayerStats stats)
+    {
+        stats.attackSpeed *= 2f;
+        if (BioEnergyManager.Instance != null)
+            BioEnergyManager.Instance.ChargeRateMultiplier *= 1.5f;
+
+        sensoryCollapseActive = true;
+
+        Debug.Log($"[Mutation] 감각 붕괴 — 공격속도 {stats.attackSpeed:F1} / 에너지 충전 ×1.5 / 스킬 스턴 {sensoryStunChance * 100f:F1}%");
+    }
+
+    /// <summary>독성 과부화 — 독/감전 +70% / 물리 -30%, 물리 범위 -20%</summary>
+    void ApplyToxicOverload(PlayerStats stats, GameObject player)
+    {
+        // 효과: 독/감전 데미지 ×1.7
+        var needle = player.GetComponent<PoisonNeedle>();
+        if (needle != null) needle.damageMultiplier *= 1.7f;
+        var electric = player.GetComponent<ElectricEngine>();
+        if (electric != null) electric.damageMultiplier *= 1.7f;
+
+        // 패널티: 물리 데미지 ×0.7, 범위 ×0.8
+        var slash = player.GetComponent<Slash>();
+        if (slash != null) { slash.damageMultiplier *= 0.7f; slash.range *= 0.8f; }
+        var explosion = player.GetComponent<BioticExplosion>();
+        if (explosion != null) { explosion.damageMultiplier *= 0.7f; explosion.range *= 0.8f; }
+
+        // (※ "상태이상 추가 피해 +100%"는 dot/상태이상 시스템 도입 후 적용 — TODO)
+
+        Debug.Log("[Mutation] 독성 과부화 — 독/감전 ×1.7 / 물리 ×0.7, 범위 ×0.8");
+    }
+
+    // ── 감각 붕괴: 스킬 사용 hook ─────────────────
+
+    void OnPlayerSkillUsed()
+    {
+        if (!sensoryCollapseActive) return;
+        if (Random.value >= sensoryStunChance) return;
+
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
+        var stats = player.GetComponent<PlayerStats>();
+        if (stats == null || stats.IsStunned) return;
+
+        StartCoroutine(StunRoutine(stats, sensoryStunDuration));
+    }
+
+    IEnumerator StunRoutine(PlayerStats stats, float duration)
+    {
+        stats.IsStunned = true;
+        yield return new WaitForSeconds(duration);
+        if (stats != null) stats.IsStunned = false;
     }
 
     // ── 조회 ─────────────────────────────────────

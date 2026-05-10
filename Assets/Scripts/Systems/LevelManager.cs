@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private SkillData[] skillPool;
     [SerializeField] private float baseExpPerLevel = 20f;
+    [SerializeField] private SkillID[] startingSkillIDs = { SkillID.Slash };
 
     public int CurrentLevel { get; private set; } = 1;
     public float CurrentExp { get; private set; }
@@ -26,6 +27,17 @@ public class LevelManager : MonoBehaviour
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         ExpToNextLevel = baseExpPerLevel;
+        InitializeStartingSkills();
+    }
+
+    void InitializeStartingSkills()
+    {
+        foreach (SkillID skillID in startingSkillIDs)
+        {
+            SkillData skill = skillPool.FirstOrDefault(s => s != null && s.skillID == skillID);
+            if (skill != null)
+                skillLevels[skill] = 1;
+        }
     }
 
     public void AddExp(float amount)

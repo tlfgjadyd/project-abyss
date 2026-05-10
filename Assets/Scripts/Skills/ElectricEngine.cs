@@ -9,6 +9,9 @@ public class ElectricEngine : MonoBehaviour
     public float chainDamageRatio = 0.6f;
     public int maxChainTargets = 3;
 
+    /// <summary>돌연변이 등에서 곱셈으로 적용. 기본 1.0</summary>
+    [HideInInspector] public float damageMultiplier = 1f;
+
     [Header("Layer")]
     [SerializeField] private LayerMask enemyLayer;
 
@@ -25,6 +28,8 @@ public class ElectricEngine : MonoBehaviour
         if (GameManager.Instance.CurrentState != GameManager.GameState.Playing)
             return;
 
+        if (stats.IsStunned) return;
+
         cooldownTimer -= Time.deltaTime;
         if (cooldownTimer > 0f) return;
 
@@ -33,6 +38,7 @@ public class ElectricEngine : MonoBehaviour
 
         Fire(primary);
         cooldownTimer = cooldown / stats.EffectiveAttackSpeed;
+        PlayerSkillEvents.OnSkillUsed?.Invoke();
     }
 
     Transform FindNearestEnemy()
@@ -51,13 +57,15 @@ public class ElectricEngine : MonoBehaviour
 
     void Fire(Transform primary)
     {
+        float baseDamage = stats.attackPower * damageMultiplier;
+
         // 1차 피해
-        primary.GetComponent<IDamageable>()?.TakeDamage(stats.attackPower);
+        primary.GetComponent<IDamageable>()?.TakeDamage(baseDamage);
 
         // 연쇄 피해 (1차 대상 주변)
         Collider2D[] chainHits = Physics2D.OverlapCircleAll(primary.position, chainRadius, enemyLayer);
         int chainCount = 0;
-        float chainDamage = stats.attackPower * chainDamageRatio;
+        float chainDamage = baseDamage * chainDamageRatio;
 
         foreach (var hit in chainHits)
         {

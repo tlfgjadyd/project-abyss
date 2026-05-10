@@ -27,15 +27,28 @@ public class HitEffect : MonoBehaviour
     public void PlayFlash()
     {
         if (sr == null) return;
-        if (flashCoroutine != null) StopCoroutine(flashCoroutine);
+
+        // 이미 플래시 중이면 색상 복원 후 새로 시작 (이전 플래시의 flashColor가 캡처되지 않도록)
+        if (flashCoroutine != null)
+        {
+            StopCoroutine(flashCoroutine);
+            sr.color = baseColorBeforeFlash;
+        }
+
+        // 플래시 직전 현재 색상을 캡처 → 종료 후 이 색상으로 복귀
+        // (페이즈2 톤 등 외부에서 적용된 색상을 보존하기 위함)
+        baseColorBeforeFlash = sr.color;
+
         flashCoroutine = StartCoroutine(FlashRoutine());
     }
+
+    private Color baseColorBeforeFlash;
 
     IEnumerator FlashRoutine()
     {
         sr.color = flashColor;
         yield return new WaitForSeconds(flashDuration);
-        sr.color = originalColor;
+        sr.color = baseColorBeforeFlash;
         flashCoroutine = null;
     }
 }
