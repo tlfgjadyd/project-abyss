@@ -47,7 +47,12 @@ public class EnemySpawner : MonoBehaviour
 
         elapsedTime += Time.deltaTime;
 
-        if (GetActiveEnemyCount() >= maxActiveEnemies)
+        // 시간 경과에 따른 max active / interval 스케일
+        float maxActiveScale = DifficultyManager.Instance != null ? DifficultyManager.Instance.CurrentMaxActiveScale : 1f;
+        float intervalScale  = DifficultyManager.Instance != null ? DifficultyManager.Instance.CurrentIntervalScale  : 1f;
+
+        int currentMaxActive = Mathf.RoundToInt(maxActiveEnemies * maxActiveScale);
+        if (GetActiveEnemyCount() >= currentMaxActive)
             return;
 
         for (int i = 0; i < waves.Length; i++)
@@ -58,7 +63,7 @@ public class EnemySpawner : MonoBehaviour
             if (timers[i] <= 0f)
             {
                 SpawnEnemy(i);
-                timers[i] = waves[i].interval;
+                timers[i] = waves[i].interval * intervalScale;
             }
         }
     }

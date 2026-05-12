@@ -22,8 +22,7 @@ public class MutationManager : MonoBehaviour
     [SerializeField] private float sensoryStunDuration = 0.5f;
 
     private readonly HashSet<MutationID> activeMutations = new();
-    private MutationData[] pendingOffer;
-    private bool hasPendingMutation = false;
+    private readonly Queue<MutationData[]> pendingOffers = new();
     private bool sensoryCollapseActive = false;
 
     /// <summary>돌연변이 2장 제시 시 발동 (MutationPanel이 구독)</summary>
@@ -68,21 +67,22 @@ public class MutationManager : MonoBehaviour
             (available[i], available[j]) = (available[j], available[i]);
         }
 
-        pendingOffer = available.Take(2).ToArray();
-        if (pendingOffer.Length == 0) return;
+        var offer = available.Take(2).ToArray();
+        if (offer.Length == 0) return;
 
-        hasPendingMutation = true;
-        // 레벨업 카드 선택이 완료되어 Playing 상태로 돌아올 때 발동
+        // 큐에 보관 — Playing 상태로 돌아올 때마다 1건씩 발동
+        pendingOffers.Enqueue(offer);
     }
 
     void OnStateChanged(GameManager.GameState state)
     {
-        if (state == GameManager.GameState.Playing && hasPendingMutation)
-        {
-            hasPendingMutation = false;
-            OnMutationOffered?.Invoke(pendingOffer);
-            GameManager.Instance.TriggerMutation();
-        }
+        // 매개변수 대신 현재 상태 기준 (중첩 ChangeState 안전)
+        if (GameManager.Instance.CurrentState != GameManager.GameState.Playing) return;
+        if (pendingOffers.Count == 0) return;
+
+        var offer = pendingOffers.Dequeue();
+        OnMutationOffered?.Invoke(offer);
+        GameManager.Instance.TriggerMutation();
     }
 
     // ── 선택 & 적용 ──────────────────────────────

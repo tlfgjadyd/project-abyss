@@ -20,10 +20,12 @@ public class HUDController : MonoBehaviour
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text pressureText;  // "압력: 45%" (선택)
     [SerializeField] private Slider   pressureSlider; // 압력 게이지 (선택)
+    [SerializeField] private TMP_Text cellsText;     // "세포 12" — 만렙 보상 누적 (선택)
 
     [Header("Feedback")]
     [SerializeField] private TMP_Text energyInsufficientText;  // "에너지 부족!" 표시
     [SerializeField] private TMP_Text bossWarningText;         // "BOSS INCOMING!" 표시
+    [SerializeField] private TMP_Text maxLevelRewardText;      // "세포 +5 / HP +XX" 표시 (선택)
 
     [Header("Refs")]
     [SerializeField] private PlayerStats playerStats;
@@ -49,8 +51,12 @@ public class HUDController : MonoBehaviour
         BioEnergyManager.Instance.OnEnergyInsufficient += OnEnergyInsufficient;
         BossSpawner.OnBossSpawned += OnBossSpawned;
 
+        LevelManager.Instance.OnCellsChanged   += UpdateCells;
+        LevelManager.Instance.OnMaxLevelReward += OnMaxLevelReward;
+
         if (energyInsufficientText != null) energyInsufficientText.gameObject.SetActive(false);
         if (bossWarningText        != null) bossWarningText.gameObject.SetActive(false);
+        if (maxLevelRewardText     != null) maxLevelRewardText.gameObject.SetActive(false);
 
         // 초기값 적용
         UpdateLevel(LevelManager.Instance.CurrentLevel);
@@ -58,6 +64,7 @@ public class HUDController : MonoBehaviour
         UpdateTimer(GameManager.Instance.TimeRemaining);
         UpdateEnergy(BioEnergyManager.Instance.CurrentEnergy, BioEnergyManager.Instance.MaxEnergy);
         UpdatePressure(PressureSystem.Instance != null ? PressureSystem.Instance.CurrentPressure : 0f);
+        UpdateCells(LevelManager.Instance.CurrentCells);
     }
 
     void OnDestroy()
@@ -67,8 +74,10 @@ public class HUDController : MonoBehaviour
 
         if (LevelManager.Instance != null)
         {
-            LevelManager.Instance.OnExpChanged   -= UpdateExp;
-            LevelManager.Instance.OnLevelChanged -= UpdateLevel;
+            LevelManager.Instance.OnExpChanged     -= UpdateExp;
+            LevelManager.Instance.OnLevelChanged   -= UpdateLevel;
+            LevelManager.Instance.OnCellsChanged   -= UpdateCells;
+            LevelManager.Instance.OnMaxLevelReward -= OnMaxLevelReward;
         }
         if (GameManager.Instance != null)
             GameManager.Instance.OnTimerUpdated -= UpdateTimer;
@@ -134,6 +143,24 @@ public class HUDController : MonoBehaviour
     {
         if (bossWarningText != null)
             StartCoroutine(ShowFeedbackText(bossWarningText, "BOSS INCOMING!", 3f));
+    }
+
+    void UpdateCells(int cells)
+    {
+        if (cellsText != null) cellsText.text = $"세포 {cells}";
+    }
+
+    void OnMaxLevelReward(int cellsGained, float hpHealed)
+    {
+        if (maxLevelRewardText == null) return;
+
+        string msg;
+        if (cellsGained > 0)
+            msg = $"세포 +{cellsGained}";
+        else
+            msg = $"HP +{Mathf.CeilToInt(hpHealed)}";
+
+        StartCoroutine(ShowFeedbackText(maxLevelRewardText, msg, 2f));
     }
 
     System.Collections.IEnumerator ShowFeedbackText(TMP_Text target, string message, float duration)

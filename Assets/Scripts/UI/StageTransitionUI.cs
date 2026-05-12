@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -47,6 +48,20 @@ public class StageTransitionUI : MonoBehaviour
             fadePanel.blocksRaycasts = false;
         }
         if (stageNameText != null) stageNameText.gameObject.SetActive(false);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 검은 화면 상태로 새 씬에 진입했다면 자동 페이드 인
+        if (fadePanel != null && fadePanel.alpha > 0.5f)
+            PlayFadeIn();
     }
 
     /// <summary>
@@ -64,25 +79,89 @@ public class StageTransitionUI : MonoBehaviour
         StartCoroutine(FadeInRoutine());
     }
 
-    // ── 코루틴 (스켈레톤) ─────────────────────────
+    // ── 코루틴 ─────────────────────────────────
 
     IEnumerator FadeOutRoutine(string title, Action onComplete)
     {
-        // [TODO 5주차] 실제 alpha 0→1 트윈
-        // float t = 0f;
-        // while (t < fadeOutDuration) { ... fadePanel.alpha = t/fadeOutDuration; ... }
-        // 자막 표시 (title)
-        // yield return new WaitForSecondsRealtime(titleHoldDuration);
+        if (fadePanel == null)
+        {
+            Debug.LogError("[StageTransitionUI] fadePanel이 null입니다.");
+            onComplete?.Invoke();
+            yield break;
+        }
 
-        Debug.Log($"[StageTransitionUI] FadeOut + '{title}' — TODO: 5주차 구현");
-        yield return null;
+        // 입력 차단 + 자막 초기 비활성
+        fadePanel.blocksRaycasts = true;
+        if (stageNameText != null)
+        {
+            stageNameText.text = title;
+            stageNameText.gameObject.SetActive(false);
+            var c = stageNameText.color;
+            c.a = 0f;
+            stageNameText.color = c;
+        }
+
+        // 1) 검은 화면 alpha 0 → 1 (unscaledDeltaTime — timeScale=0에서도 동작)
+        float t = 0f;
+        while (t < fadeOutDuration)
+        {
+            t += Time.unscaledDeltaTime;
+            fadePanel.alpha = Mathf.Clamp01(t / fadeOutDuration);
+            yield return null;
+        }
+        fadePanel.alpha = 1f;
+
+        // 2) 자막 페이드 인 (검은 화면 위에서, 짧게)
+        if (stageNameText != null)
+        {
+            stageNameText.gameObject.SetActive(true);
+            float titleFadeIn = 0.3f;
+            float tt = 0f;
+            while (tt < titleFadeIn)
+            {
+                tt += Time.unscaledDeltaTime;
+                var c = stageNameText.color;
+                c.a = Mathf.Clamp01(tt / titleFadeIn);
+                stageNameText.color = c;
+                yield return null;
+            }
+            var fc = stageNameText.color;
+            fc.a = 1f;
+            stageNameText.color = fc;
+        }
+
+        // 3) 자막 hold
+        yield return new WaitForSecondsRealtime(titleHoldDuration);
+
+        // 4) onComplete (보통 SceneManager.LoadScene). 페이드 인은 새 씬에서 호출됨.
         onComplete?.Invoke();
     }
 
     IEnumerator FadeInRoutine()
     {
-        // [TODO 5주차] alpha 1→0 트윈
-        Debug.Log("[StageTransitionUI] FadeIn — TODO: 5주차 구현");
+        if (fadePanel == null)
+        {
+            Debug.LogError("[StageTransitionUI] fadePanel이 null입니다.");
+            yield break;
+        }
+
+        // 진입 직후 한 프레임 대기 (새 씬 매니저 Start 완료 보장)
         yield return null;
+
+        fadePanel.alpha = 1f;
+        fadePanel.blocksRaycasts = true;
+
+        // alpha 1 → 0
+        float t = 0f;
+        while (t < fadeInDuration)
+        {
+            t += Time.unscaledDeltaTime;
+            fadePanel.alpha = 1f - Mathf.Clamp01(t / fadeInDuration);
+            yield return null;
+        }
+        fadePanel.alpha = 0f;
+        fadePanel.blocksRaycasts = false;
+
+        if (stageNameText != null) stageNameText.gameObject.SetActive(false);
     }
 }

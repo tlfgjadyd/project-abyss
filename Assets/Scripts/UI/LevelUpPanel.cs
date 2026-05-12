@@ -34,7 +34,8 @@ public class LevelUpPanel : MonoBehaviour
 
     void OnStateChanged(GameManager.GameState state)
     {
-        if (state != GameManager.GameState.LevelUp)
+        // 중첩 ChangeState 호출 시 매개변수가 stale일 수 있음 → 항상 CurrentState 기준으로 판단
+        if (GameManager.Instance.CurrentState != GameManager.GameState.LevelUp)
             gameObject.SetActive(false);
     }
 }

@@ -44,44 +44,51 @@ public class StageManager : MonoBehaviour
 
     /// <summary>
     /// 다음 스테이지로 전환. 마지막 스테이지면 엔딩으로.
-    /// [TODO 5주차] 페이드 + 씬 로딩 실제 구현
+    /// 페이드 아웃 → 씬 로드 → (새 씬에서 자동 페이드 인).
     /// </summary>
     public void TransitionToNext()
     {
-        if (CurrentStage == null)
-        {
-            Debug.LogError("[StageManager] CurrentStage가 null입니다.");
-            return;
-        }
-
         // 1. 현재 진행 데이터 저장
         if (PlayerProgressData.Instance != null)
             PlayerProgressData.Instance.Capture();
 
         // 2. 마지막 스테이지면 엔딩
-        if (CurrentStage.IsFinalStage)
+        if (CurrentStage != null && CurrentStage.IsFinalStage)
         {
             LoadEnding();
             return;
         }
 
-        // 3. 다음 스테이지로 전환
-        StageData next = CurrentStage.nextStage;
-        Debug.Log($"[StageManager] '{CurrentStage.displayName}' → '{next.displayName}' 전환");
+        // 3. 다음 스테이지 결정
+        StageData next = CurrentStage != null ? CurrentStage.nextStage : null;
+        string nextDisplayName = next != null ? next.displayName : "다음 스테이지";
+        string nextSceneName   = (next != null && !string.IsNullOrEmpty(next.sceneName))
+            ? next.sceneName
+            : SceneManager.GetActiveScene().name; // fallback: 같은 씬 재로드 (Day 30 전까지 검증용)
 
-        CurrentStage = next;
-        OnStageChanged?.Invoke(next);
-
-        // [TODO 5주차] 페이드 아웃 → 씬 로드 → 페이드 인
-        // StageTransitionUI.Instance.PlayFadeOut(next.displayName, () => {
-        //     SceneManager.LoadScene(next.sceneName);
-        // });
-
-        // 임시: 직접 씬 로드 (페이드 없이)
-        if (!string.IsNullOrEmpty(next.sceneName))
+        if (next != null)
         {
-            // SceneManager.LoadScene(next.sceneName);  // 5주차에 활성화
-            Debug.Log($"[StageManager] (TODO) SceneManager.LoadScene(\"{next.sceneName}\") 호출 예정");
+            Debug.Log($"[StageManager] '{(CurrentStage != null ? CurrentStage.displayName : "?")}' → '{nextDisplayName}' 전환");
+            CurrentStage = next;
+            OnStageChanged?.Invoke(next);
+        }
+        else
+        {
+            Debug.Log($"[StageManager] nextStage가 비어있어 현재 씬을 재로드합니다 (검증 모드).");
+        }
+
+        // 4. 페이드 아웃 → 씬 로드
+        if (StageTransitionUI.Instance != null)
+        {
+            StageTransitionUI.Instance.PlayFadeOut(nextDisplayName, () =>
+            {
+                SceneManager.LoadScene(nextSceneName);
+            });
+        }
+        else
+        {
+            // 폴백: 페이드 없이 즉시 로드
+            SceneManager.LoadScene(nextSceneName);
         }
     }
 

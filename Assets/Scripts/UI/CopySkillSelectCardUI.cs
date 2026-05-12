@@ -37,8 +37,12 @@ public class CopySkillSelectCardUI : MonoBehaviour
         CopySkillManager.Instance.AssignSkill(targetSlot, skill);
         CopySkillSelectPanel.Instance.Hide();
 
-        // 스테이지 클리어
+        // 스테이지 클리어 상태로 전환
         GameManager.Instance.TriggerStageClear();
+
+        // 페이드 아웃 + 씬 로드 (StageManager가 없으면 무시 — 검증 환경 호환)
+        if (StageManager.Instance != null)
+            StageManager.Instance.TransitionToNext();
     }
 
     CopySkillBase FindSkillComponent(CopySkillID id)

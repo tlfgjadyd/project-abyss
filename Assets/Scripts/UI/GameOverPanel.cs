@@ -19,14 +19,11 @@ public class GameOverPanel : MonoBehaviour
 
     void OnStateChanged(GameManager.GameState state)
     {
-        if (state == GameManager.GameState.GameOver)
+        // GameOver 전용. StageClear는 별도 패널 없이 StageTransitionUI 페이드로 처리.
+        // 중첩 ChangeState 안전을 위해 매개변수 대신 CurrentState 기준으로 판단.
+        if (GameManager.Instance.CurrentState == GameManager.GameState.GameOver)
         {
             if (titleText != null) titleText.text = "GAME OVER";
-            gameObject.SetActive(true);
-        }
-        else if (state == GameManager.GameState.StageClear)
-        {
-            if (titleText != null) titleText.text = "STAGE CLEAR";
             gameObject.SetActive(true);
         }
         else
