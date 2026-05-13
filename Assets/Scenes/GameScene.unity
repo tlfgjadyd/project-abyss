@@ -2318,7 +2318,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6925c195b04e2a498f826669de7dba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  peakTime: 360
+  peakTime: 20
+  overrideStageData: 1
   hpMultiplierPeak: 2
   damageMultiplierPeak: 1.5
   intervalMultiplierPeak: 0.4
@@ -5416,6 +5417,7 @@ Transform:
   - {fileID: 2030982757}
   - {fileID: 1778182529}
   - {fileID: 314901028}
+  - {fileID: 893371228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &677622160
@@ -6631,6 +6633,60 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 846999929}
   m_CullTransparentMesh: 1
+--- !u!1 &893371227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 893371228}
+  - component: {fileID: 893371229}
+  m_Layer: 0
+  m_Name: PlayerProgressData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &893371228
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893371227}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 677609190}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &893371229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893371227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10a22e9b63fbdea47bf7a23b1e9753b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHp: 0
+  pressureResistance: 0
+  currentLevel: 0
+  currentExp: 0
+  expToNextLevel: 0
+  currentCells: 0
+  qSlotData: {fileID: 0}
+  eSlotData: {fileID: 0}
+  spaceSlotData: {fileID: 0}
+  ownedMutationIDs: 
 --- !u!1 &915015911
 GameObject:
   m_ObjectHideFlags: 0
@@ -8689,7 +8745,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7002643cba1f9a4fb2dc72bc382daa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingStage: {fileID: 0}
+  startingStage: {fileID: 11400000, guid: ba32252f66148b748b26d760da7dc0e6, type: 2}
 --- !u!4 &1181134934
 Transform:
   m_ObjectHideFlags: 0
@@ -9329,8 +9385,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossPrefab: {fileID: 4177956351103701311, guid: 0e0e12b9f3ec5c3418f5eb634811e4e5, type: 3}
-  bossSpawnTime: 10
+  bossSpawnTime: 20
   spawnOffset: 10
+  overrideStageData: 1
   enemySpawner: {fileID: 1197450468}
 --- !u!1 &1271655546
 GameObject:
@@ -10056,7 +10113,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1423104708}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.67699206, y: -0.8747312, z: 0.008850405}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14734,8 +14791,8 @@ SceneRoots:
   - {fileID: 845797515}
   - {fileID: 1247999759}
   - {fileID: 1568885039}
-  - {fileID: 1423104709}
   - {fileID: 1361632214}
   - {fileID: 769729818}
   - {fileID: 1740240793}
   - {fileID: 1181134934}
+  - {fileID: 1423104709}

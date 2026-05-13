@@ -71,6 +71,39 @@ public class CopySkillManager : MonoBehaviour
         _ => null
     };
 
+    /// <summary>
+    /// PlayerProgressData 복원용. CopySkillData를 받아 플레이어의 해당 스킬 컴포넌트 찾고 슬롯에 할당.
+    /// data가 null이면 슬롯을 비움.
+    /// </summary>
+    public void RestoreSlot(int slot, CopySkillData data)
+    {
+        if (data == null)
+        {
+            AssignSkill(slot, null);
+            return;
+        }
+
+        var skill = FindSkillComponent(data.copySkillID);
+        if (skill != null)
+            skill.data = data;
+
+        AssignSkill(slot, skill);
+    }
+
+    CopySkillBase FindSkillComponent(CopySkillID id)
+    {
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return null;
+
+        return id switch
+        {
+            CopySkillID.Berserk        => player.GetComponent<BerserkSkill>(),
+            CopySkillID.Dash           => player.GetComponent<DashSkill>(),
+            CopySkillID.HealingFactor  => player.GetComponent<HealingFactorSkill>(),
+            _                          => null
+        };
+    }
+
     // ── 발동 ─────────────────────────────────────
 
     void TryActivate(CopySkillBase skill)

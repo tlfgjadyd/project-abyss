@@ -10,10 +10,14 @@ public class BossSpawner : MonoBehaviour
 
     [Header("보스 설정")]
     [SerializeField] private GameObject   bossPrefab;
-    [Tooltip("스테이지 시작 후 보스가 등장하는 시간 (초)")]
+    [Tooltip("StageManager.CurrentStage가 있으면 그 값으로 덮어씌워짐 (overrideStageData=false일 때).")]
     [SerializeField] private float        bossSpawnTime = 480f;
     [Tooltip("플레이어로부터 보스가 스폰될 거리")]
     [SerializeField] private float        spawnOffset   = 10f;
+
+    [Header("Test Mode")]
+    [Tooltip("체크 시 StageData를 무시하고 인스펙터의 bossSpawnTime을 사용 (단축 테스트용).")]
+    [SerializeField] private bool         overrideStageData = false;
 
     [Header("연결")]
     [SerializeField] private EnemySpawner enemySpawner;
@@ -21,6 +25,15 @@ public class BossSpawner : MonoBehaviour
     private float   elapsed;
     private bool    bossSpawned;
     private BossBase currentBoss;
+
+    void Start()
+    {
+        // overrideStageData=true이면 인스펙터 값 그대로 사용 (테스트 단축용)
+        if (overrideStageData) return;
+
+        if (StageManager.Instance != null && StageManager.Instance.CurrentStage != null)
+            bossSpawnTime = StageManager.Instance.CurrentStage.bossSpawnTime;
+    }
 
     void Update()
     {

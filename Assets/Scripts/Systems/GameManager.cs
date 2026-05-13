@@ -12,8 +12,9 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState{get;private set;}
 
     // Stage Timer
-    [Header("Stage Settings")]
-    [SerializeField] private float stageDuration = 540f; // 9miniute
+    [Header("Stage Settings (fallback)")]
+    [Tooltip("StageManager.CurrentStage가 있으면 그 값으로 덮어씌워짐. 없을 때만 fallback으로 사용.")]
+    [SerializeField] private float stageDuration = 540f;
     public float TimeRemaining {get; private set;}
     public bool TimerRunning {get; private set;}
 
@@ -89,7 +90,12 @@ public class GameManager : MonoBehaviour
 
     void StartStage()
     {
-        TimeRemaining = stageDuration;
+        // StageManager가 있고 현재 스테이지 데이터가 있으면 그 값을 우선 사용
+        float duration = stageDuration;
+        if (StageManager.Instance != null && StageManager.Instance.CurrentStage != null)
+            duration = StageManager.Instance.CurrentStage.stageDuration;
+
+        TimeRemaining = duration;
         ChangeState(GameState.Playing);
     }
 
@@ -125,6 +131,17 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1f;
+
+        // StageManager가 있으면 진행 데이터 리셋 + 첫 스테이지로 이동
+        if (StageManager.Instance != null)
+        {
+            StageManager.Instance.StartNewGame();
+            return;
+        }
+
+        // 폴백: 현재 씬 재로드
+        if (PlayerProgressData.Instance != null)
+            PlayerProgressData.Instance.ResetAll();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

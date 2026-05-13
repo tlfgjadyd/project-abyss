@@ -203,4 +203,44 @@ public class LevelManager : MonoBehaviour
     {
         return skillLevels.TryGetValue(skill, out int level) ? level : 0;
     }
+
+    // ── PlayerProgressData 연동 (씬 전환 시 상태 복원) ───
+
+    /// <summary>현재 스킬 레벨 Dictionary의 복사본 반환 (Capture용).</summary>
+    public Dictionary<SkillData, int> GetSkillLevelsCopy()
+    {
+        return new Dictionary<SkillData, int>(skillLevels);
+    }
+
+    /// <summary>
+    /// 새 씬에서 LevelManager의 상태를 한 번에 복원.
+    /// 각 스킬에 대해 Lv1~targetLevel까지 OnSkillSelected를 순차 발행하여
+    /// SkillEffectApplier의 누적 delta 효과를 재적용한다. (maxHp, attackPower, projectile count 등)
+    /// </summary>
+    public void SetState(int level, float exp, float expToNext, Dictionary<SkillData, int> levels, int cells)
+    {
+        CurrentLevel    = level;
+        CurrentExp      = exp;
+        ExpToNextLevel  = expToNext > 0f ? expToNext : baseExpPerLevel * Mathf.Max(1, level);
+        CurrentCells    = cells;
+
+        skillLevels.Clear();
+        if (levels != null)
+        {
+            foreach (var kv in levels)
+            {
+                if (kv.Key == null) continue;
+                skillLevels[kv.Key] = kv.Value;
+
+                // 스킬 효과 재적용: Lv1부터 targetLevel까지 누적 발행
+                // (SkillEffectApplier가 += delta 방식이라 한 번씩 호출해야 함)
+                for (int lv = 1; lv <= kv.Value; lv++)
+                    OnSkillSelected?.Invoke(kv.Key, lv);
+            }
+        }
+
+        OnLevelChanged?.Invoke(CurrentLevel);
+        OnExpChanged?.Invoke(CurrentExp, ExpToNextLevel);
+        OnCellsChanged?.Invoke(CurrentCells);
+    }
 }

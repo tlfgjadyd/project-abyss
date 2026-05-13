@@ -13,6 +13,10 @@ public class DifficultyManager : MonoBehaviour
     [Tooltip("스케일이 최대치에 도달하는 시간(초). 보스 등장 시점 또는 그 직전으로 설정 권장.")]
     [SerializeField] private float peakTime = 360f;
 
+    [Header("Test Mode")]
+    [Tooltip("체크 시 StageData를 무시하고 인스펙터의 peakTime을 사용 (단축 테스트용).")]
+    [SerializeField] private bool overrideStageData = false;
+
     [Header("Enemy Stats at Peak")]
     [Tooltip("절정 시점의 HP 배율 (≥ 1)")]
     [SerializeField] private float hpMultiplierPeak     = 2.0f;
@@ -39,6 +43,16 @@ public class DifficultyManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+    }
+
+    void Start()
+    {
+        // overrideStageData=true이면 인스펙터 값 그대로 사용 (테스트 단축용)
+        if (overrideStageData) return;
+
+        // StageManager가 있으면 peakTime을 현재 스테이지의 bossSpawnTime과 동기화
+        if (StageManager.Instance != null && StageManager.Instance.CurrentStage != null)
+            peakTime = StageManager.Instance.CurrentStage.bossSpawnTime;
     }
 
     void Update()

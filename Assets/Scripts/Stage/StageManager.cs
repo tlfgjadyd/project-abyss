@@ -43,8 +43,9 @@ public class StageManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 다음 스테이지로 전환. 마지막 스테이지면 엔딩으로.
+    /// 다음 스테이지로 전환. 마지막 스테이지면 엔딩 씬으로.
     /// 페이드 아웃 → 씬 로드 → (새 씬에서 자동 페이드 인).
+    /// 씬이 BuildSettings에 없으면 현재 씬 재로드(검증 모드).
     /// </summary>
     public void TransitionToNext()
     {
@@ -52,43 +53,50 @@ public class StageManager : MonoBehaviour
         if (PlayerProgressData.Instance != null)
             PlayerProgressData.Instance.Capture();
 
-        // 2. 마지막 스테이지면 엔딩
-        if (CurrentStage != null && CurrentStage.IsFinalStage)
-        {
-            LoadEnding();
-            return;
-        }
-
-        // 3. 다음 스테이지 결정
+        // 2. 다음 씬과 자막 결정
         StageData next = CurrentStage != null ? CurrentStage.nextStage : null;
-        string nextDisplayName = next != null ? next.displayName : "다음 스테이지";
-        string nextSceneName   = (next != null && !string.IsNullOrEmpty(next.sceneName))
-            ? next.sceneName
-            : SceneManager.GetActiveScene().name; // fallback: 같은 씬 재로드 (Day 30 전까지 검증용)
+        bool isEnding  = (next == null);
 
-        if (next != null)
+        string sceneName;
+        string displayName;
+
+        if (isEnding)
         {
-            Debug.Log($"[StageManager] '{(CurrentStage != null ? CurrentStage.displayName : "?")}' → '{nextDisplayName}' 전환");
-            CurrentStage = next;
-            OnStageChanged?.Invoke(next);
+            sceneName   = "Ending";  // TODO 6주차: 엔딩 씬 작성 시 이 이름 유지/변경
+            displayName = "엔딩";
+            Debug.Log("[StageManager] 마지막 스테이지 클리어 → 엔딩 진입 시도");
         }
         else
         {
-            Debug.Log($"[StageManager] nextStage가 비어있어 현재 씬을 재로드합니다 (검증 모드).");
+            sceneName   = !string.IsNullOrEmpty(next.sceneName) ? next.sceneName : SceneManager.GetActiveScene().name;
+            displayName = next.displayName;
+            Debug.Log($"[StageManager] '{(CurrentStage != null ? CurrentStage.displayName : "?")}' → '{displayName}' 전환");
+
+            CurrentStage = next;
+            OnStageChanged?.Invoke(next);
+        }
+
+        // 3. BuildSettings에 없으면 현재 씬으로 fallback (검증 모드)
+        int buildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + sceneName + ".unity");
+        if (buildIndex < 0)
+        {
+            Debug.LogWarning($"[StageManager] '{sceneName}' 씬이 BuildSettings에 없습니다 → 현재 씬 재로드 (검증 모드).");
+            sceneName = SceneManager.GetActiveScene().name;
         }
 
         // 4. 페이드 아웃 → 씬 로드
+        string sceneToLoad = sceneName; // 클로저 캡처용
         if (StageTransitionUI.Instance != null)
         {
-            StageTransitionUI.Instance.PlayFadeOut(nextDisplayName, () =>
+            StageTransitionUI.Instance.PlayFadeOut(displayName, () =>
             {
-                SceneManager.LoadScene(nextSceneName);
+                SceneManager.LoadScene(sceneToLoad);
             });
         }
         else
         {
             // 폴백: 페이드 없이 즉시 로드
-            SceneManager.LoadScene(nextSceneName);
+            SceneManager.LoadScene(sceneToLoad);
         }
     }
 
@@ -111,10 +119,18 @@ public class StageManager : MonoBehaviour
         CurrentStage = startingStage;
         OnStageChanged?.Invoke(CurrentStage);
 
-        if (CurrentStage != null && !string.IsNullOrEmpty(CurrentStage.sceneName))
+        // 씬 이름 결정: startingStage.sceneName이 BuildSettings에 있으면 사용, 없으면 현재 씬 fallback
+        string sceneName = (CurrentStage != null && !string.IsNullOrEmpty(CurrentStage.sceneName))
+            ? CurrentStage.sceneName
+            : SceneManager.GetActiveScene().name;
+
+        int buildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + sceneName + ".unity");
+        if (buildIndex < 0)
         {
-            // SceneManager.LoadScene(CurrentStage.sceneName);  // 5주차에 활성화
-            Debug.Log($"[StageManager] (TODO) 새 게임 시작: {CurrentStage.sceneName}");
+            Debug.LogWarning($"[StageManager] '{sceneName}' 씬이 BuildSettings에 없어 현재 씬을 재로드합니다.");
+            sceneName = SceneManager.GetActiveScene().name;
         }
+
+        SceneManager.LoadScene(sceneName);
     }
 }

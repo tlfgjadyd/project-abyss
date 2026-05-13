@@ -249,4 +249,30 @@ public class MutationManager : MonoBehaviour
     // ── 조회 ─────────────────────────────────────
 
     public bool HasMutation(MutationID id) => activeMutations.Contains(id);
+
+    // ── PlayerProgressData 연동 (씬 전환 시 상태 복원) ───
+
+    /// <summary>현재 보유 돌연변이 ID 목록 반환 (Capture용).</summary>
+    public List<MutationID> GetOwnedIDs() => new List<MutationID>(activeMutations);
+
+    /// <summary>
+    /// 새 씬에서 돌연변이 상태 복원.
+    /// 각 ID마다 ApplyMutation을 호출하여 stats에 곱셈 효과를 재적용한다.
+    /// (Awake에서 stats가 base 값으로 초기화된 후 호출되는 것이 전제)
+    /// </summary>
+    public void RestoreOwnedIDs(List<MutationID> ids)
+    {
+        if (ids == null) return;
+
+        foreach (var id in ids)
+        {
+            if (activeMutations.Contains(id)) continue;
+
+            var data = System.Array.Find(mutationPool, m => m != null && m.mutationID == id);
+            if (data == null) continue;
+
+            activeMutations.Add(id);
+            ApplyMutation(data);
+        }
+    }
 }

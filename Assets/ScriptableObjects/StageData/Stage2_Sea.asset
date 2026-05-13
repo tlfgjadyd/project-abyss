@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9b32ee781149e04d834bf07b444712a, type: 3}
+  m_Name: Stage2_Sea
+  m_EditorClassIdentifier: 
+  stageNumber: 2
+  sceneName: Stage2_Sea
+  displayName: "\uD574\uC800"
+  pressureEnabled: 1
+  pressureStartY: -5
+  pressureMaxY: -30
+  pressureMovePenalty: 0.2
+  pressureAttackPenalty: 0.2
+  pressureExpBonus: 0.3
+  stageDuration: 420
+  bossSpawnTime: 360
+  nextStage: {fileID: 11400000, guid: 0251a5ec430232b41aed30a3f717e11e, type: 2}
