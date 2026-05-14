@@ -36,6 +36,9 @@ public class StageManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+
+        // DontDestroyOnLoad는 root GameObject에만 적용 가능 → 자식이면 root로 이동
+        if (transform.parent != null) transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
 
         if (CurrentStage == null && startingStage != null)

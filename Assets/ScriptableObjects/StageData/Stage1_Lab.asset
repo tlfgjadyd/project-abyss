@@ -23,4 +23,4 @@ MonoBehaviour:
   pressureExpBonus: 0
   stageDuration: 420
   bossSpawnTime: 360
-  nextStage: {fileID: 0}
+  nextStage: {fileID: 11400000, guid: 38afc61c6ac298e438980a2c6bc13535, type: 2}

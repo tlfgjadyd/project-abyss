@@ -50,12 +50,10 @@ public class GameManager : MonoBehaviour
 
     public void ChangeState(GameState newState)
     {
-        
         CurrentState = newState;
 
-        // 이벤트 던짐
-        OnGameStateChanged?.Invoke(newState);
-
+        // timeScale/Timer는 이벤트 발행 전에 처리 — 구독자가 또 ChangeState를 호출해도
+        // 외부 호출의 switch가 마지막에 덮어쓰지 않도록 atomic하게 유지.
         switch (newState)
         {
             case GameState.Playing:
@@ -80,10 +78,13 @@ public class GameManager : MonoBehaviour
             case GameState.StageClear:
                 Time.timeScale = 0f;
                 TimerRunning = false;
-                // TODO: 다음 스테이지 전환 
+                // TODO: 다음 스테이지 전환
                 Debug.Log("Stage Clear");
                 break;
         }
+
+        // 이벤트 발행을 마지막에 — 구독자가 또 ChangeState를 호출하면 그 내부 switch가 최종 적용됨.
+        OnGameStateChanged?.Invoke(newState);
     }
 
     // ── 타이머 ──────────────────────────────────

@@ -6,12 +6,14 @@ public class EnemyAI : MonoBehaviour
 {
     private Rigidbody2D rb;
     private EnemyBase enemy;
+    private EnemyRangedAttack rangedAttack; // 있으면 거리 유지 (원거리 적)
     private Transform player;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         enemy = GetComponent<EnemyBase>();
+        rangedAttack = GetComponent<EnemyRangedAttack>();
     }
 
     void OnEnable()
@@ -37,7 +39,30 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        Vector2 dir = ((Vector2)player.position - (Vector2)transform.position).normalized;
-        rb.velocity = dir * enemy.Data.moveSpeed;
+        Vector2 toPlayer = (Vector2)player.position - (Vector2)transform.position;
+        float distance  = toPlayer.magnitude;
+
+        // 원거리 적: stopDistance 근방에서 정지/후퇴
+        if (rangedAttack != null)
+        {
+            float stopDist = rangedAttack.StopDistance;
+            float retreatDist = stopDist * 0.7f;
+
+            if (distance < retreatDist)
+            {
+                // 너무 가까우면 후퇴
+                rb.velocity = -toPlayer.normalized * enemy.Data.moveSpeed;
+                return;
+            }
+            if (distance < stopDist)
+            {
+                // 적정 거리: 정지
+                rb.velocity = Vector2.zero;
+                return;
+            }
+        }
+
+        // 기본: 추적
+        rb.velocity = toPlayer.normalized * enemy.Data.moveSpeed;
     }
 }

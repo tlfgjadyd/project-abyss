@@ -5418,6 +5418,7 @@ Transform:
   - {fileID: 1778182529}
   - {fileID: 314901028}
   - {fileID: 893371228}
+  - {fileID: 1181134934}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &677622160
@@ -8754,12 +8755,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1181134932}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.67699206, y: 0.8747312, z: -0.008850405}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 677609190}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1186321851
 GameObject:
@@ -8849,7 +8850,7 @@ MonoBehaviour:
   - enemyPrefab: {fileID: 7747541175761680800, guid: 02e7939e4de7c2248a7d68bf99b7773c, type: 3}
     interval: 1.5
     poolSize: 15
-    startTime: 60
+    startTime: 0
   - enemyPrefab: {fileID: 8454685512197736215, guid: be06698e460d0b841b5a7effa4c10235, type: 3}
     interval: 4
     poolSize: 10
@@ -14791,8 +14792,7 @@ SceneRoots:
   - {fileID: 845797515}
   - {fileID: 1247999759}
   - {fileID: 1568885039}
+  - {fileID: 1423104709}
   - {fileID: 1361632214}
   - {fileID: 769729818}
   - {fileID: 1740240793}
-  - {fileID: 1181134934}
-  - {fileID: 1423104709}
