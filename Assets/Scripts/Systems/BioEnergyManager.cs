@@ -7,10 +7,6 @@ public class BioEnergyManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float maxEnergy = 200f;
 
-    [Header("Debug")]
-    [SerializeField] private bool testMode = false;
-    [SerializeField] private float testConsumeAmount = 30f;
-
     public float CurrentEnergy { get; private set; }
     public float MaxEnergy => maxEnergy;
 
@@ -25,13 +21,6 @@ public class BioEnergyManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-    }
-
-    void Update()
-    {
-        // 테스트 키 (Tab) — 에너지 소비 확인용
-        if (testMode && Input.GetKeyDown(KeyCode.Tab))
-            ConsumeEnergy(testConsumeAmount);
     }
 
     // ── 외부 호출 ────────────────────────────────

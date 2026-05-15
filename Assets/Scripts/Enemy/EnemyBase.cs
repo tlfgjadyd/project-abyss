@@ -9,6 +9,12 @@ public class EnemyBase : MonoBehaviour, IDamageable
     public EnemyData Data => data;
     public bool IsStunned { get; private set; }
 
+    /// <summary>이동속도 배율 (DeepPressure 등 슬로우 디버프). EnemyAI가 이 값을 곱해 사용.</summary>
+    public float MoveSpeedMultiplier { get; private set; } = 1f;
+
+    /// <summary>받는 피해 배율 (DeepPressure 등 취약 디버프). TakeDamage 내부에서 곱연산.</summary>
+    public float TakeDamageMultiplier { get; private set; } = 1f;
+
     private float currentHp;
     private float scaledMaxHp;          // 난이도 스케일 적용 후 최대 HP
     private float scaledContactDamage;  // 난이도 스케일 적용 후 접촉 피해
@@ -16,6 +22,8 @@ public class EnemyBase : MonoBehaviour, IDamageable
     private bool isDead;
     private HitEffect hitEffect;
     private Coroutine stunCoroutine;
+    private Coroutine slowCoroutine;
+    private Coroutine vulnerableCoroutine;
 
     public System.Action<EnemyBase> OnDeath;
 
@@ -41,17 +49,55 @@ public class EnemyBase : MonoBehaviour, IDamageable
         contactTimer = 0f;
         IsStunned = false;
         stunCoroutine = null;
+
+        // 풀에서 재사용 시 디버프 초기화
+        MoveSpeedMultiplier = 1f;
+        TakeDamageMultiplier = 1f;
+        slowCoroutine = null;
+        vulnerableCoroutine = null;
     }
 
     public void TakeDamage(float amount)
     {
         if (isDead) return;
 
-        currentHp -= amount;
+        currentHp -= amount * TakeDamageMultiplier;
         hitEffect?.PlayFlash();
 
         if (currentHp <= 0f)
             Die();
+    }
+
+    /// <summary>이동속도 디버프 적용 (DeepPressure 등). multiplier=1보다 작으면 슬로우.</summary>
+    public void ApplySlow(float multiplier, float duration)
+    {
+        if (isDead) return;
+        if (slowCoroutine != null) StopCoroutine(slowCoroutine);
+        slowCoroutine = StartCoroutine(SlowRoutine(multiplier, duration));
+    }
+
+    IEnumerator SlowRoutine(float multiplier, float duration)
+    {
+        MoveSpeedMultiplier = multiplier;
+        yield return new WaitForSeconds(duration);
+        MoveSpeedMultiplier = 1f;
+        slowCoroutine = null;
+    }
+
+    /// <summary>취약 디버프 적용 (받는 피해 증가). multiplier=1.5이면 받는 피해 +50%.</summary>
+    public void ApplyVulnerability(float multiplier, float duration)
+    {
+        if (isDead) return;
+        if (vulnerableCoroutine != null) StopCoroutine(vulnerableCoroutine);
+        vulnerableCoroutine = StartCoroutine(VulnerabilityRoutine(multiplier, duration));
+    }
+
+    IEnumerator VulnerabilityRoutine(float multiplier, float duration)
+    {
+        TakeDamageMultiplier = multiplier;
+        yield return new WaitForSeconds(duration);
+        TakeDamageMultiplier = 1f;
+        vulnerableCoroutine = null;
     }
 
     public void Stun(float duration)

@@ -100,6 +100,9 @@ public class CopySkillManager : MonoBehaviour
             CopySkillID.Berserk        => player.GetComponent<BerserkSkill>(),
             CopySkillID.Dash           => player.GetComponent<DashSkill>(),
             CopySkillID.HealingFactor  => player.GetComponent<HealingFactorSkill>(),
+            CopySkillID.Ultrasonic     => player.GetComponent<UltrasonicSkill>(),
+            CopySkillID.DeepPressure   => player.GetComponent<DeepPressureSkill>(),
+            CopySkillID.PredatorCharge => player.GetComponent<PredatorChargeSkill>(),
             _                          => null
         };
     }

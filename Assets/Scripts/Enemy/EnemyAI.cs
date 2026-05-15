@@ -51,7 +51,7 @@ public class EnemyAI : MonoBehaviour
             if (distance < retreatDist)
             {
                 // 너무 가까우면 후퇴
-                rb.velocity = -toPlayer.normalized * enemy.Data.moveSpeed;
+                rb.velocity = -toPlayer.normalized * enemy.Data.moveSpeed * enemy.MoveSpeedMultiplier;
                 return;
             }
             if (distance < stopDist)
@@ -63,6 +63,6 @@ public class EnemyAI : MonoBehaviour
         }
 
         // 기본: 추적
-        rb.velocity = toPlayer.normalized * enemy.Data.moveSpeed;
+        rb.velocity = toPlayer.normalized * enemy.Data.moveSpeed * enemy.MoveSpeedMultiplier;
     }
 }
