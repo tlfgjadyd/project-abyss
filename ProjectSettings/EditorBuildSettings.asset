@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Stage2_Sea.unity
     guid: dadc18c2fe2ed534bb75627d52225f92
+  - enabled: 1
+    path: Assets/Scenes/Stage3_Deep.unity
+    guid: 9ef59e13e54521f4aa2f948eddc2ecbf
   m_configObjects: {}

@@ -25,9 +25,18 @@
 - **이번 주(6주차)에 처리**: 3·4스테이지, 메타 업그레이드, 엔딩
 - **7주차로 미룸**: 스킬 풀 확장, 향유고래 풀 패턴, 매니저 prefab 변환, 본격 밸런싱
 
-## 2. 사전 결정 사항
+## 2. 사전 결정 사항 ✅ (2026-05-17 확정)
 
-6주차 시작 전에 확정해야 하는 항목. 각 Day가 이 결정에 의존한다.
+| 항목 | 결정 |
+|------|------|
+| §2-1 시야 제한 | **(A) URP 2D Light** — 프로젝트가 이미 URP+Renderer2D 사용 |
+| §2-2 자폭 적 | 문서 그대로 (`EnemySuicideExplode`) |
+| §2-3 레이저 | **(B) 별도 컴포넌트** `EnemyLaserAttack` — 발사 모델/시각화가 EnemyRangedAttack과 다름 |
+| §2-4 메타 항목 | PlayerPrefs 저장. 압력저항만 5→4단계 +40% 만렙으로 조정 (50%면 압력 컨셉 소멸), 비용 `10/25/60/150`. 나머지 4종은 문서 표 그대로 |
+| §2-5 엔딩 | **같은 씬 VictoryPanel** — 별도 Ending 씬 X. `StageManager.LoadEnding`이 패널만 호출 |
+| §2-6 메인 메뉴 | **옵션 B** — MainMenu 씬 1개에 메인패널/메타패널 토글 |
+
+각 Day가 이 결정에 의존한다.
 
 ### 2-1. 3스테이지 시야 제한 구현 방식
 
@@ -138,71 +147,72 @@
 - 페이즈2 진입 시 레이저 발사 패턴 추가
 - 7주차에 드론 소환/보호막 추가
 
-## 4. Day 35 - 3스테이지 기본 구성
+## 4. Day 35 - 3스테이지 기본 구성 ✅ (2026-05-17 완료)
 
 ### 4-1. 씬 생성
 
-- [ ] `Stage3_Deep.unity` 씬 생성 (Stage2 복사 → DontDestroyOnLoad 매니저 제거)
-- [ ] BuildSettings에 등록
-- [ ] 카메라 배경색을 짙은 검정/남색으로 변경 (심해 분위기)
+- [x] `Stage3_Deep.unity` 씬 생성 (Stage2 복사). DontDestroyOnLoad 매니저는 Stage2 구조 그대로 유지 (싱글톤 중복 검사 자체 처리)
+- [x] BuildSettings에 등록 (인덱스 2)
+- [x] 카메라 배경색을 짙은 남색 `(0.02, 0.04, 0.1, 1)`로 변경 (심해 분위기)
 
 ### 4-2. 자폭 시스템 신규
 
-- [ ] `EnemySuicideExplode` 컴포넌트 생성
-  - [ ] triggerRange (자폭 발동 거리)
-  - [ ] warningDuration (1초 점멸)
-  - [ ] explosionRadius (폭발 반경)
-  - [ ] damage
-- [ ] 색상 점멸 (white ↔ red 또는 yellow)로 경고 모션
-- [ ] 폭발 시 OverlapCircleAll로 PlayerStats 피해 + 자기 사망
+- [x] `EnemySuicideExplode` 컴포넌트 생성 (`Assets/Scripts/Enemy/EnemySuicideExplode.cs`)
+  - [x] triggerRange (자폭 발동 거리)
+  - [x] warningDuration (1초 점멸)
+  - [x] explosionRadius (폭발 반경)
+  - [x] damage
+- [x] 색상 점멸 (originalColor ↔ warningColor 빨강)로 경고 모션
+- [x] 폭발 시 OverlapCircleAll로 PlayerStats 피해 + 자기 사망 (SetActive(false))
 
 ### 4-3. 3스테이지 적 데이터/프리팹
 
-- [ ] `EnemyData_Anglerfish.asset` 생성 (심해아귀 — 기본 추적)
-- [ ] `EnemyData_GiantSquid.asset` 생성 (대왕오징어 — 빠른 이속, 높은 체력)
-- [ ] `EnemyData_Jellyfish.asset` 생성 (심해해파리 — 약간 빠름, 자폭)
-- [ ] 풍선장어 자산은 Day 32에서 만든 것 재활용 (`EnemyData_BalloonEel.asset`, `Enemy_BalloonEel.prefab`)
-- [ ] 4종 prefab 색상 차별화
+- [x] `EnemyData_Anglerfish.asset` (심해아귀 — HP35/이속2.2)
+- [x] `EnemyData_GiantSquid.asset` (대왕오징어 — HP50/이속3.6, 빠름+높은 체력)
+- [x] `EnemyData_Jellyfish.asset` (심해해파리 — HP15/이속2.6, 접촉피해0/자폭전용)
+- [x] 풍선장어 자산은 Day 32에서 만든 것 재활용
+- [x] 4종 prefab 색상 차별화 (Anglerfish 어두운 보라, GiantSquid 진한 자주, Jellyfish 연한 분홍 반투명)
 
 ### 4-4. EnemySpawner 웨이브 설정
 
-- [ ] Wave 0: 심해아귀 (0s 시작)
-- [ ] Wave 1: 대왕오징어 (60s)
-- [ ] Wave 2: 심해해파리 (자폭, 90s) — 너무 잦으면 답답하니 interval 길게
-- [ ] Wave 3: 풍선장어 (원거리, 120s)
+- [x] Wave 0: 심해아귀 (0s, interval 2s, pool 25)
+- [x] Wave 1: 대왕오징어 (60s, interval 3.5s, pool 12)
+- [x] Wave 2: 심해해파리 (자폭, 90s, interval 5s, pool 10)
+- [x] Wave 3: 풍선장어 (원거리, 120s, interval 4s, pool 10)
 
 ### 4-5. 검증
 
-- [ ] 3스테이지 진입 시 압력 자동 활성화 (Stage3_Deep StageData에 따라)
-- [ ] 적 4종 모두 정상 동작
-- [ ] 심해해파리가 가까이 가면 경고 모션 후 자폭, 광범위 피해
+- [x] 3스테이지 진입 시 압력 자동 활성화 (Stage3_Deep StageData에 따라)
+- [x] 적 4종 모두 정상 동작 (Play 모드 스폰 확인)
+- [x] 심해해파리가 가까이 가면 경고 모션 후 자폭, 광범위 피해
 
-## 5. Day 36 - 3스테이지 시야 제한
+## 5. Day 36 - 3스테이지 시야 제한 ✅ (2026-05-17 완료)
 
-사전 결정 §2-1에서 정한 방식으로 구현.
+사전 결정 §2-1: **(A) URP 2D Light** 채택 (프로젝트가 이미 URP 14.0.12 + Renderer2D 사용).
 
 ### 5-1. 시야 제한 시스템 구현
 
-- [ ] 사전 결정 §2-1 옵션 중 채택한 방식 선택
-- [ ] 플레이어 주변 원형 영역만 밝게, 나머지는 어둡게
-- [ ] 카메라 추적 (플레이어 따라 이동)
+- [x] 옵션 A (URP 2D Light) 채택
+- [x] `[Map]/GlobalLight2D_Dark`: Light2D type=Global, intensity 0.1, color (0.4, 0.5, 0.7) — 짙은 청색 어둠
+- [x] `[Player]/Player/VisionLight2D`: Light2D type=Point, intensity 1.0, innerRadius 3 / outerRadius 6, falloffIntensity 0.6, 따뜻한 화이트
+- [x] Point Light가 Player 자식이므로 카메라/플레이어 이동에 자동 추적
 
 ### 5-2. 적/투사체 가시성 조정
 
-- [ ] 시야 밖 적도 충돌/AI는 작동, 시각만 가려짐
-- [ ] 적 SpriteRenderer 정렬 (sorting layer/order)이 시야 마스크와 호환되는지 확인
-- [ ] EnemyProjectile도 동일하게 처리
+- [x] 모든 sprite 머티리얼이 `Sprite-Lit-Default` (URP 2D) → Light2D에 자동 반응. 시야 밖 적은 어두워지지만 충돌/AI는 정상 동작
+- [x] 별도 sorting layer/order 조정 불필요 (URP Renderer2D가 자동 처리)
+- [x] EnemyProjectile도 동일 머티리얼 사용으로 일관 처리
 
 ### 5-3. 시야 반경 조정 옵션
 
-- [ ] 압력 저항 메타 업그레이드와 연동: 저항이 높을수록 시야 반경 약간 증가? (선택 — 시간 없으면 패스)
-- [ ] 인스펙터에서 시야 반경 조정 가능
+- [ ] 압력 저항 메타와 시야 반경 연동 → **Day 40 메타 시스템 작업 시 함께 처리** (현재 미적용)
+- [x] 인스펙터에서 `VisionLight2D`의 outerRadius/innerRadius 조정 가능 (Light2D 컴포넌트 직렬화 필드)
 
 ### 5-4. 검증
 
-- [ ] 3스테이지에서 시야가 제한된 상태로 게임 진행
-- [ ] 다른 스테이지에서는 시야 제한 없음 (활성 조건 분리)
-- [ ] 적이 시야 밖에서 다가오는 긴장감 체감
+- [x] 3스테이지에서 시야가 제한된 상태로 게임 진행 (Play 모드 확인)
+- [x] Player가 prefab 인스턴스가 아닌 씬 로컬 GameObject → Stage3에만 VisionLight2D 적용, Stage1/2 영향 없음
+- [x] 적이 시야 밖에서 다가오는 긴장감 체감 (사용자 확인)
 
 ## 6. Day 37 - 산갈치 보스 + Space 슬롯 카피 스킬
 
