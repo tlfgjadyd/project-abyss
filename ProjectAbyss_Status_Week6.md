@@ -214,84 +214,95 @@
 - [x] Player가 prefab 인스턴스가 아닌 씬 로컬 GameObject → Stage3에만 VisionLight2D 적용, Stage1/2 영향 없음
 - [x] 적이 시야 밖에서 다가오는 긴장감 체감 (사용자 확인)
 
-## 6. Day 37 - 산갈치 보스 + Space 슬롯 카피 스킬
+## 6. Day 37 - 산갈치 보스 + Space 슬롯 카피 스킬 ✅ (2026-05-18 완료)
 
 ### 6-1. CopySkillID 확장
 
-- [ ] `CopySkillID` enum에 3스테이지 카피 스킬 3종 추가 (VoidPierce, GlowFrenzy, BleedSwim)
-- [ ] `CopySkillManager` + `CopySkillSelectCardUI`의 `FindSkillComponent()` 갱신
+- [x] `CopySkillID` enum에 VoidPierce(7), GlowFrenzy(8), BleedSwim(9) 추가 (enum 끝에만 추가, 직렬화 호환 유지)
+- [x] `CopySkillManager.FindSkillComponent()` + `CopySkillSelectCardUI.FindSkillComponent()` 3종 케이스 추가
 
 ### 6-2. 산갈치 보스
 
-- [ ] `BossData_Oarfish.asset` 생성
-- [ ] `Boss_Oarfish.prefab` 생성 (실험용 실험체 복제 → 데이터 교체)
-- [ ] 큰 크기 (scale 3.0), 발광 톤 색상 (밝은 청록)
-- [ ] BossAI 기본 추적 + 돌진 활용
-- [ ] **휘두르는 공격** 추가:
-  - 일정 간격으로 부채꼴 광역 공격 (Slash 구조 응용)
-  - 자체 BossSwingAttack 컴포넌트 또는 BossAI 확장
-- [ ] 페이즈2 진입 시 돌진 빈도 ↑
-- [ ] (선택) 마디 발광은 자식 SpriteRenderer로 단순 표현. 풀 마디 판정은 7주차
+- [x] `BossData_Oarfish.asset` 생성 (HP 1300 / 이속 2.1 / 접촉 22 / 페이즈2 이속 ×1.7 / 돌진 16 속도·0.45s)
+- [x] `Boss_Oarfish.prefab` 생성 (Boss_Whale 복제 → BossData 교체)
+- [x] 큰 크기 (Transform.localScale 3.0), 발광 청록 색상 (0.4, 0.95, 0.95)
+- [x] BossAI 기본 추적 + 돌진 활용 (Whale 컴포넌트 그대로)
+- [x] **휘두르는 공격** = `BossSwingAttack` 컴포넌트 신규 (Slash/Ultrasonic의 부채꼴 판정 응용)
+  - 조준 단계 0.7s (LineRenderer 부채꼴 표시, 주황 경고)
+  - 공격 단계 즉발 OverlapCircle + 각도 필터 (100° 부채꼴, range 5)
+  - 페이즈2 진입 시 attackInterval × 0.6 (자주 발동)
+- [x] 페이즈2 진입 시 돌진 빈도 ↑ (BossAI EnterPhase2 기존 로직 + phase2SpeedMultiplier 1.7)
+- [ ] 마디 발광은 7주차로 미룸 (단순화)
 
 ### 6-3. 3스테이지 카피 스킬
 
-디자인 문서 §8 — Space 슬롯.
-
-- [ ] `CopySkill_VoidPierce.asset` (공허 관통 — 직선 다단 히트, 100E)
-- [ ] `CopySkill_GlowFrenzy.asset` (발광 폭주 — 주변 발광 마디 8개 생성, 닿으면 폭발 + 넉백, 120E)
-- [ ] `CopySkill_BleedSwim.asset` (절단 유영 — 고속 이동 + 궤적 출혈 부여, 10초간 최대 6회, 130E)
-- [ ] BossData_Oarfish.copySkillOptions에 3종 등록, copySkillSlot=2 (Space)
+- [x] `CopySkill_VoidPierce.asset` (공허 관통 — 직선 다단 히트, 100E, ID=7)
+- [x] `CopySkill_GlowFrenzy.asset` (발광 폭주 — 발광 노드 8개, 폭발 + 넉백, 120E, ID=8)
+- [x] `CopySkill_BleedSwim.asset` (절단 유영 — 고속 이동 + 궤적 출혈, 130E, ID=9)
+- [x] BossData_Oarfish.copySkillOptions에 3종 등록, copySkillSlot=2 (Space)
 
 ### 6-4. 스킬 컴포넌트 구현
 
-- [ ] `VoidPierceSkill` — 직선 사거리 다단 히트 (BoxCast 또는 Slash 응용)
-- [ ] `GlowFrenzySkill` — 주변에 8개 발광 노드 생성, 적이 닿으면 폭발+넉백
-- [ ] `BleedSwimSkill` — 고속 이동 + 궤적에 출혈 트레일 생성 (EnemyAuraDamage 응용 가능)
-- [ ] Player 오브젝트에 3종 컴포넌트 부착 (Stage3, Stage4 양쪽)
+- [x] `VoidPierceSkill` — Physics2D.BoxCastAll로 직선 다단 히트 (length 9, width 1.2, 4틱)
+- [x] `GlowFrenzySkill` — 8개 노드를 원형 배치. 보조 `GlowFrenzyNode` 컴포넌트: 트리거 닿으면 OverlapCircle 폭발 + Rigidbody2D 넉백
+- [x] `BleedSwimSkill` — speedMultiplier 2.5로 4s 가속. 보조 `BleedTrailNode` 컴포넌트: 동적 sprite + tick 데미지
+- [x] Stage3 Player에 3종 컴포넌트 부착 + enemyLayer=Enemy(6) 설정
+- [ ] Stage4 Player에는 Day 38 씬 생성 시 함께 부착
 
 ### 6-5. Stage3 BossSpawner 설정
 
-- [ ] BossSpawner.bossPrefab = Boss_Oarfish
+- [x] BossSpawner.bossPrefab = Boss_Oarfish
 
 ### 6-6. 검증
 
-- [ ] 산갈치 등장, 돌진 + 휘두르기 공격 동작 확인
-- [ ] 카피 카드 3종 표시 + Space 슬롯 장착
-- [ ] Space 키로 발동 확인
+- [x] 컴파일 클린 (CS 에러 없음)
+- [x] Boss_Oarfish prefab 컴포넌트 구조 정상 (BossBase / BossAI / HitEffect / BossPhaseEffect / BossSwingAttack)
+- [x] 인스펙터에서 BossData 참조 / 카피 스킬 옵션 3종 / copySkillSlot=2 확인
+- [x] 산갈치 등장 + 휘두르기 부채꼴 회피 가능 확인 (사용자 검증, 2026-05-18)
+- [x] **버그 픽스**: Slot_Q/Slot_Space의 TMP_Text 폰트가 LiberationSans → 한글 깨짐. Stage1/2/3 모든 슬롯의 텍스트(키/이름/비용)를 `NotoSansKR-Regular SDF`로 일괄 교체 (총 25개 컴포넌트)
+- [ ] **사용자 피드백**: 카피 스킬 누적으로 산갈치 패턴 발현 전에 사망. → §10-3 1차 밸런싱에 반영
+- [ ] **사용자 피드백**: BleedSwim 동작이 의도와 다름. → §11 "BleedSwim 재설계" 7주차로 이월
 
-## 7. Day 38 - 4스테이지 기본 구성 + 레이저 시스템
+## 7. Day 38 - 4스테이지 기본 구성 + 레이저 시스템 ✅ (2026-05-18 완료)
 
 ### 7-1. 씬 생성
 
-- [ ] `Stage4_Ruined.unity` 씬 생성 (Stage1 또는 Stage2 복사)
-- [ ] BuildSettings에 등록
-- [ ] 카메라 배경색을 어두운 적/회색으로 변경 (파괴된 연구소 분위기)
+- [x] `Stage4_Ruined.unity` 씬 생성 (Stage1_Lab 복사 — 둘 다 압력 비활성)
+- [x] BuildSettings에 등록 (인덱스 3)
+- [x] 카메라 배경색을 짙은 적/회색 `(0.08, 0.04, 0.04, 1)`으로 변경 (파괴된 연구소 분위기)
 
-### 7-2. 직선 레이저 시스템 (사전 결정 §2-3)
+### 7-2. 직선 레이저 시스템 (사전 결정 §2-3 (B))
 
-- [ ] `EnemyLaserAttack` 컴포넌트 생성
-- [ ] 흐름: 조준 단계(라인 표시, 1초) → 발사 단계(즉발 데미지, OverlapBox 또는 Raycast)
-- [ ] 사거리, 데미지, 발사 간격 인스펙터 노출
-- [ ] LineRenderer로 시각 표시 (조준=얇은 빨간 선, 발사=두꺼운 흰 선)
+- [x] `EnemyLaserAttack` 컴포넌트 생성 (`Assets/Scripts/Enemy/EnemyLaserAttack.cs`)
+- [x] 흐름: 조준 단계 1s (LineRenderer 얇은 빨간 선) → 발사 단계 (OverlapBoxAll 즉발 + 두꺼운 흰 선 잔상 0.1s)
+- [x] 사거리(attackRange) / 데미지 / attackInterval / aimDuration / beamWidth 인스펙터 노출
+- [x] StopDistance public 속성으로 EnemyAI가 추적 거리 유지
 
 ### 7-3. 4스테이지 적 데이터/프리팹
 
-- [ ] `EnemyData_ReinforcedGuard.asset` (강화 방패 — 1스 Guard 강화, 돌진)
-- [ ] `EnemyData_LaserSoldier.asset` (원거리 전투요원 — 레이저)
-- [ ] `EnemyData_ReinforcedSoldier.asset` (강화 근접 — 빠른 이속, 강한 공격)
-- [ ] 3종 prefab 색상 차별화
+- [x] `EnemyData_ReinforcedGuard.asset` (HP 70 / 이속 2.4 / 접촉 12) — 1스 Guard 강화
+- [x] `EnemyData_LaserSoldier.asset` (HP 30 / 이속 1.6 / 접촉 5) — 원거리, 레이저
+- [x] `EnemyData_ReinforcedSoldier.asset` (HP 35 / 이속 3.4 / 접촉 10) — 빠른 강한 근접
+- [x] 3종 prefab 색상 차별화 (Guard 진한 적, Soldier 밝은 적, LaserSoldier 노란빛)
+- [x] Enemy_LaserSoldier에서 EnemyRangedAttack 제거 + EnemyLaserAttack 부착
 
 ### 7-4. EnemySpawner 웨이브 설정
 
-- [ ] Wave 0: 강화 근접 (0s 시작, 많이)
-- [ ] Wave 1: 강화 방패 (45s, 적게)
-- [ ] Wave 2: 원거리 (90s, 적게 — 너무 많으면 답답)
+- [x] Wave 0: 강화 근접 (0s, interval 1.5s, pool 30) — 많이
+- [x] Wave 1: 강화 방패 (45s, interval 4.5s, pool 12) — 적게
+- [x] Wave 2: 원거리 (90s, interval 6s, pool 8) — 너무 많으면 답답하지 않게 적게
 
-### 7-5. 검증
+### 7-5. 추가 작업
 
-- [ ] 4스테이지 진입 시 압력 비활성 확인
-- [ ] 레이저 적이 거리 유지 + 조준 후 발사
-- [ ] 강화 적들의 차별화된 위협 체감
+- [x] Stage4 Player에 VoidPierce/GlowFrenzy/BleedSwim 카피 스킬 3종 부착 + enemyLayer=Enemy(6) (Day 37 spec 후속)
+
+### 7-6. 검증
+
+- [x] 컴파일 클린
+- [x] Play 모드 진입 시 Wave 0 (강화 근접) 정상 스폰 확인
+- [x] Stage4 압력 비활성 (StageData pressureEnabled=0 확인)
+- [ ] 레이저 적 조준→발사 실제 동작 (Wave 1·2 등장 후) — 사용자 검증 필요
+- [ ] 강화 적들의 차별화된 위협 체감 — 사용자 검증 필요
 
 ## 8. Day 39 - 연구소장 보스 (페이즈1 + 페이즈2 레이저)
 
@@ -418,6 +429,10 @@
 - [ ] 4스테이지 적 밀도 + 보스 난이도
 - [ ] 메타 업그레이드 비용 (5세포가 너무 싸면 10~15로)
 - [ ] 만렙 보상 카드 비율 (현재 회복 30% / 세포 +5)
+- [ ] **★ Day 37 피드백** — 1→2→3 순차 진행 시 카피 3개 누적으로 산갈치가 패턴 보여주기 전에 사망. 옵션:
+  - 보스 HP 곡선 ↑ (Whale 1000 / Oarfish 1300 / Director 1500 → 더 큰 격차)
+  - 카피 스킬 에너지 비용 ↑ (현 100~140E를 130~180E로)
+  - 보스별 페이즈1 최소 지속 시간 보장 (HP가 빨리 깎여도 일정 시간은 페이즈2 진입 안 함)
 
 ### 10-4. 마무리
 
@@ -433,6 +448,7 @@
 
 ### 디자인 보강
 - **스킬 풀 확장** — 공격 스킬 2~3종 (음파 진동, 가시 발사, 흡혈 촉수), 패시브 1~2종 (압력 적응, 발광 감각)
+- **BleedSwim(절단 유영) 재설계** — Day 37에서 "가속+출혈 트레일"로 구현했으나 사용자 의도와 다름. 스킬 풀 확장 시 함께 재작업
 - **향유고래 풀 패턴** — 초음파 광역 + 페이즈2 추가 패턴
 - **산갈치 마디 판정** — 다중 collider로 마디별 hit 처리, 마디별 발광 효과
 - **연구소장 드론 소환** — 자폭 드론 패턴

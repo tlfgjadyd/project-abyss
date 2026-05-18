@@ -15,7 +15,10 @@ public enum CopySkillID
     HealingFactor,  // 1스테이지 회복
     Ultrasonic,     // 2스테이지 초음파 (부채꼴 대피해 + 스턴)
     DeepPressure,   // 2스테이지 심해 압박 (주변 디버프)
-    PredatorCharge  // 2스테이지 포식 충돌 (직선 돌진, 무적, 출혈)
+    PredatorCharge, // 2스테이지 포식 충돌 (직선 돌진, 무적, 출혈)
+    VoidPierce,     // 3스테이지 공허 관통 (직선 다단 히트)
+    GlowFrenzy,     // 3스테이지 발광 폭주 (8개 발광 노드, 닿으면 폭발+넉백)
+    BleedSwim       // 3스테이지 절단 유영 (고속 이동 + 궤적 출혈)
 }
 
 [CreateAssetMenu(fileName = "NewCopySkillData", menuName = "Abyss/Copy Skill Data")]

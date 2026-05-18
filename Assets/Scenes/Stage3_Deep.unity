@@ -560,6 +560,9 @@ GameObject:
   - component: {fileID: 136577167}
   - component: {fileID: 136577166}
   - component: {fileID: 136577165}
+  - component: {fileID: 136577170}
+  - component: {fileID: 136577169}
+  - component: {fileID: 136577168}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -968,6 +971,79 @@ MonoBehaviour:
   visualColor: {r: 0.5, g: 0.8, b: 1, a: 1}
   visualDuration: 0.3
   visualLineWidth: 0.12
+--- !u!114 &136577168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e4eb17c05ccc24aa1fce22467a2079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 0}
+  speedMultiplier: 2.5
+  duration: 4
+  trailInterval: 0.1
+  trailRadius: 0.7
+  trailLifetime: 3
+  damageMultiplier: 0.5
+  damageTickInterval: 0.5
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  trailColor: {r: 0.9, g: 0.1, b: 0.3, a: 0.6}
+--- !u!114 &136577169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6b35b36c88f5064e854412e3f0cb934, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 0}
+  nodeCount: 8
+  nodeRadius: 2.5
+  nodeLifetime: 6
+  triggerRadius: 0.7
+  explosionRadius: 1.6
+  damageMultiplier: 2
+  knockbackForce: 8
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  nodeColor: {r: 0.4, g: 1, b: 0.9, a: 1}
+  nodeScale: 0.4
+--- !u!114 &136577170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a485d6ce1a9e89409de9140bde0e929, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 0}
+  length: 9
+  width: 1.2
+  damageMultiplier: 1.2
+  hitTicks: 4
+  tickInterval: 0.1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  beamColor: {r: 0.6, g: 0.2, b: 1, a: 1}
+  visualDuration: 0.5
+  visualLineWidth: 0.35
 --- !u!1 &152028253
 GameObject:
   m_ObjectHideFlags: 0
@@ -2704,8 +2780,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
+  m_sharedMaterial: {fileID: -1473441032799324142, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3559,8 +3635,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
+  m_sharedMaterial: {fileID: -1473441032799324142, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4966,8 +5042,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: E
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
+  m_sharedMaterial: {fileID: -1473441032799324142, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5100,8 +5176,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Space
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
+  m_sharedMaterial: {fileID: -1473441032799324142, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7071,8 +7147,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Q
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
+  m_sharedMaterial: {fileID: -1473441032799324142, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7518,8 +7594,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
+  m_sharedMaterial: {fileID: -1473441032799324142, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -8519,8 +8595,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u2014"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
+  m_sharedMaterial: {fileID: -1473441032799324142, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -9221,8 +9297,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5190831b9a60c14fbd614e9e5d844f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossPrefab: {fileID: 4177956351103701311, guid: da48ee1e5234ecf42bdef18d003cf885, type: 3}
-  bossSpawnTime: 20
+  bossPrefab: {fileID: 4177956351103701311, guid: b63ff80f83669534d96b9deb495cba12, type: 3}
+  bossSpawnTime: 480
   spawnOffset: 10
   overrideStageData: 0
   enemySpawner: {fileID: 1197450468}
@@ -10107,8 +10183,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u2014"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
+  m_sharedMaterial: {fileID: -1473441032799324142, guid: 892f0f171b64fce4a864090a305c68e8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

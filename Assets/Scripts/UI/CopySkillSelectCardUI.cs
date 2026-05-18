@@ -58,6 +58,9 @@ public class CopySkillSelectCardUI : MonoBehaviour
             CopySkillID.Ultrasonic     => player.GetComponent<UltrasonicSkill>(),
             CopySkillID.DeepPressure   => player.GetComponent<DeepPressureSkill>(),
             CopySkillID.PredatorCharge => player.GetComponent<PredatorChargeSkill>(),
+            CopySkillID.VoidPierce     => player.GetComponent<VoidPierceSkill>(),
+            CopySkillID.GlowFrenzy     => player.GetComponent<GlowFrenzySkill>(),
+            CopySkillID.BleedSwim      => player.GetComponent<BleedSwimSkill>(),
             _                          => null
         };
     }
