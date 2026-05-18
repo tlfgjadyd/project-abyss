@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
             case GameState.GameOver:
                 Time.timeScale = 0f;
                 TimerRunning = false;
-                // TODO: GameOver UI 호출
+                AccumulateRunCellsToMeta();
                 Debug.Log("Game Over");
                 break;
 
@@ -128,6 +128,22 @@ public class GameManager : MonoBehaviour
 
     public void TriggerGameOver() => ChangeState(GameState.GameOver);
     public void TriggerStageClear() => ChangeState(GameState.StageClear);
+
+    /// <summary>
+    /// 현재 런에서 모은 세포를 메타 데이터에 누적하고 인게임 카운터를 비운다.
+    /// GameOver / Stage4 엔딩 시점에 한 번씩만 호출.
+    /// </summary>
+    public void AccumulateRunCellsToMeta()
+    {
+        var lm = LevelManager.Instance;
+        if (lm == null) return;
+        int amount = lm.CurrentCells;
+        if (amount <= 0) return;
+
+        MetaProgressData.AddCells(amount);
+        lm.ConsumeAllCells(); // 인게임 카운터 0으로 (중복 누적 방지)
+        Debug.Log($"[GameManager] 메타 세포 +{amount} (누적 {MetaProgressData.TotalCells})");
+    }
 
     public void RestartGame()
     {

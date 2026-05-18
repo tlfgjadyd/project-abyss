@@ -65,9 +65,9 @@ public class StageManager : MonoBehaviour
 
         if (isEnding)
         {
-            sceneName   = "Ending";  // TODO 6주차: 엔딩 씬 작성 시 이 이름 유지/변경
-            displayName = "엔딩";
-            Debug.Log("[StageManager] 마지막 스테이지 클리어 → 엔딩 진입 시도");
+            // 같은 씬에서 VictoryPanel 표시 (씬 전환 없음)
+            LoadEnding();
+            return;
         }
         else
         {
@@ -104,13 +104,15 @@ public class StageManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 엔딩 씬으로 전환. 마지막 보스(연구소장) 처치 후 호출.
-    /// [TODO 5주차] 엔딩 씬 이름 결정 + 로드
+    /// 마지막 보스(연구소장) 처치 후 호출. 같은 씬의 VictoryPanel을 띄운다.
     /// </summary>
     public void LoadEnding()
     {
-        Debug.Log("[StageManager] 엔딩 진입 — TODO: 5주차 구현");
-        // SceneManager.LoadScene("Ending");
+        Debug.Log("[StageManager] 엔딩 진입 → VictoryPanel 표시");
+        if (VictoryPanel.Instance != null)
+            VictoryPanel.Instance.Show();
+        else
+            Debug.LogWarning("[StageManager] VictoryPanel.Instance가 null입니다. 씬에 패널이 설치되었는지 확인하세요.");
     }
 
     /// <summary>새 게임 시작. 진행 데이터 리셋 후 첫 스테이지로.</summary>

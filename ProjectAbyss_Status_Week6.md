@@ -304,103 +304,106 @@
 - [ ] 레이저 적 조준→발사 실제 동작 (Wave 1·2 등장 후) — 사용자 검증 필요
 - [ ] 강화 적들의 차별화된 위협 체감 — 사용자 검증 필요
 
-## 8. Day 39 - 연구소장 보스 (페이즈1 + 페이즈2 레이저)
+## 8. Day 39 - 연구소장 보스 (페이즈1 + 페이즈2 레이저) ✅ (2026-05-18 완료)
 
 ### 8-1. BossData_Director 생성
 
-- [ ] `BossData_Director.asset` 생성
-- [ ] HP 1500 (마지막 보스, 가장 강함)
-- [ ] 이속 2.5
-- [ ] 페이즈2 비율 0.5
-- [ ] **copySkillOptions = null** (마지막 보스, 카피 스킬 선택 없음)
+- [x] `BossData_Director.asset` 생성
+- [x] HP 1500 (마지막 보스, 가장 강함)
+- [x] 이속 2.5, 접촉 25, 페이즈2 이속 ×1.4
+- [x] 페이즈2 비율 0.5
+- [x] **copySkillOptions = []** (빈 배열 — 마지막 보스, 카피 스킬 선택 없음)
 
 ### 8-2. Boss_Director.prefab
 
-- [ ] `Boss_Director.prefab` 생성 (실험체 복제 또는 신규)
-- [ ] 시각 차별화 (인간+기계 컨셉 → 회색+빨강)
-- [ ] BossBase, BossAI, HitEffect, BossPhaseEffect 부착
+- [x] `Boss_Director.prefab` 생성 (Boss_ExperimentalSubjects 복제 → 데이터 교체)
+- [x] 시각 차별화: 회색+짙은 빨강 `(0.55, 0.18, 0.18)`
+- [x] BossBase, BossAI, HitEffect, BossPhaseEffect 부착 (복제 시 자동 포함)
 
-### 8-3. 페이즈2 레이저 패턴
+### 8-3. 레이저 패턴 (페이즈1부터 발동, 페이즈2 위협도 증가)
 
-- [ ] `BossDirectorAttack` 컴포넌트 신규 (또는 EnemyLaserAttack 응용)
-- [ ] 페이즈2 진입 시 일정 간격 레이저 발사
-- [ ] BossBase.OnPhase2Entered 이벤트 구독으로 발사 활성화
+- [x] `BossDirectorAttack` 컴포넌트 신규 (`Assets/Scripts/Enemy/BossDirectorAttack.cs`)
+- [x] **사용자 피드백**: 페이즈1이 너무 단조로움 → 페이즈1부터 레이저 발동으로 변경
+  - 스폰 후 initialDelay 2.5s 대기 → 페이즈1 fireInterval 4.5s
+  - 페이즈2 진입 시 phase2IntervalMultiplier 0.55 → 약 2.5s 간격으로 위협도 증가
+  - 페이즈2 추가는 BossAI 돌진과 시너지 (이중 압박)
+- [x] EnemyLaserAttack 패턴 응용 (조준 1s LineRenderer → OverlapBoxAll 즉발 + 잔상 0.15s)
+- [x] activeFx 추적 + OnDisable 정리 — 보스 사망 시 라인 잔상 버그 사전 방지
+- [x] range 14 / beamWidth 0.6 / damage 30 (보스급 데미지)
 
 ### 8-4. 마지막 보스 카피 스킬 없음 처리
 
-- [ ] `BossSpawner.OnBossDied`에서 BossData.copySkillOptions가 비어있으면 CopySkillSelectPanel 띄우지 않고 바로 TriggerStageClear + TransitionToNext 호출
-- [ ] 이 흐름이 엔딩으로 연결되는지 확인 (Stage4_Ruined.nextStage = null → IsFinalStage)
+- [x] `BossSpawner.OnBossDied`에서 `boss.Data.copySkillOptions`가 null/빈 배열이면 CopySkillSelectPanel 띄우지 않고 `GameManager.TriggerStageClear()` + `StageManager.TransitionToNext()` 호출
+- [x] 흐름 검증: Stage4 `nextStage = null` → `TransitionToNext` 안의 `isEnding` 분기 진입 → 현재는 "Ending" 씬 시도 (Day 40에서 VictoryPanel.Show로 교체 예정)
 
 ### 8-5. Stage4 BossSpawner 설정
 
-- [ ] BossSpawner.bossPrefab = Boss_Director
+- [x] BossSpawner.bossPrefab = Boss_Director
 
 ### 8-6. 검증
 
-- [ ] 연구소장 등장, 페이즈1 추적
-- [ ] HP 50% 도달 시 페이즈2 진입 + 레이저 발사
-- [ ] 처치 후 카피 선택 없이 바로 다음 단계 (엔딩)
+- [x] BossSpawner 강제 호출 → Boss_Director 인스턴스화 정상 (HP 1500, copySkillOptions 길이=0 확인)
+- [x] 보스 즉사 후 GameManager 상태 = `StageClear` 확인 (분기 정상 동작)
+- [ ] 페이즈2 레이저 실제 발사 동작 / 일반 5분 플레이 시 보스 등장 + 50% HP에서 레이저 — 사용자 검증 필요
 
-## 9. Day 40 - 메타 업그레이드 시스템 + 엔딩 + 메인 메뉴
+## 9. Day 40 - 메타 업그레이드 시스템 + 엔딩 + 메인 메뉴 ✅ (2026-05-18 완료)
 
 ### 9-1. PlayerPrefs 기반 메타 데이터
 
-- [ ] `MetaProgressData` 정적 클래스 또는 매니저 생성
-- [ ] PlayerPrefs key 정의:
-  - `Meta_TotalCells` (누적 사용 가능 세포)
-  - `Meta_MaxHpLevel`, `Meta_MoveSpeedLevel`, `Meta_AttackSpeedLevel`, `Meta_AttackPowerLevel`, `Meta_PressureResistanceLevel`
-- [ ] `LoadCells()`, `SaveCells()`, `GetLevel(stat)`, `SetLevel(stat, level)` 메서드
+- [x] `MetaProgressData` 정적 클래스 (`Assets/Scripts/Systems/MetaProgressData.cs`)
+- [x] PlayerPrefs 키 6종: `Meta_TotalCells`, `Meta_MaxHpLevel`, `Meta_MoveSpeedLevel`, `Meta_AttackSpeedLevel`, `Meta_AttackPowerLevel`, `Meta_PressureResistanceLevel`
+- [x] `TotalCells` 프로퍼티, `AddCells`, `GetLevel`, `TryPurchase`, `GetNextCost`, `GetMaxHpBonus`/`GetMoveSpeedMultiplier`/`GetAttackSpeedMultiplier`/`GetAttackPowerMultiplier`/`GetPressureResistanceBonus`, `ResetAll`
 
 ### 9-2. 세포 인게임 → 메타로 이동
 
-- [ ] 4스테이지 클리어 또는 GameOver 시 `LevelManager.CurrentCells` → `MetaProgressData.TotalCells`에 누적
-- [ ] PlayerProgressData.ResetAll에서 인게임 세포 초기화 (이미 됨)
+- [x] `GameManager.AccumulateRunCellsToMeta()` 신규 — `LevelManager.CurrentCells` → `MetaProgressData.AddCells` + `LevelManager.ConsumeAllCells()` (중복 누적 방지)
+- [x] GameState.GameOver 진입 시 자동 호출
+- [x] 4스 엔딩 시 `VictoryPanel.Show()`에서 호출 (UI 표시 전 캡처 → 누적)
+- [x] `LevelManager.ConsumeAllCells()` 메서드 신규 추가
 
 ### 9-3. 게임 시작 시 메타 스탯 적용
 
-- [ ] `PlayerStats.Awake`에서 MetaProgressData 값을 읽어 적용
-  - maxHp += metaHpDelta
-  - moveSpeed *= metaMoveMultiplier
-  - attackSpeed *= metaAtkSpeedMultiplier
-  - attackPower *= metaAtkPowerMultiplier
-  - pressureResistance += metaResistance
+- [x] `PlayerStats.Awake`에서 메타 보너스 적용:
+  - `maxHp += GetMaxHpBonus()` (+10 / +20 / +30 / +40)
+  - `moveSpeed *= GetMoveSpeedMultiplier()` (×1.05/×1.10/×1.15/×1.20)
+  - `attackSpeed *= GetAttackSpeedMultiplier()`
+  - `attackPower *= GetAttackPowerMultiplier()`
+  - `pressureResistance += GetPressureResistanceBonus()` (+0.1/+0.2/+0.3/+0.4)
 
 ### 9-4. 메인 메뉴 + 메타 업그레이드 UI
 
-- [ ] `MainMenu.unity` 씬 신규 생성
-- [ ] BuildSettings에 등록 (인덱스 0번 — 시작 씬)
-- [ ] 메뉴 항목:
-  - **START** — Stage1_Lab 로드
-  - **META UPGRADE** — 메타 업그레이드 패널
-  - **QUIT** — Application.Quit
-- [ ] 메타 업그레이드 패널:
-  - 5종 스탯 표시 + 현재 레벨 / 다음 레벨 비용 / 효과
-  - "구매" 버튼 (세포 충분 + 최대 레벨 미만일 때만 활성)
-  - 누적 세포 표시
+- [x] `MainMenu.unity` 씬 신규 생성 (`Assets/Scenes/MainMenu.unity`)
+- [x] BuildSettings 재정렬: MainMenu(0) → Stage1(1) → Stage2(2) → Stage3(3) → Stage4(4)
+- [x] 메인 패널: START / META UPGRADE / QUIT 3버튼
+- [x] 메타 업그레이드 패널: 5종 스탯 행 (스탯명/Lv/효과/비용/구매 버튼) + 누적 세포 표시 + 메인 메뉴 복귀
+- [x] 스크립트: `MainMenuController.cs`, `MetaUpgradePanel.cs`, `MetaUpgradeRow.cs`
+- [x] UI 구성은 일회성 `Assets/Scripts/Editor/MainMenuBuilder.cs`로 자동 생성 (NotoSansKR-Regular SDF 사용)
 
 ### 9-5. VictoryPanel (엔딩 패널)
 
-- [ ] `VictoryPanel.cs` 신규 생성
-- [ ] Stage4_Ruined 씬에 패널 추가 (CopySkillSelectPanel 복제 + 컴포넌트 교체)
-- [ ] 표시 내용:
-  - "EXPERIMENT COMPLETE" 텍스트
-  - 클리어 시간 (스테이지 합산 또는 마지막 스테이지 진행 시간)
-  - 누적 세포
+- [x] `VictoryPanel.cs` 신규 생성 (`Assets/Scripts/UI/VictoryPanel.cs`)
+- [x] Stage4_Ruined Canvas에 패널 추가 (코드로 동적 생성)
+- [x] 표시 내용:
+  - "EXPERIMENT COMPLETE" 타이틀
+  - 클리어 시간 (마지막 스테이지 `Time.timeSinceLevelLoad` — 7주차에 스테이지별 합산 가능)
+  - 획득 세포 (이번 런)
+  - 누적 세포 (메타에 적립 후)
   - "메인 메뉴로" 버튼
-- [ ] 4스테이지 보스 처치 후 표시 (StageManager.LoadEnding에서 호출)
+- [x] DontDestroyOnLoad 매니저 6종 정리 후 MainMenu 씬 로드 (클린 상태 보장)
+- [x] **픽스 (사용자 피드백)**: 씬 저장 시 비활성 상태로 두면 Awake가 호출 안 되어 `VictoryPanel.Instance`가 null. 패널은 **활성 상태로 저장**, `Start()`가 자동 숨김 처리하도록 패턴 통일
 
 ### 9-6. 흐름 연결
 
-- [ ] StageManager.LoadEnding 활성화 → VictoryPanel.Show
-- [ ] VictoryPanel "메인 메뉴로" → SceneManager.LoadScene("MainMenu")
-- [ ] 메인 메뉴 START → PlayerProgressData.ResetAll() + Stage1_Lab 로드
+- [x] `StageManager.LoadEnding` → `VictoryPanel.Instance.Show()` 호출
+- [x] `StageManager.TransitionToNext`의 isEnding 분기 → `LoadEnding()` 호출 (기존 "Ending" 씬 로드 코드 제거)
+- [x] `VictoryPanel` "메인 메뉴로" → 매니저 정리 + `SceneManager.LoadScene("MainMenu")`
+- [x] 메인 메뉴 START → `PlayerProgressData.ResetAll()` + Stage1_Lab 로드
 
 ### 9-7. 검증
 
-- [ ] 메인 메뉴 → START → 1스테이지 시작
-- [ ] 4스테이지 클리어 → VictoryPanel 표시
-- [ ] 메인 메뉴 복귀 → 누적 세포 표시
-- [ ] 메타 업그레이드 구매 → 다음 게임 시 스탯 적용
+- [x] 컴파일 클린 (스크립트 5개 신규, 4개 수정)
+- [x] MainMenu 씬 Canvas/MainPanel/MetaPanel/Controller 구조 정상 확인 (런타임 inspection)
+- [ ] 1회 풀 사이클 (메인 메뉴 → 1~4스 → 엔딩 → 메인 메뉴 → 메타 구매 → 재플레이) — 사용자 검증 필요
 
 ## 10. Day 41 - 6주차 통합 테스트 + 1차 밸런싱
 

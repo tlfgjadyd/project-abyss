@@ -24,8 +24,16 @@ public class LevelManager : MonoBehaviour
     public float CurrentExp { get; private set; }
     public float ExpToNextLevel { get; private set; }
 
-    /// <summary>누적 세포 (메타 재화). 6주차에 메타 업그레이드 화면에서 사용 예정.</summary>
+    /// <summary>누적 세포 (메타 재화). 6주차 Day 40: 게임오버/4스 엔딩 시 MetaProgressData에 누적.</summary>
     public int CurrentCells { get; private set; }
+
+    /// <summary>인게임 세포 카운터를 0으로 비운다. 메타로 누적 후 중복 누적 방지용.</summary>
+    public void ConsumeAllCells()
+    {
+        if (CurrentCells == 0) return;
+        CurrentCells = 0;
+        OnCellsChanged?.Invoke(0);
+    }
 
     private readonly Dictionary<SkillData, int> skillLevels = new();
     private SkillData[] currentOffer;

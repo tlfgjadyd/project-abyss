@@ -77,6 +77,21 @@ public class BossSpawner : MonoBehaviour
             enemySpawner.DespawnAll();
 
         BossHPBar.Instance?.Hide();
-        CopySkillSelectPanel.Instance?.Show(boss.Data);
+
+        // 마지막 보스 분기: copySkillOptions가 비어있으면 카피 선택 없이 바로 다음 단계로
+        bool hasCopyOptions = boss.Data != null
+                              && boss.Data.copySkillOptions != null
+                              && boss.Data.copySkillOptions.Length > 0;
+
+        if (hasCopyOptions)
+        {
+            CopySkillSelectPanel.Instance?.Show(boss.Data);
+        }
+        else
+        {
+            GameManager.Instance.TriggerStageClear();
+            if (StageManager.Instance != null)
+                StageManager.Instance.TransitionToNext();
+        }
     }
 }

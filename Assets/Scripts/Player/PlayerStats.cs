@@ -26,6 +26,13 @@ public class PlayerStats : MonoBehaviour
 
     void Awake()
     {
+        // 메타 업그레이드 적용 (인스펙터 기본값에 가산/곱셈)
+        maxHp              += MetaProgressData.GetMaxHpBonus();
+        moveSpeed          *= MetaProgressData.GetMoveSpeedMultiplier();
+        attackSpeed        *= MetaProgressData.GetAttackSpeedMultiplier();
+        attackPower        *= MetaProgressData.GetAttackPowerMultiplier();
+        pressureResistance += MetaProgressData.GetPressureResistanceBonus();
+
         currentHp = maxHp;
     }
 
