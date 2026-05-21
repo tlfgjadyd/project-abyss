@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e452e9c86644be9478c35e80e6c483b1, type: 3}
   m_Name: EnemyData_ElectricEel
   m_EditorClassIdentifier: 
-  maxHp: 25
-  moveSpeed: 3.2
-  contactDamage: 4
+  maxHp: 38
+  moveSpeed: 3.8
+  contactDamage: 6
   contactCooldown: 1
-  expAmount: 12
+  expAmount: 6
   energyDrop: 5

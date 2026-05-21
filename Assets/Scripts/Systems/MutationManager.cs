@@ -9,7 +9,7 @@ public class MutationManager : MonoBehaviour
 
     [Header("Settings")]
     [Tooltip("돌연변이 선택이 뜨는 레벨 (오름차순으로 설정)")]
-    [SerializeField] private int[] triggerLevels = { 7, 12 };
+    [SerializeField] private int[] triggerLevels = { 15, 25 };
     [SerializeField] private MutationData[] mutationPool;
 
     [Header("Mimicry Organ — 정기 무적")]
@@ -130,7 +130,7 @@ public class MutationManager : MonoBehaviour
     /// <summary>과부화 — 공격력 ×1.6, 현재 HP 비율 유지하며 최대 HP -30%</summary>
     void ApplyOverload(PlayerStats stats)
     {
-        stats.attackPower *= 1.6f;
+        stats.attackPower *= 1.2f;
 
         float hpRatio = stats.maxHp > 0f ? stats.currentHp / stats.maxHp : 1f;
         stats.maxHp    *= 0.7f;
@@ -195,9 +195,9 @@ public class MutationManager : MonoBehaviour
     /// <summary>감각 붕괴 — 공격속도 ×2, 에너지 충전 ×1.5 / 스킬 사용 시 5~10% 확률 0.5초 스턴</summary>
     void ApplySensoryCollapse(PlayerStats stats)
     {
-        stats.attackSpeed *= 2f;
+        stats.attackSpeed *= 1.5f;
         if (BioEnergyManager.Instance != null)
-            BioEnergyManager.Instance.ChargeRateMultiplier *= 1.5f;
+            BioEnergyManager.Instance.ChargeRateMultiplier *= 1.25f;
 
         sensoryCollapseActive = true;
 

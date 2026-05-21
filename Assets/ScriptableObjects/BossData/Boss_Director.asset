@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 524f4373c24896e40be9d5ce91ffbbe6, type: 3}
   m_Name: Boss_Director
-  m_EditorClassIdentifier:
-  bossName: "연구소장"
-  maxHp: 1500
+  m_EditorClassIdentifier: 
+  bossName: "\uC5F0\uAD6C\uC18C\uC7A5"
+  maxHp: 17000
   moveSpeed: 2.5
   contactDamage: 25
   contactCooldown: 1
@@ -22,5 +22,6 @@ MonoBehaviour:
   chargeInterval: 5
   chargeSpeed: 18
   chargeDuration: 0.5
+  cellReward: 5
   copySkillOptions: []
   copySkillSlot: 0

@@ -78,6 +78,10 @@ public class BossSpawner : MonoBehaviour
 
         BossHPBar.Instance?.Hide();
 
+        // 세포 보상 — Capture 이전이라 다음 씬으로 자동 보존
+        if (boss.Data != null && boss.Data.cellReward > 0)
+            LevelManager.Instance?.AddCells(boss.Data.cellReward, "boss");
+
         // 마지막 보스 분기: copySkillOptions가 비어있으면 카피 선택 없이 바로 다음 단계로
         bool hasCopyOptions = boss.Data != null
                               && boss.Data.copySkillOptions != null

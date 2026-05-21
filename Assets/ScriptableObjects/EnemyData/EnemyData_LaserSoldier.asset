@@ -11,10 +11,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e452e9c86644be9478c35e80e6c483b1, type: 3}
   m_Name: EnemyData_LaserSoldier
-  m_EditorClassIdentifier:
-  maxHp: 30
+  m_EditorClassIdentifier: 
+  maxHp: 39
   moveSpeed: 1.6
   contactDamage: 5
   contactCooldown: 1
-  expAmount: 22
+  expAmount: 11
   energyDrop: 8

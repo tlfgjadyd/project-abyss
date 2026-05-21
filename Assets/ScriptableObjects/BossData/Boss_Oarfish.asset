@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 524f4373c24896e40be9d5ce91ffbbe6, type: 3}
   m_Name: Boss_Oarfish
-  m_EditorClassIdentifier:
-  bossName: "산갈치"
-  maxHp: 1300
+  m_EditorClassIdentifier: 
+  bossName: "\uC0B0\uAC08\uCE58"
+  maxHp: 14000
   moveSpeed: 2.1
   contactDamage: 22
   contactCooldown: 1
@@ -22,6 +22,7 @@ MonoBehaviour:
   chargeInterval: 4
   chargeSpeed: 16
   chargeDuration: 0.45
+  cellReward: 5
   copySkillOptions:
   - {fileID: 11400000, guid: 98d90b00107f1ae41876638b732a6738, type: 2}
   - {fileID: 11400000, guid: 2d6aea153cd7ca042a90fb0193cdb34f, type: 2}

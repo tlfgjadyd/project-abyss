@@ -52,13 +52,15 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void TransitionToNext()
     {
+        // 0. 스테이지 클리어 세포 보상 (엔딩 스테이지 제외, Capture 이전이라 다음 씬으로 보존)
+        StageData next = CurrentStage != null ? CurrentStage.nextStage : null;
+        bool isEnding  = (next == null);
+        if (!isEnding && CurrentStage != null && CurrentStage.clearCellReward > 0)
+            LevelManager.Instance?.AddCells(CurrentStage.clearCellReward, "stage clear");
+
         // 1. 현재 진행 데이터 저장
         if (PlayerProgressData.Instance != null)
             PlayerProgressData.Instance.Capture();
-
-        // 2. 다음 씬과 자막 결정
-        StageData next = CurrentStage != null ? CurrentStage.nextStage : null;
-        bool isEnding  = (next == null);
 
         string sceneName;
         string displayName;

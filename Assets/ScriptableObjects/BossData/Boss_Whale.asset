@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Boss_Whale
   m_EditorClassIdentifier: 
   bossName: "\uD5A5\uC720\uACE0\uB798"
-  maxHp: 1000
+  maxHp: 10000
   moveSpeed: 1.8
   contactDamage: 20
   contactCooldown: 1
@@ -22,6 +22,7 @@ MonoBehaviour:
   chargeInterval: 5
   chargeSpeed: 18
   chargeDuration: 0.5
+  cellReward: 5
   copySkillOptions:
   - {fileID: 11400000, guid: a638d4bced6e99a4487276881cdf399c, type: 2}
   - {fileID: 11400000, guid: 3527427c022ea1e489bebfbf63307f5e, type: 2}

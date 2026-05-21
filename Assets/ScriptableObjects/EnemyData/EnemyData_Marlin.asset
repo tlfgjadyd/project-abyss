@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e452e9c86644be9478c35e80e6c483b1, type: 3}
   m_Name: EnemyData_Marlin
   m_EditorClassIdentifier: 
-  maxHp: 15
-  moveSpeed: 4.5
-  contactDamage: 7
+  maxHp: 22
+  moveSpeed: 5.4
+  contactDamage: 10
   contactCooldown: 1
-  expAmount: 10
+  expAmount: 5
   energyDrop: 4

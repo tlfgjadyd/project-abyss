@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Boss_ExperimentalSubjects
   m_EditorClassIdentifier: 
   bossName: "\uC2E4\uD5D8\uC6A9 \uC2E4\uD5D8\uCCB4"
-  maxHp: 600
+  maxHp: 6000
   moveSpeed: 2.5
   contactDamage: 15
   contactCooldown: 1
@@ -22,6 +22,7 @@ MonoBehaviour:
   chargeInterval: 4
   chargeSpeed: 14
   chargeDuration: 0.35
+  cellReward: 5
   copySkillOptions:
   - {fileID: 11400000, guid: 276e0e4f22de3044e809e5761fb87f48, type: 2}
   - {fileID: 11400000, guid: 43ae1413d3ffe53469fb2f3126405e14, type: 2}

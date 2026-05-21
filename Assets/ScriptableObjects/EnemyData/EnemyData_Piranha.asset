@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e452e9c86644be9478c35e80e6c483b1, type: 3}
   m_Name: EnemyData_Piranha
   m_EditorClassIdentifier: 
-  maxHp: 25
-  moveSpeed: 3
-  contactDamage: 5
+  maxHp: 38
+  moveSpeed: 3.6
+  contactDamage: 8
   contactCooldown: 1
-  expAmount: 8
+  expAmount: 4
   energyDrop: 3

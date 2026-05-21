@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e452e9c86644be9478c35e80e6c483b1, type: 3}
   m_Name: EnemyData_Shark
   m_EditorClassIdentifier: 
-  maxHp: 40
-  moveSpeed: 4
-  contactDamage: 12
+  maxHp: 60
+  moveSpeed: 4.8
+  contactDamage: 18
   contactCooldown: 1
-  expAmount: 15
+  expAmount: 8
   energyDrop: 6

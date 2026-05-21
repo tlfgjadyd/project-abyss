@@ -11,10 +11,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e452e9c86644be9478c35e80e6c483b1, type: 3}
   m_Name: EnemyData_GiantSquid
-  m_EditorClassIdentifier:
-  maxHp: 50
-  moveSpeed: 3.6
-  contactDamage: 8
+  m_EditorClassIdentifier: 
+  maxHp: 75
+  moveSpeed: 4.3
+  contactDamage: 12
   contactCooldown: 1
-  expAmount: 20
+  expAmount: 10
   energyDrop: 7

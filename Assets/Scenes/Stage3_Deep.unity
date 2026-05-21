@@ -212,7 +212,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 361620b2acbced84fb0297bd18c43bbf, type: 2}
   baseExpPerLevel: 20
   startingSkillIDs: 00000000
-  cellsPerSelection: 5
+  cellsPerSelection: 2
   hpHealRatioPerSelection: 0.3
 --- !u!1 &9839236
 GameObject:
@@ -2329,7 +2329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peakTime: 20
-  overrideStageData: 1
+  overrideStageData: 0
   hpMultiplierPeak: 2
   damageMultiplierPeak: 1.5
   intervalMultiplierPeak: 0.4
@@ -3052,7 +3052,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 6.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -8768,7 +8768,7 @@ MonoBehaviour:
     poolSize: 10
     startTime: 120
   spawnRadius: 12
-  maxActiveEnemies: 50
+  maxActiveEnemies: 70
 --- !u!1 &1202727827
 GameObject:
   m_ObjectHideFlags: 0
@@ -12697,7 +12697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac48ae494638540439f36950f3104492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerLevels: 070000000c000000
+  triggerLevels: 0f00000019000000
   mutationPool:
   - {fileID: 11400000, guid: 766aa8ba287f3654d96822f409531560, type: 2}
   - {fileID: 11400000, guid: c3ed9a6b4fb20904aa47239fe31d2c42, type: 2}

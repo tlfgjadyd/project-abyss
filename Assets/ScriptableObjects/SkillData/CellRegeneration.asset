@@ -23,7 +23,7 @@ MonoBehaviour:
     rangeDelta: 0
     moveSpeedDelta: 0
     maxHpDelta: 10
-    hpRegenDelta: 1
+    hpRegenDelta: 0.3
     knockbackEnabled: 0
     piercingEnabled: 0
     extraProjectiles: 0
@@ -34,7 +34,7 @@ MonoBehaviour:
     rangeDelta: 0
     moveSpeedDelta: 0
     maxHpDelta: 10
-    hpRegenDelta: 1
+    hpRegenDelta: 0.3
     knockbackEnabled: 0
     piercingEnabled: 0
     extraProjectiles: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
     rangeDelta: 0
     moveSpeedDelta: 0
     maxHpDelta: 15
-    hpRegenDelta: 1.5
+    hpRegenDelta: 0.4
     knockbackEnabled: 0
     piercingEnabled: 0
     extraProjectiles: 0
@@ -56,7 +56,7 @@ MonoBehaviour:
     rangeDelta: 0
     moveSpeedDelta: 0
     maxHpDelta: 15
-    hpRegenDelta: 2
+    hpRegenDelta: 0.5
     knockbackEnabled: 0
     piercingEnabled: 0
     extraProjectiles: 0

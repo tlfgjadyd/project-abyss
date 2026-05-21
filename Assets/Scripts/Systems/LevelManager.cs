@@ -12,7 +12,7 @@ public class LevelManager : MonoBehaviour
 
     [Header("Max Level Rewards")]
     [Tooltip("만렙 보상 카드 — '세포 추출' 선택 시 누적되는 세포 수")]
-    [SerializeField] private int cellsPerSelection = 5;
+    [SerializeField] private int cellsPerSelection = 2;
     [Tooltip("만렙 보상 카드 — '세포 강화' 선택 시 회복되는 최대 HP 비율 (0.30 = 30%)")]
     [Range(0f, 1f)]
     [SerializeField] private float hpHealRatioPerSelection = 0.30f;
@@ -26,6 +26,15 @@ public class LevelManager : MonoBehaviour
 
     /// <summary>누적 세포 (메타 재화). 6주차 Day 40: 게임오버/4스 엔딩 시 MetaProgressData에 누적.</summary>
     public int CurrentCells { get; private set; }
+
+    /// <summary>인게임 세포 누적. 보스 처치/스테이지 클리어 등 만렙 카드 외 경로용.</summary>
+    public void AddCells(int amount, string source = "")
+    {
+        if (amount <= 0) return;
+        CurrentCells += amount;
+        OnCellsChanged?.Invoke(CurrentCells);
+        Debug.Log($"[LevelManager] 세포 +{amount} ({source}) — 누적 {CurrentCells}");
+    }
 
     /// <summary>인게임 세포 카운터를 0으로 비운다. 메타로 누적 후 중복 누적 방지용.</summary>
     public void ConsumeAllCells()

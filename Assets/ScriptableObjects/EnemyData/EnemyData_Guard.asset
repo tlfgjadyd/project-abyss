@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e452e9c86644be9478c35e80e6c483b1, type: 3}
   m_Name: EnemyData_Guard
   m_EditorClassIdentifier: 
-  maxHp: 45
-  moveSpeed: 1
-  contactDamage: 5
+  maxHp: 68
+  moveSpeed: 1.2
+  contactDamage: 8
   contactCooldown: 1
-  expAmount: 10
+  expAmount: 5
+  energyDrop: 5

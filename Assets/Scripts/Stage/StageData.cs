@@ -41,6 +41,10 @@ public class StageData : ScriptableObject
     [Tooltip("보스 등장 시간 (초)")]
     public float bossSpawnTime = 480f;
 
+    [Header("보상")]
+    [Tooltip("이 스테이지를 클리어(다음 스테이지로 전환)할 때 인게임 세포에 누적. 엔딩 스테이지는 사용 안 함.")]
+    public int clearCellReward = 3;
+
     [Header("스테이지 체인")]
     [Tooltip("다음 스테이지. null이면 마지막 스테이지로 간주.")]
     public StageData nextStage;

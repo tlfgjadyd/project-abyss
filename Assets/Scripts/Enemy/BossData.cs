@@ -19,6 +19,10 @@ public class BossData : ScriptableObject
     public float chargeSpeed = 14f;
     public float chargeDuration = 0.35f;
 
+    [Header("보상")]
+    [Tooltip("보스 처치 시 즉시 인게임 세포에 누적 (메타 진행감 보장).")]
+    public int cellReward = 5;
+
     [Header("카피 스킬 선택지")]
     [Tooltip("보스 처치 후 제시되는 카피 스킬 선택지 (최대 3개)")]
     public CopySkillData[] copySkillOptions;

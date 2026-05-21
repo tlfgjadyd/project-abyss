@@ -16,5 +16,5 @@ MonoBehaviour:
   moveSpeed: 1.8
   contactDamage: 3
   contactCooldown: 1
-  expAmount: 12
+  expAmount: 6
   energyDrop: 5
