@@ -44,6 +44,12 @@ public class GameManager : MonoBehaviour
         if (TimerRunning)
             UpdateTimer();
 
+        // ESC 토글: Playing ↔ Paused (다른 상태는 ESC 무시 — LevelUp/Mutation/GameOver/StageClear)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (CurrentState == GameState.Playing) PauseGame();
+            else if (CurrentState == GameState.Paused) ResumeGame();
+        }
     }
 
     // --- 상태 변환 ----
