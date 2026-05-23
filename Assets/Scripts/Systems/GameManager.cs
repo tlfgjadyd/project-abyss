@@ -44,11 +44,14 @@ public class GameManager : MonoBehaviour
         if (TimerRunning)
             UpdateTimer();
 
-        // ESC 토글: Playing ↔ Paused (다른 상태는 ESC 무시 — LevelUp/Mutation/GameOver/StageClear)
+        // ESC 토글: PausePanel을 직접 켜고 끔. CopySelect/LevelUp 등 다른 패널이 Paused 상태일 때 ESC 무시.
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (CurrentState == GameState.Playing) PauseGame();
-            else if (CurrentState == GameState.Paused) ResumeGame();
+            var pp = PausePanel.Instance;
+            if (pp != null && pp.IsShowing)
+                pp.Hide(); // ResumeGame 내부 호출
+            else if (CurrentState == GameState.Playing && pp != null)
+                pp.Show(); // PauseGame 내부 호출
         }
     }
 

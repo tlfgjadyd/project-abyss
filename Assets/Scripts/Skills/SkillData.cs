@@ -5,7 +5,10 @@ public enum SkillType { Attack, Passive }
 public enum SkillID
 {
     Slash, PoisonNeedle, BioticExplosion, ElectricEngine,
-    CellRegen, AccelMutation, NeuralAccel
+    CellRegen, AccelMutation, NeuralAccel,
+    // Day 45 신규 5종
+    SonicPulse, SpikeBurst, DrainTentacle,
+    MagneticInduction, GlowOrgan
 }
 
 [System.Serializable]

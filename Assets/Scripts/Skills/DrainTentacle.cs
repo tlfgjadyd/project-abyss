@@ -1,0 +1,89 @@
+using UnityEngine;
+
+/// <summary>
+/// 흡혈 촉수 — 주기적으로 가장 가까운 적 1체에 라인 형태 데미지 + 받은 데미지의 일정 비율 흡혈.
+/// 시각: LineRenderer 짧은 표시 (플레이어 → 적).
+/// </summary>
+public class DrainTentacle : MonoBehaviour
+{
+    [Header("Stats")]
+    public float range = 5f;
+    public float cooldown = 2f;
+    [Range(0f, 1f)] public float lifestealRatio = 0.3f;
+
+    [HideInInspector] public float damageMultiplier = 1f;
+
+    [Header("Layer")]
+    [SerializeField] private LayerMask enemyLayer;
+
+    [Header("Visual")]
+    [SerializeField] private Color tentacleColor = new Color(0.7f, 0.05f, 0.15f, 1f);
+    [SerializeField] private float visualDuration = 0.25f;
+    [SerializeField] private float visualWidth = 0.2f;
+
+    private PlayerStats stats;
+    private float cooldownTimer;
+
+    void Awake()
+    {
+        stats = GetComponent<PlayerStats>();
+    }
+
+    void Update()
+    {
+        if (GameManager.Instance.CurrentState != GameManager.GameState.Playing) return;
+        if (stats.IsStunned) return;
+
+        cooldownTimer -= Time.deltaTime;
+        if (cooldownTimer > 0f) return;
+
+        Drain();
+        cooldownTimer = cooldown / stats.EffectiveAttackSpeed;
+        PlayerSkillEvents.OnSkillUsed?.Invoke();
+    }
+
+    void Drain()
+    {
+        // 가장 가까운 적 1체
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range, enemyLayer);
+        if (hits.Length == 0) return;
+
+        Collider2D closest = null;
+        float minSq = float.MaxValue;
+        foreach (var c in hits)
+        {
+            if (c == null) continue;
+            float d = ((Vector2)c.transform.position - (Vector2)transform.position).sqrMagnitude;
+            if (d < minSq) { minSq = d; closest = c; }
+        }
+        if (closest == null) return;
+
+        float damage = stats.attackPower * damageMultiplier;
+        closest.GetComponent<IDamageable>()?.TakeDamage(damage);
+        stats.Heal(damage * lifestealRatio);
+
+        SpawnVisual(transform.position, closest.transform.position);
+    }
+
+    void SpawnVisual(Vector2 a, Vector2 b)
+    {
+        var fx = new GameObject("DrainFx");
+        var lr = fx.AddComponent<LineRenderer>();
+        lr.useWorldSpace = true;
+        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.startWidth = visualWidth;
+        lr.endWidth = visualWidth * 0.5f;
+        lr.startColor = tentacleColor;
+        lr.endColor = tentacleColor;
+        lr.positionCount = 2;
+        lr.SetPosition(0, a);
+        lr.SetPosition(1, b);
+        Destroy(fx, visualDuration);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(0.7f, 0.05f, 0.15f, 0.3f);
+        Gizmos.DrawWireSphere(transform.position, range);
+    }
+}

@@ -10,6 +10,10 @@ public class PlayerStats : MonoBehaviour
     public float attackSpeed = 1f;      // 공격 쿨타임 배율 (1 = 기본)
     public float hpRegenPerSecond = 0f; // 세포 재생 패시브로 증가
 
+    [Header("Passive")]
+    [Tooltip("자기 유도 패시브 — ExpOrb 흡인 범위 배율. 기본 1f")]
+    public float magneticRangeMultiplier = 1f;
+
     // 압력 시스템
     [HideInInspector] public float pressureResistance     = 0f;  // 0 ~ 0.5  (메타 업그레이드)
     [HideInInspector] public float pressureMoveMultiplier   = 1f;  // PressureSystem이 설정
@@ -54,10 +58,23 @@ public class PlayerStats : MonoBehaviour
     /// <summary>의태 기관 돌연변이 — true 시 모든 HP 회복 차단</summary>
     [HideInInspector] public bool healingBlocked = false;
 
+    /// <summary>발광 기관 패시브 — 활성 시 다음 1회 데미지 무효 후 비활성. GlowOrganSkill이 관리.</summary>
+    [HideInInspector] public bool glowShieldActive = false;
+    /// <summary>발광 기관 — 보호막 소모 시 호출되는 콜백 (스킬 컴포넌트가 등록)</summary>
+    public System.Action OnGlowShieldConsumed;
+
     public void TakeDamage(float amount)
     {
         if (currentHp <= 0f) return;
         if (IsInvincible) return;
+
+        // 발광 기관 보호막 — 1회 흡수
+        if (glowShieldActive)
+        {
+            glowShieldActive = false;
+            OnGlowShieldConsumed?.Invoke();
+            return;
+        }
 
         currentHp = Mathf.Clamp(currentHp - amount, 0f, maxHp);
         OnHpChanged?.Invoke(currentHp, maxHp);

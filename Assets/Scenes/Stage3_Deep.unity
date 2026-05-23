@@ -210,6 +210,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a87cc13fbe640c146910f2f874f781c1, type: 2}
   - {fileID: 11400000, guid: ed9355e1ac12b60488ea9d5c6dd69139, type: 2}
   - {fileID: 11400000, guid: 361620b2acbced84fb0297bd18c43bbf, type: 2}
+  - {fileID: 11400000, guid: 708b867114aa12045b1c9282f0559e2f, type: 2}
+  - {fileID: 11400000, guid: a001cf2eb4269914e82ca6923653f4b6, type: 2}
+  - {fileID: 11400000, guid: 10c6df48fcf8d414a83128385f6e4fd9, type: 2}
+  - {fileID: 11400000, guid: 3d7ccaebaa9d21444b07adf6947614aa, type: 2}
+  - {fileID: 11400000, guid: 4d5ed3bfd99debc409d045e960d9b541, type: 2}
   baseExpPerLevel: 20
   startingSkillIDs: 00000000
   cellsPerSelection: 2
@@ -563,6 +568,11 @@ GameObject:
   - component: {fileID: 136577170}
   - component: {fileID: 136577169}
   - component: {fileID: 136577168}
+  - component: {fileID: 136577175}
+  - component: {fileID: 136577174}
+  - component: {fileID: 136577173}
+  - component: {fileID: 136577172}
+  - component: {fileID: 136577171}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -616,10 +626,12 @@ MonoBehaviour:
   attackPower: 10
   attackSpeed: 1
   hpRegenPerSecond: 0
+  magneticRangeMultiplier: 1
   pressureResistance: 0
   pressureMoveMultiplier: 1
   pressureAttackMultiplier: 1
   healingBlocked: 0
+  glowShieldActive: 0
 --- !u!70 &136577152
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -984,17 +996,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 0}
-  speedMultiplier: 2.5
   duration: 4
-  trailInterval: 0.1
-  trailRadius: 0.7
-  trailLifetime: 3
-  damageMultiplier: 0.5
-  damageTickInterval: 0.5
+  speedMultiplier: 2.5
+  collisionRadius: 0.8
+  bleedDuration: 3
+  bleedTickInterval: 0.3
+  bleedDamageMultiplier: 0.4
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
-  trailColor: {r: 0.9, g: 0.1, b: 0.3, a: 0.6}
+  bleedColor: {r: 0.9, g: 0.1, b: 0.3, a: 1}
 --- !u!114 &136577169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1033,17 +1044,110 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 0}
-  length: 9
+  length: 8
   width: 1.2
-  damageMultiplier: 1.2
-  hitTicks: 4
-  tickInterval: 0.1
+  channelDuration: 5
+  tickInterval: 0.15
+  turnRate: 180
+  damageMultiplier: 0.5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
   beamColor: {r: 0.6, g: 0.2, b: 1, a: 1}
-  visualDuration: 0.5
   visualLineWidth: 0.35
+--- !u!114 &136577171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dfe8835531cb034f8cbfad2287671e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 12
+  shieldColor: {r: 1, g: 0.95, b: 0.4, a: 0.7}
+  shieldRadius: 0.6
+--- !u!114 &136577172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f58d3e984fcb544ab8c2a8032c52794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &136577173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d82d43bc15f1c144974dc7acb1f0aa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 5
+  cooldown: 2
+  lifestealRatio: 0.3
+  damageMultiplier: 1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  tentacleColor: {r: 0.7, g: 0.05, b: 0.15, a: 1}
+  visualDuration: 0.25
+  visualWidth: 0.2
+--- !u!114 &136577174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31736451f42464a4a97d309ee6f62667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 6
+  cooldown: 5
+  spikeCount: 8
+  spikeWidth: 0.5
+  damageMultiplier: 1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  spikeColor: {r: 1, g: 0.9, b: 0.3, a: 1}
+  visualDuration: 0.2
+  spikeVisualWidth: 0.15
+--- !u!114 &136577175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa9ee6ae45241849b19bdd73aab8b39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 3.5
+  cooldown: 3.5
+  knockbackForce: 7
+  damageMultiplier: 1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  pulseColor: {r: 0.4, g: 0.7, b: 1, a: 0.6}
+  visualDuration: 0.3
 --- !u!1 &152028253
 GameObject:
   m_ObjectHideFlags: 0
@@ -3222,7 +3326,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -6020,7 +6124,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -9428,7 +9532,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -10254,7 +10358,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1391095431
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11095,8 +11199,8 @@ MonoBehaviour:
   m_LightType: 4
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.4, g: 0.5, b: 0.7, a: 1}
-  m_Intensity: 0.1
+  m_Color: {r: 0.2, g: 0.3, b: 0.5, a: 1}
+  m_Intensity: 0.04
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 00000000
@@ -15414,8 +15518,8 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 3
-  m_PointLightOuterRadius: 6
+  m_PointLightInnerRadius: 2.5
+  m_PointLightOuterRadius: 5
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1

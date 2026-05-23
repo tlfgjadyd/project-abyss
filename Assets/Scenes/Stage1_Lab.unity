@@ -210,6 +210,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a87cc13fbe640c146910f2f874f781c1, type: 2}
   - {fileID: 11400000, guid: ed9355e1ac12b60488ea9d5c6dd69139, type: 2}
   - {fileID: 11400000, guid: 361620b2acbced84fb0297bd18c43bbf, type: 2}
+  - {fileID: 11400000, guid: 708b867114aa12045b1c9282f0559e2f, type: 2}
+  - {fileID: 11400000, guid: a001cf2eb4269914e82ca6923653f4b6, type: 2}
+  - {fileID: 11400000, guid: 10c6df48fcf8d414a83128385f6e4fd9, type: 2}
+  - {fileID: 11400000, guid: 3d7ccaebaa9d21444b07adf6947614aa, type: 2}
+  - {fileID: 11400000, guid: 4d5ed3bfd99debc409d045e960d9b541, type: 2}
   baseExpPerLevel: 20
   startingSkillIDs: 00000000
   cellsPerSelection: 2
@@ -694,6 +699,11 @@ GameObject:
   - component: {fileID: 136577167}
   - component: {fileID: 136577166}
   - component: {fileID: 136577165}
+  - component: {fileID: 136577172}
+  - component: {fileID: 136577171}
+  - component: {fileID: 136577170}
+  - component: {fileID: 136577169}
+  - component: {fileID: 136577168}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -746,10 +756,12 @@ MonoBehaviour:
   attackPower: 10
   attackSpeed: 1
   hpRegenPerSecond: 0
+  magneticRangeMultiplier: 1
   pressureResistance: 0
   pressureMoveMultiplier: 1
   pressureAttackMultiplier: 1
   healingBlocked: 0
+  glowShieldActive: 0
 --- !u!70 &136577152
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1101,6 +1113,99 @@ MonoBehaviour:
   visualColor: {r: 0.5, g: 0.8, b: 1, a: 1}
   visualDuration: 0.3
   visualLineWidth: 0.12
+--- !u!114 &136577168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dfe8835531cb034f8cbfad2287671e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 12
+  shieldColor: {r: 1, g: 0.95, b: 0.4, a: 0.7}
+  shieldRadius: 0.6
+--- !u!114 &136577169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f58d3e984fcb544ab8c2a8032c52794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &136577170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d82d43bc15f1c144974dc7acb1f0aa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 5
+  cooldown: 2
+  lifestealRatio: 0.3
+  damageMultiplier: 1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  tentacleColor: {r: 0.7, g: 0.05, b: 0.15, a: 1}
+  visualDuration: 0.25
+  visualWidth: 0.2
+--- !u!114 &136577171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31736451f42464a4a97d309ee6f62667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 6
+  cooldown: 5
+  spikeCount: 8
+  spikeWidth: 0.5
+  damageMultiplier: 1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  spikeColor: {r: 1, g: 0.9, b: 0.3, a: 1}
+  visualDuration: 0.2
+  spikeVisualWidth: 0.15
+--- !u!114 &136577172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136577148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa9ee6ae45241849b19bdd73aab8b39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 3.5
+  cooldown: 3.5
+  knockbackForce: 7
+  damageMultiplier: 1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  pulseColor: {r: 0.4, g: 0.7, b: 1, a: 0.6}
+  visualDuration: 0.3
 --- !u!1 &152028253
 GameObject:
   m_ObjectHideFlags: 0

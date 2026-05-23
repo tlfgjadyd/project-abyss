@@ -11,6 +11,12 @@ public class SkillEffectApplier : MonoBehaviour
     private PoisonNeedle poisonNeedle;
     private BioticExplosion bioticExplosion;
     private ElectricEngine electricEngine;
+    // Day 45 신규
+    private SonicPulse sonicPulse;
+    private SpikeBurst spikeBurst;
+    private DrainTentacle drainTentacle;
+    private MagneticInduction magnetic;
+    private GlowOrgan glowOrgan;
 
     void Awake()
     {
@@ -21,12 +27,23 @@ public class SkillEffectApplier : MonoBehaviour
         bioticExplosion = GetComponent<BioticExplosion>();
         electricEngine = GetComponent<ElectricEngine>();
 
+        sonicPulse = GetComponent<SonicPulse>();
+        spikeBurst = GetComponent<SpikeBurst>();
+        drainTentacle = GetComponent<DrainTentacle>();
+        magnetic = GetComponent<MagneticInduction>();
+        glowOrgan = GetComponent<GlowOrgan>();
+
         if (!testMode)
         {
             // 선택형 스킬은 시작 시 비활성화 — 레벨업에서 처음 선택할 때 활성화됨
             if (poisonNeedle != null)    poisonNeedle.enabled    = false;
             if (bioticExplosion != null) bioticExplosion.enabled = false;
             if (electricEngine != null)  electricEngine.enabled  = false;
+            if (sonicPulse != null)      sonicPulse.enabled      = false;
+            if (spikeBurst != null)      spikeBurst.enabled      = false;
+            if (drainTentacle != null)   drainTentacle.enabled   = false;
+            if (magnetic != null)        magnetic.enabled        = false;
+            if (glowOrgan != null)       glowOrgan.enabled       = false;
         }
     }
 
@@ -56,7 +73,59 @@ public class SkillEffectApplier : MonoBehaviour
             case SkillID.PoisonNeedle:    ApplyPoisonNeedle(s);    break;
             case SkillID.BioticExplosion: ApplyBioticExplosion(s); break;
             case SkillID.ElectricEngine:  ApplyElectricEngine(s);  break;
+            // Day 45 신규
+            case SkillID.SonicPulse:        ApplySonicPulse(s);     break;
+            case SkillID.SpikeBurst:        ApplySpikeBurst(s);     break;
+            case SkillID.DrainTentacle:     ApplyDrainTentacle(s);  break;
+            case SkillID.MagneticInduction: ApplyMagnetic(s);       break;
+            case SkillID.GlowOrgan:         ApplyGlowOrgan(s);      break;
         }
+    }
+
+    // ── Day 45 신규 스킬 ─────────────────────────
+
+    void ApplySonicPulse(SkillLevelStats s)
+    {
+        stats.attackPower += s.attackPowerDelta;
+        if (sonicPulse == null) return;
+        if (!sonicPulse.enabled) sonicPulse.enabled = true;
+        sonicPulse.range += s.rangeDelta;
+        sonicPulse.cooldown = Mathf.Max(0.5f, sonicPulse.cooldown - s.cooldownDelta);
+    }
+
+    void ApplySpikeBurst(SkillLevelStats s)
+    {
+        stats.attackPower += s.attackPowerDelta;
+        if (spikeBurst == null) return;
+        if (!spikeBurst.enabled) spikeBurst.enabled = true;
+        spikeBurst.range += s.rangeDelta;
+        spikeBurst.cooldown = Mathf.Max(0.5f, spikeBurst.cooldown - s.cooldownDelta);
+        spikeBurst.spikeCount += s.extraProjectiles;
+    }
+
+    void ApplyDrainTentacle(SkillLevelStats s)
+    {
+        stats.attackPower += s.attackPowerDelta;
+        if (drainTentacle == null) return;
+        if (!drainTentacle.enabled) drainTentacle.enabled = true;
+        drainTentacle.range += s.rangeDelta;
+        drainTentacle.cooldown = Mathf.Max(0.3f, drainTentacle.cooldown - s.cooldownDelta);
+    }
+
+    void ApplyMagnetic(SkillLevelStats s)
+    {
+        if (magnetic == null) return;
+        if (!magnetic.enabled) magnetic.enabled = true;
+        // moveSpeedDelta 슬롯을 흡인 범위 배율 증분으로 재사용 (Lv마다 +0.2 정도)
+        stats.magneticRangeMultiplier += s.moveSpeedDelta;
+    }
+
+    void ApplyGlowOrgan(SkillLevelStats s)
+    {
+        if (glowOrgan == null) return;
+        if (!glowOrgan.enabled) glowOrgan.enabled = true;
+        // cooldownDelta로 쿨다운 감소
+        glowOrgan.cooldown = Mathf.Max(3f, glowOrgan.cooldown - s.cooldownDelta);
     }
 
     // ── 공격 스킬 ────────────────────────────────
