@@ -49,9 +49,8 @@ public class BossSpawner : MonoBehaviour
     {
         bossSpawned = true;
 
-        // 일반 적 스폰 중단
-        if (enemySpawner != null)
-            enemySpawner.enabled = false;
+        // Day 45 후속: 보스 등장 후에도 일반 적 스폰 유지 (긴장감 강화).
+        // 보스 처치 시 DespawnAll로 화면 정리만 수행.
 
         // 스폰 위치: 플레이어 오른쪽 offset
         var playerObj = GameObject.FindGameObjectWithTag("Player");

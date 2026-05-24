@@ -11,11 +11,17 @@ public class GameManager : MonoBehaviour
     public enum GameState{Playing, Paused, LevelUp, Mutation, GameOver, StageClear}
     public GameState CurrentState{get;private set;}
 
-    // Stage Timer
+    // Stage Timer (Day 45 후속: 카운트다운 → 카운트업으로 변경. 시간 초과 GameOver 폐지)
     [Header("Stage Settings (fallback)")]
-    [Tooltip("StageManager.CurrentStage가 있으면 그 값으로 덮어씌워짐. 없을 때만 fallback으로 사용.")]
+    [Tooltip("StageManager.CurrentStage가 있으면 그 값으로 덮어씌워짐. 없을 때만 fallback으로 사용. 현재는 보스 스폰 타이밍에만 의미 있음 (UI는 카운트업).")]
     [SerializeField] private float stageDuration = 540f;
-    public float TimeRemaining {get; private set;}
+
+    /// <summary>스테이지 시작 후 경과 시간 (초). 카운트업.</summary>
+    public float ElapsedTime { get; private set; }
+
+    /// <summary>호환성: 기존 호출자(VictoryPanel 등)를 위해 유지. 의미는 ElapsedTime과 동일.</summary>
+    public float TimeRemaining => ElapsedTime;
+
     public bool TimerRunning {get; private set;}
 
     // Event
@@ -37,6 +43,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         StartStage();
+
+        // 스테이지 BGM 자동 재생 (StageManager에서 현재 스테이지 번호 가져옴)
+        if (AudioManager.Instance != null && StageManager.Instance != null && StageManager.Instance.CurrentStage != null)
+            AudioManager.Instance.PlayStageBGM(StageManager.Instance.CurrentStage.stageNumber);
     }
 
     void Update()
@@ -100,26 +110,17 @@ public class GameManager : MonoBehaviour
 
     void StartStage()
     {
-        // StageManager가 있고 현재 스테이지 데이터가 있으면 그 값을 우선 사용
-        float duration = stageDuration;
-        if (StageManager.Instance != null && StageManager.Instance.CurrentStage != null)
-            duration = StageManager.Instance.CurrentStage.stageDuration;
-
-        TimeRemaining = duration;
+        // stageDuration은 BossSpawner 등에서 보스 스폰 시점 계산에 사용 (StageData.bossSpawnTime).
+        // 타이머 자체는 0에서 시작해 계속 카운트업.
+        ElapsedTime = 0f;
         ChangeState(GameState.Playing);
     }
 
     void UpdateTimer()
     {
-        TimeRemaining -= Time.deltaTime;
-        OnTimerUpdated?.Invoke(TimeRemaining);
-
-        if (TimeRemaining <= 0f)
-        {
-            TimeRemaining = 0f;
-            // 시간 초과 → 일단 GameOver (보스 미처치 시)
-            ChangeState(GameState.GameOver);
-        }
+        ElapsedTime += Time.deltaTime;
+        OnTimerUpdated?.Invoke(ElapsedTime);
+        // 시간 초과 GameOver 폐지 — 무한 진행. GameOver는 사망 또는 명시 호출로만.
     }
 
     // ── 외부 호출용 ─────────────────────────────

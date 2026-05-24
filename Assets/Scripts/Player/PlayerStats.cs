@@ -19,8 +19,14 @@ public class PlayerStats : MonoBehaviour
     [HideInInspector] public float pressureMoveMultiplier   = 1f;  // PressureSystem이 설정
     [HideInInspector] public float pressureAttackMultiplier = 1f;
 
-    /// <summary>압력 페널티가 반영된 실제 이동속도</summary>
-    public float EffectiveMoveSpeed   => moveSpeed   * pressureMoveMultiplier;
+    // 보스 디버프 (Day 46 향유고래 페이즈2)
+    /// <summary>보스 디버프 — 이동속도 배율 (1=정상, 0.5=절반). 보스 컴포넌트가 일시 설정 후 복원.</summary>
+    [HideInInspector] public float bossDebuffMoveMultiplier = 1f;
+    /// <summary>보스 디버프 — 받는 데미지 배율 (1=정상, 1.5=취약). TakeDamage에서 곱셈.</summary>
+    [HideInInspector] public float bossDebuffVulnMultiplier = 1f;
+
+    /// <summary>압력 + 보스 디버프 반영 실제 이동속도</summary>
+    public float EffectiveMoveSpeed   => moveSpeed   * pressureMoveMultiplier * bossDebuffMoveMultiplier;
     /// <summary>압력 페널티가 반영된 실제 공격속도</summary>
     public float EffectiveAttackSpeed => attackSpeed * pressureAttackMultiplier;
 
@@ -76,7 +82,11 @@ public class PlayerStats : MonoBehaviour
             return;
         }
 
+        // 보스 디버프 취약: 받는 데미지 배율 적용
+        amount *= bossDebuffVulnMultiplier;
+
         currentHp = Mathf.Clamp(currentHp - amount, 0f, maxHp);
+        AudioManager.Instance?.PlaySFX(SfxId.PlayerHit);
         OnHpChanged?.Invoke(currentHp, maxHp);
 
         if (currentHp <= 0f)

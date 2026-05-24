@@ -33,6 +33,9 @@ public class MainMenuController : MonoBehaviour
         if (metaButton     != null) metaButton.onClick.AddListener(ShowMeta);
         if (quitButton     != null) quitButton.onClick.AddListener(OnQuit);
         if (metaBackButton != null) metaBackButton.onClick.AddListener(ShowMain);
+
+        // 메인 메뉴 BGM 자동 재생 (AudioManager 존재 시)
+        AudioManager.Instance?.PlayMainMenuBGM();
     }
 
     void ShowMain()

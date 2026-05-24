@@ -39,6 +39,9 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
+        // 넉백 중에는 velocity 덮어쓰기 양보 (rb가 자유 비행)
+        if (enemy.IsKnockedBack) return;
+
         Vector2 toPlayer = (Vector2)player.position - (Vector2)transform.position;
         float distance  = toPlayer.magnitude;
 

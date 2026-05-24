@@ -31,11 +31,21 @@ public class BossDirectorAttack : MonoBehaviour
     [SerializeField] private float aimWidth    = 0.08f;
     [SerializeField] private float beamLineWidth = 0.45f;
 
+    [Header("Drone Summon (페이즈2)")]
+    [Tooltip("Enemy_Drone prefab")]
+    [SerializeField] private GameObject dronePrefab;
+    [Tooltip("페이즈2 진입 후 첫 드론 소환까지 대기")]
+    [SerializeField] private float droneInitialDelay = 3f;
+    [SerializeField] private float droneSummonInterval = 6f;
+    [SerializeField] private int dronesPerSummon = 2;
+    [SerializeField] private float droneSpawnRadius = 2f;
+
     private BossBase boss;
     private Transform player;
     private bool active;
     private GameObject activeFx;
     private Coroutine fireLoop;
+    private Coroutine droneLoop;
 
     void Awake()
     {
@@ -50,13 +60,43 @@ public class BossDirectorAttack : MonoBehaviour
 
         // 페이즈1부터 발사 시작
         fireLoop = StartCoroutine(FireLoop());
+
+        // 페이즈2 진입 시 드론 소환 루프 시작
+        if (boss != null) boss.OnPhase2Entered += StartDroneLoop;
     }
 
     void OnDisable()
     {
         if (activeFx != null) { Destroy(activeFx); activeFx = null; }
         if (fireLoop != null) { StopCoroutine(fireLoop); fireLoop = null; }
+        if (droneLoop != null) { StopCoroutine(droneLoop); droneLoop = null; }
+        if (boss != null) boss.OnPhase2Entered -= StartDroneLoop;
         active = false;
+    }
+
+    void StartDroneLoop()
+    {
+        if (droneLoop == null && dronePrefab != null)
+            droneLoop = StartCoroutine(DroneSummonLoop());
+    }
+
+    IEnumerator DroneSummonLoop()
+    {
+        yield return new WaitForSeconds(droneInitialDelay);
+        while (active && boss != null && !boss.IsDead)
+        {
+            if (GameManager.Instance != null &&
+                GameManager.Instance.CurrentState == GameManager.GameState.Playing)
+            {
+                for (int i = 0; i < dronesPerSummon; i++)
+                {
+                    Vector2 offset = Random.insideUnitCircle.normalized * droneSpawnRadius;
+                    Vector2 pos = (Vector2)transform.position + offset;
+                    Instantiate(dronePrefab, pos, Quaternion.identity);
+                }
+            }
+            yield return new WaitForSeconds(droneSummonInterval);
+        }
     }
 
     IEnumerator FireLoop()

@@ -110,6 +110,7 @@ public class LevelManager : MonoBehaviour
             ExpToNextLevel = baseExpPerLevel * CurrentLevel;
             OnLevelChanged?.Invoke(CurrentLevel);
             pendingLevelUps++;
+            AudioManager.Instance?.PlaySFX(SfxId.LevelUp);
         }
 
         OnExpChanged?.Invoke(CurrentExp, ExpToNextLevel);

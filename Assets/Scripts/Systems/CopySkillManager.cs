@@ -127,6 +127,7 @@ public class CopySkillManager : MonoBehaviour
         }
 
         BioEnergyManager.Instance.ConsumeEnergy(cost);
+        AudioManager.Instance?.PlaySFX(SfxId.CopySkillCast);
         skill.Execute();
     }
 }

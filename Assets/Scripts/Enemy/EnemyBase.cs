@@ -25,6 +25,10 @@ public class EnemyBase : MonoBehaviour, IDamageable
     private Coroutine slowCoroutine;
     private Coroutine vulnerableCoroutine;
 
+    /// <summary>넉백 종료 시각 (Time.time 기준). EnemyAI가 velocity 덮어쓰기 양보.</summary>
+    public float KnockbackUntil { get; private set; }
+    public bool IsKnockedBack => Time.time < KnockbackUntil;
+
     public System.Action<EnemyBase> OnDeath;
 
     void Awake()
@@ -100,6 +104,17 @@ public class EnemyBase : MonoBehaviour, IDamageable
         vulnerableCoroutine = null;
     }
 
+    /// <summary>넉백 적용 — Rigidbody2D에 즉시 force + 일정 시간 EnemyAI 양보.</summary>
+    public void ApplyKnockback(Vector2 dir, float force, float duration = 0.25f)
+    {
+        if (isDead) return;
+        var rb = GetComponent<Rigidbody2D>();
+        if (rb == null) return;
+        rb.velocity = Vector2.zero;
+        rb.AddForce(dir.normalized * force, ForceMode2D.Impulse);
+        KnockbackUntil = Time.time + duration;
+    }
+
     public void Stun(float duration)
     {
         if (isDead) return;
@@ -136,6 +151,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
 
         ExpOrbPool.Instance?.Spawn(transform.position, data.expAmount);
         BioEnergyManager.Instance?.AddEnergy(data.energyDrop);
+        AudioManager.Instance?.PlaySFX(SfxId.EnemyDeath);
 
         OnDeath?.Invoke(this);
         gameObject.SetActive(false);

@@ -49,13 +49,13 @@ public class SonicPulse : MonoBehaviour
         foreach (var hit in hits)
         {
             hit.GetComponent<IDamageable>()?.TakeDamage(damage);
-            // 넉백
-            var rb = hit.GetComponent<Rigidbody2D>();
-            if (rb != null)
+            // 넉백 — EnemyAI가 velocity를 매 프레임 덮어쓰므로 ApplyKnockback 경유 (양보 플래그)
+            var enemy = hit.GetComponent<EnemyBase>();
+            if (enemy != null)
             {
                 Vector2 dir = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
                 if (dir.sqrMagnitude < 0.0001f) dir = Vector2.right;
-                rb.AddForce(dir * knockbackForce, ForceMode2D.Impulse);
+                enemy.ApplyKnockback(dir, knockbackForce, 0.25f);
             }
         }
         SpawnVisual();

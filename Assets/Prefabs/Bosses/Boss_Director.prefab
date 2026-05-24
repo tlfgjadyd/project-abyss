@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 5204198190627243193}
   - component: {fileID: 6767844755331763580}
   - component: {fileID: 1841222352911551083}
+  - component: {fileID: 2195752663628047720}
   m_Layer: 6
   m_Name: Boss_Director
   m_TagString: Untagged
@@ -227,6 +228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialDelay: 1.5
   fireInterval: 3.5
+  phase2IntervalMultiplier: 0.55
   aimDuration: 1
   beamDuration: 0.15
   range: 14
@@ -239,3 +241,24 @@ MonoBehaviour:
   beamColor: {r: 1, g: 1, b: 1, a: 1}
   aimWidth: 0.08
   beamLineWidth: 0.45
+  dronePrefab: {fileID: 7067148694784486748, guid: 001ca45af1d75d34a82bb58db88bd303, type: 3}
+  droneInitialDelay: 3
+  droneSummonInterval: 6
+  dronesPerSummon: 2
+  droneSpawnRadius: 2
+--- !u!114 &2195752663628047720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4177956351103701311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fc49b4de35d3d4418d03fd2b2304db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shieldDuration: 5
+  shieldColor: {r: 0.4, g: 0.9, b: 1, a: 0.9}
+  ringRadius: 1.2
+  ringWidth: 0.15

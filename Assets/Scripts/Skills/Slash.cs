@@ -28,7 +28,10 @@ public class Slash : MonoBehaviour
             hit.GetComponent<IDamageable>()?.TakeDamage(damage);
 
             if (knockbackEnabled)
-                hit.GetComponent<Rigidbody2D>()?.AddForce(toEnemy * knockbackForce, ForceMode2D.Impulse);
+            {
+                var enemy = hit.GetComponent<EnemyBase>();
+                if (enemy != null) enemy.ApplyKnockback(toEnemy, knockbackForce, 0.25f);
+            }
         }
 
         PlayerSkillEvents.OnSkillUsed?.Invoke();
