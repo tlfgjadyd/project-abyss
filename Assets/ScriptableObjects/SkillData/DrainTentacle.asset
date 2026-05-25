@@ -18,7 +18,7 @@ MonoBehaviour:
   skillID: 9
   maxLevel: 4
   levelStats:
-  - attackPowerDelta: 2
+  - attackPowerDelta: 1
     attackSpeedDelta: 0
     rangeDelta: 0.5
     moveSpeedDelta: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
     extraProjectiles: 0
     cooldownDelta: 0
     stunDurationDelta: 0
-  - attackPowerDelta: 2
+  - attackPowerDelta: 1
     attackSpeedDelta: 0
     rangeDelta: 0
     moveSpeedDelta: 0
@@ -40,7 +40,7 @@ MonoBehaviour:
     extraProjectiles: 0
     cooldownDelta: 0.2
     stunDurationDelta: 0
-  - attackPowerDelta: 3
+  - attackPowerDelta: 2
     attackSpeedDelta: 0
     rangeDelta: 0.5
     moveSpeedDelta: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
     extraProjectiles: 0
     cooldownDelta: 0.2
     stunDurationDelta: 0
-  - attackPowerDelta: 3
+  - attackPowerDelta: 2
     attackSpeedDelta: 0
     rangeDelta: 0.5
     moveSpeedDelta: 0

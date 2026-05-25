@@ -9,7 +9,7 @@ public class DrainTentacle : MonoBehaviour
     [Header("Stats")]
     public float range = 5f;
     public float cooldown = 2f;
-    [Range(0f, 1f)] public float lifestealRatio = 0.3f;
+    [Range(0f, 1f)] public float lifestealRatio = 0.1f;
 
     [HideInInspector] public float damageMultiplier = 1f;
 
@@ -44,8 +44,9 @@ public class DrainTentacle : MonoBehaviour
 
     void Drain()
     {
-        // 가장 가까운 적 1체
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range, enemyLayer);
+        // 가장 가까운 적 1체 (시야 제한 반영)
+        float effRange = stats != null ? stats.ApplyAutoTrackLimit(range) : range;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, effRange, enemyLayer);
         if (hits.Length == 0) return;
 
         Collider2D closest = null;

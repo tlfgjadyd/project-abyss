@@ -14,6 +14,16 @@ public class PlayerStats : MonoBehaviour
     [Tooltip("자기 유도 패시브 — ExpOrb 흡인 범위 배율. 기본 1f")]
     public float magneticRangeMultiplier = 1f;
 
+    [Header("Stage")]
+    [Tooltip("자동 추적 스킬 사거리 상한. 0 = 무제한. StageManager가 씬 시작 시 StageData에서 설정")]
+    [HideInInspector] public float autoTrackRangeLimit = 0f;
+
+    /// <summary>스킬에서 사거리 계산 시 사용. limit=0이면 그대로, 아니면 Min</summary>
+    public float ApplyAutoTrackLimit(float baseRange)
+    {
+        return autoTrackRangeLimit > 0f ? Mathf.Min(baseRange, autoTrackRangeLimit) : baseRange;
+    }
+
     // 압력 시스템
     [HideInInspector] public float pressureResistance     = 0f;  // 0 ~ 0.5  (메타 업그레이드)
     [HideInInspector] public float pressureMoveMultiplier   = 1f;  // PressureSystem이 설정

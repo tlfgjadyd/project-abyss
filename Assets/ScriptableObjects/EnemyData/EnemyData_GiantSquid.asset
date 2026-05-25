@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyData_GiantSquid
   m_EditorClassIdentifier: 
   maxHp: 75
-  moveSpeed: 4.3
+  moveSpeed: 6.9
   contactDamage: 12
   contactCooldown: 1
   expAmount: 10

@@ -16,5 +16,5 @@ MonoBehaviour:
   description: "\uBC14\uB77C\uBCF4\uB294 \uBC29\uD5A5 \uBD80\uCC44\uAF34\uB85C \uB300\uD53C\uD574
     + \uC2A4\uD134"
   skillType: 0
-  energyCost: 140
+  energyCost: 80
   copySkillID: 4

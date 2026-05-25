@@ -45,6 +45,10 @@ public class StageData : ScriptableObject
     [Tooltip("이 스테이지를 클리어(다음 스테이지로 전환)할 때 인게임 세포에 누적. 엔딩 스테이지는 사용 안 함.")]
     public int clearCellReward = 3;
 
+    [Header("시야 제한 (Day 48b)")]
+    [Tooltip("자동 추적 스킬(Slash/PoisonNeedle/ElectricEngine/DrainTentacle)의 사거리 상한. 0 = 무제한. 3스 시야 제한과 정합 위해 사용")]
+    public float autoTrackRangeLimit = 0f;
+
     [Header("스테이지 체인")]
     [Tooltip("다음 스테이지. null이면 마지막 스테이지로 간주.")]
     public StageData nextStage;

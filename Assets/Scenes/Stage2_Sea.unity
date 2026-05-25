@@ -562,6 +562,7 @@ MonoBehaviour:
   attackSpeed: 1
   hpRegenPerSecond: 0
   magneticRangeMultiplier: 1
+  autoTrackRangeLimit: 0
   pressureResistance: 0
   pressureMoveMultiplier: 1
   pressureAttackMultiplier: 1
@@ -910,7 +911,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 0}
-  range: 6
+  range: 14
   angle: 90
   damageMultiplier: 5
   stunDuration: 1.5
@@ -1007,6 +1008,7 @@ MonoBehaviour:
   range: 3.5
   cooldown: 3.5
   knockbackForce: 7
+  knockbackEnabled: 0
   damageMultiplier: 1
   enemyLayer:
     serializedVersion: 2
@@ -2922,6 +2924,8 @@ GameObject:
   - component: {fileID: 381684343}
   - component: {fileID: 381684346}
   - component: {fileID: 381684347}
+  - component: {fileID: 381684349}
+  - component: {fileID: 381684348}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3062,6 +3066,31 @@ MonoBehaviour:
   target: {fileID: 136577149}
   smoothSpeed: 5
   offset: {x: 0, y: 0, z: -10}
+--- !u!114 &381684348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381684342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0375d1a64d83a0a438beb035625b2be2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &381684349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381684342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a5efdc54bd2eec43b0429bd9e4d48e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultOrthoSize: 6.5
 --- !u!1 &381944773
 GameObject:
   m_ObjectHideFlags: 0

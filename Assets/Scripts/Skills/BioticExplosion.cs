@@ -46,6 +46,28 @@ public class BioticExplosion : MonoBehaviour
             if (stunDuration > 0f)
                 hit.GetComponent<EnemyBase>()?.Stun(stunDuration);
         }
+        // 시각: 폭발 반경 원 페이드
+        SpawnExplosionFx(transform.position, range);
+    }
+
+    void SpawnExplosionFx(Vector2 origin, float r)
+    {
+        var fx = new GameObject("BioticExplosionFx");
+        fx.transform.position = origin;
+        var lr = fx.AddComponent<LineRenderer>();
+        lr.useWorldSpace = false;
+        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.startWidth = 0.12f; lr.endWidth = 0.12f;
+        var color = new Color(0.3f, 1f, 0.5f, 1f);
+        lr.startColor = color; lr.endColor = color;
+        const int seg = 32;
+        lr.positionCount = seg + 1;
+        for (int i = 0; i <= seg; i++)
+        {
+            float a = i / (float)seg * Mathf.PI * 2f;
+            lr.SetPosition(i, new Vector3(Mathf.Cos(a) * r, Mathf.Sin(a) * r, 0f));
+        }
+        fx.AddComponent<SkillFxFader>().Init(lr, color, 0.3f);
     }
 
     void OnDrawGizmosSelected()

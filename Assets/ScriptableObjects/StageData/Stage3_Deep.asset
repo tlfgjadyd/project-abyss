@@ -23,4 +23,6 @@ MonoBehaviour:
   pressureExpBonus: 0.5
   stageDuration: 360
   bossSpawnTime: 300
+  clearCellReward: 3
+  autoTrackRangeLimit: 5.5
   nextStage: {fileID: 11400000, guid: cac4ae4daa6ad024ab877b957955588e, type: 2}

@@ -54,7 +54,8 @@ public class PoisonNeedle : MonoBehaviour
 
     Transform FindNearestEnemy()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRadius, enemyLayer);
+        float effRange = stats != null ? stats.ApplyAutoTrackLimit(detectionRadius) : detectionRadius;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, effRange, enemyLayer);
         Transform nearest = null;
         float minDist = float.MaxValue;
 
@@ -91,6 +92,28 @@ public class PoisonNeedle : MonoBehaviour
         proj.damage = stats.attackPower * damageMultiplier;
         proj.isPiercing = isPiercing;
         proj.Fire(direction);
+        // 발사 시작점 작은 점 시각 (LineRenderer 8각형 mini)
+        SpawnMuzzleFx(transform.position);
+    }
+
+    void SpawnMuzzleFx(Vector2 origin)
+    {
+        var fx = new GameObject("NeedleMuzzleFx");
+        fx.transform.position = origin;
+        var lr = fx.AddComponent<LineRenderer>();
+        lr.useWorldSpace = false;
+        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.startWidth = 0.06f; lr.endWidth = 0.06f;
+        var color = new Color(0.6f, 1f, 0.3f, 1f);
+        lr.startColor = color; lr.endColor = color;
+        const int seg = 8; const float r = 0.18f;
+        lr.positionCount = seg + 1;
+        for (int i = 0; i <= seg; i++)
+        {
+            float a = i / (float)seg * Mathf.PI * 2f;
+            lr.SetPosition(i, new Vector3(Mathf.Cos(a) * r, Mathf.Sin(a) * r, 0f));
+        }
+        fx.AddComponent<SkillFxFader>().Init(lr, color, 0.12f);
     }
 
     static Vector2 Rotate(Vector2 v, float degrees)

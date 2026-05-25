@@ -66,6 +66,7 @@ public class BossSpawner : MonoBehaviour
             currentBoss.OnBossDeath += OnBossDied;
             BossHPBar.Instance?.Show(currentBoss);
             OnBossSpawned?.Invoke();
+            // 카메라 효과 제거 — BossHPBar로 등장 알림 충분
         }
     }
 
@@ -76,6 +77,7 @@ public class BossSpawner : MonoBehaviour
             enemySpawner.DespawnAll();
 
         BossHPBar.Instance?.Hide();
+        // 카메라 효과 제거 — DeathExplosion + 카피 패널 등장으로 처치 피드백 충분
 
         // 세포 보상 — Capture 이전이라 다음 씬으로 자동 보존
         if (boss.Data != null && boss.Data.cellReward > 0)

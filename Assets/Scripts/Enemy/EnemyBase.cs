@@ -153,6 +153,11 @@ public class EnemyBase : MonoBehaviour, IDamageable
         BioEnergyManager.Instance?.AddEnergy(data.energyDrop);
         AudioManager.Instance?.PlaySFX(SfxId.EnemyDeath);
 
+        // 사망 폭발 시각 — Sprite 색상 기반
+        var sr = GetComponentInChildren<SpriteRenderer>();
+        Color c = sr != null ? sr.color : new Color(1f, 0.6f, 0.3f, 1f);
+        DeathExplosion.Spawn(transform.position, c, 0.6f);
+
         OnDeath?.Invoke(this);
         gameObject.SetActive(false);
     }

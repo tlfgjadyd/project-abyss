@@ -2,16 +2,17 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// 초음파 — 바라보는 방향 부채꼴로 대피해 + 스턴 (140E).
+/// 초음파 — 마우스 방향 부채꼴 광역 + 스턴 (80E).
 /// 2스테이지 향유고래 보스 카피 스킬.
+/// Day 48b 재설계: FaceDirection → 마우스 조준, 사거리 대폭 ↑ (화면 끝), 에너지 140→80.
 /// </summary>
 public class UltrasonicSkill : CopySkillBase
 {
     [Header("Stats")]
-    [SerializeField] private float range = 6f;
+    [SerializeField] private float range = 14f;             // 6 → 14 (화면 끝까지)
     [Range(0f, 360f)]
-    [SerializeField] private float angle = 90f;
-    [SerializeField] private float damageMultiplier = 5f;   // 기본 공격력의 5배 (대피해)
+    [SerializeField] private float angle = 90f;             // 각도 유지
+    [SerializeField] private float damageMultiplier = 5f;
     [SerializeField] private float stunDuration = 1.5f;
 
     [Header("Layer")]
@@ -26,7 +27,19 @@ public class UltrasonicSkill : CopySkillBase
     {
         if (controller == null || stats == null) return;
 
-        Vector2 dir = controller.FaceDirection;
+        // 마우스 방향 조준 (VoidPierce 패턴 재사용)
+        Vector2 origin = transform.position;
+        Vector2 dir;
+        var cam = Camera.main;
+        if (cam != null)
+        {
+            Vector3 mouseWorld = cam.ScreenToWorldPoint(Input.mousePosition);
+            mouseWorld.z = 0f;
+            Vector2 mouseDir = (Vector2)mouseWorld - origin;
+            dir = mouseDir.sqrMagnitude > 0.0001f ? mouseDir.normalized : controller.FaceDirection;
+        }
+        else dir = controller.FaceDirection;
+
         float damage = stats.attackPower * damageMultiplier;
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range, enemyLayer);

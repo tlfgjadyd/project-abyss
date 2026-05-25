@@ -10,6 +10,15 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private float baseExpPerLevel = 20f;
     [SerializeField] private SkillID[] startingSkillIDs = { SkillID.Slash };
 
+    [Header("Skill Slot Limits (뱀서 스타일 빌드 제한)")]
+    [Tooltip("동시에 보유할 수 있는 공격 스킬 최대 수. 가득 차면 카드 후보에서 신규 공격 제외")]
+    [SerializeField] private int maxAttackSlots = 5;
+    [Tooltip("동시에 보유할 수 있는 패시브 스킬 최대 수")]
+    [SerializeField] private int maxPassiveSlots = 3;
+
+    public int MaxAttackSlots  => maxAttackSlots;
+    public int MaxPassiveSlots => maxPassiveSlots;
+
     [Header("Max Level Rewards")]
     [Tooltip("만렙 보상 카드 — '세포 추출' 선택 시 누적되는 세포 수")]
     [SerializeField] private int cellsPerSelection = 2;
@@ -148,17 +157,38 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.TriggerLevelUp();
     }
 
-    /// <summary>모든 일반 스킬이 maxLevel에 도달했는지 확인.</summary>
+    /// <summary>
+    /// 더 이상 제시 가능한 카드가 없는지 확인. 슬롯 제한 도입 후:
+    /// - 공격 슬롯 가득 + 보유 공격 모두 만렙
+    /// - 패시브 슬롯 가득 + 보유 패시브 모두 만렙
+    /// 두 조건 모두 충족 시 만렙 보상 카드로 전환.
+    /// </summary>
     public bool IsAllSkillsMaxed()
     {
         if (skillPool == null || skillPool.Length == 0) return false;
 
+        int ownedAttack = 0, ownedPassive = 0;
+        bool anyAttackUpgradable = false, anyPassiveUpgradable = false;
         foreach (var s in skillPool)
         {
             if (s == null) continue;
-            if (GetSkillLevel(s) < s.maxLevel) return false;
+            int lv = GetSkillLevel(s);
+            bool isOwned = lv > 0;
+            if (s.skillType == SkillType.Attack)
+            {
+                if (isOwned) ownedAttack++;
+                if (lv < s.maxLevel && isOwned) anyAttackUpgradable = true;
+            }
+            else
+            {
+                if (isOwned) ownedPassive++;
+                if (lv < s.maxLevel && isOwned) anyPassiveUpgradable = true;
+            }
         }
-        return true;
+
+        bool attackDone  = (ownedAttack  >= maxAttackSlots)  && !anyAttackUpgradable;
+        bool passiveDone = (ownedPassive >= maxPassiveSlots) && !anyPassiveUpgradable;
+        return attackDone && passiveDone;
     }
 
     /// <summary>만렙 보상 카드 선택. MaxLevelRewardPanel에서 호출.</summary>
@@ -196,10 +226,36 @@ public class LevelManager : MonoBehaviour
 
     SkillData[] PickSkills(int count)
     {
-        var available = skillPool
-            .Where(s => GetSkillLevel(s) < s.maxLevel)
-            .ToList();
+        // 현재 보유 공격/패시브 스킬 수 (Lv1+ 획득한 것)
+        int ownedAttack  = 0;
+        int ownedPassive = 0;
+        foreach (var kv in skillLevels)
+        {
+            if (kv.Key == null || kv.Value <= 0) continue;
+            if (kv.Key.skillType == SkillType.Attack)  ownedAttack++;
+            else                                       ownedPassive++;
+        }
+        bool attackSlotsFull  = ownedAttack  >= maxAttackSlots;
+        bool passiveSlotsFull = ownedPassive >= maxPassiveSlots;
 
+        var available = new System.Collections.Generic.List<SkillData>();
+        foreach (var s in skillPool)
+        {
+            if (s == null) continue;
+            int lv = GetSkillLevel(s);
+            if (lv >= s.maxLevel) continue;
+
+            // 슬롯 가득 + 신규 스킬(Lv0)이면 후보에서 제외. 기존 강화는 OK.
+            bool isNew = lv == 0;
+            if (isNew)
+            {
+                if (s.skillType == SkillType.Attack  && attackSlotsFull)  continue;
+                if (s.skillType == SkillType.Passive && passiveSlotsFull) continue;
+            }
+            available.Add(s);
+        }
+
+        // Fisher-Yates 셔플
         for (int i = available.Count - 1; i > 0; i--)
         {
             int j = Random.Range(0, i + 1);

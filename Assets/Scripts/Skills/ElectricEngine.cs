@@ -43,7 +43,8 @@ public class ElectricEngine : MonoBehaviour
 
     Transform FindNearestEnemy()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRadius, enemyLayer);
+        float effRange = stats != null ? stats.ApplyAutoTrackLimit(detectionRadius) : detectionRadius;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, effRange, enemyLayer);
         Transform nearest = null;
         float minDist = float.MaxValue;
 
@@ -59,8 +60,9 @@ public class ElectricEngine : MonoBehaviour
     {
         float baseDamage = stats.attackPower * damageMultiplier;
 
-        // 1차 피해
+        // 1차 피해 + 시각 (Player → primary Z호)
         primary.GetComponent<IDamageable>()?.TakeDamage(baseDamage);
+        SpawnZigZag(transform.position, primary.position);
 
         // 연쇄 피해 (1차 대상 주변)
         Collider2D[] chainHits = Physics2D.OverlapCircleAll(primary.position, chainRadius, enemyLayer);
@@ -73,10 +75,39 @@ public class ElectricEngine : MonoBehaviour
             if (chainCount >= maxChainTargets) break;
 
             hit.GetComponent<IDamageable>()?.TakeDamage(chainDamage);
+            // 연쇄 시각 (primary → 보조 타겟)
+            SpawnZigZag(primary.position, hit.transform.position);
             chainCount++;
         }
 
         // TODO Week 3: Lv4 — 사망 시 감전 필드 생성
+    }
+
+    /// <summary>두 점 사이 zigzag(Z 호) LineRenderer + 페이드</summary>
+    void SpawnZigZag(Vector3 from, Vector3 to)
+    {
+        var fx = new GameObject("ElectricFx");
+        var lr = fx.AddComponent<LineRenderer>();
+        lr.useWorldSpace = true;
+        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.startWidth = 0.08f; lr.endWidth = 0.08f;
+        var color = new Color(0.5f, 0.9f, 1f, 1f);
+        lr.startColor = color; lr.endColor = color;
+
+        // 3~5 segment zigzag (수직 노이즈)
+        const int seg = 6;
+        lr.positionCount = seg + 1;
+        Vector3 axis = to - from;
+        Vector3 perp = new Vector3(-axis.y, axis.x, 0f).normalized * 0.3f;
+        for (int i = 0; i <= seg; i++)
+        {
+            float t = i / (float)seg;
+            Vector3 onLine = Vector3.Lerp(from, to, t);
+            // 양 끝은 정확히 from/to, 중간만 노이즈
+            float noise = (i == 0 || i == seg) ? 0f : (Random.value - 0.5f) * 2f;
+            lr.SetPosition(i, onLine + perp * noise);
+        }
+        fx.AddComponent<SkillFxFader>().Init(lr, color, 0.15f);
     }
 
     void OnDrawGizmosSelected()

@@ -109,6 +109,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4d5ed3bfd99debc409d045e960d9b541, type: 2}
   baseExpPerLevel: 20
   startingSkillIDs: 00000000
+  maxAttackSlots: 5
+  maxPassiveSlots: 3
   cellsPerSelection: 2
   hpHealRatioPerSelection: 0.3
 --- !u!1 &1618769651829626253

@@ -128,6 +128,7 @@ public class CopySkillManager : MonoBehaviour
 
         BioEnergyManager.Instance.ConsumeEnergy(cost);
         AudioManager.Instance?.PlaySFX(SfxId.CopySkillCast);
+        // 카메라 효과 제거 — 공허관통 마우스 조준 방해
         skill.Execute();
     }
 }

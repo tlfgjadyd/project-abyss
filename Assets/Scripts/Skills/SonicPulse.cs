@@ -8,8 +8,11 @@ public class SonicPulse : MonoBehaviour
 {
     [Header("Stats")]
     public float range = 3.5f;
-    public float cooldown = 3.5f;
+    public float cooldown = 5f;        // Day 48b 너프: 3.5 → 5
     public float knockbackForce = 7f;
+
+    [Tooltip("넉백 활성 여부. SkillEffectApplier가 Lv4 도달 시 true로 설정 (4Lv 보상)")]
+    public bool knockbackEnabled = false;
 
     /// <summary>돌연변이/패시브 곱셈. 기본 1.0</summary>
     [HideInInspector] public float damageMultiplier = 1f;
@@ -49,7 +52,8 @@ public class SonicPulse : MonoBehaviour
         foreach (var hit in hits)
         {
             hit.GetComponent<IDamageable>()?.TakeDamage(damage);
-            // 넉백 — EnemyAI가 velocity를 매 프레임 덮어쓰므로 ApplyKnockback 경유 (양보 플래그)
+            // 넉백은 Lv4 도달 시에만 (SkillEffectApplier가 knockbackEnabled 토글)
+            if (!knockbackEnabled) continue;
             var enemy = hit.GetComponent<EnemyBase>();
             if (enemy != null)
             {

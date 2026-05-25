@@ -44,9 +44,22 @@ public class GameManager : MonoBehaviour
     {
         StartStage();
 
-        // 스테이지 BGM 자동 재생 (StageManager에서 현재 스테이지 번호 가져옴)
-        if (AudioManager.Instance != null && StageManager.Instance != null && StageManager.Instance.CurrentStage != null)
-            AudioManager.Instance.PlayStageBGM(StageManager.Instance.CurrentStage.stageNumber);
+        var stage = StageManager.Instance != null ? StageManager.Instance.CurrentStage : null;
+
+        // 스테이지 BGM 자동 재생
+        if (AudioManager.Instance != null && stage != null)
+            AudioManager.Instance.PlayStageBGM(stage.stageNumber);
+
+        // 시야 사거리 제한 PlayerStats에 주입 (StageData.autoTrackRangeLimit)
+        if (stage != null)
+        {
+            var playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                var ps = playerObj.GetComponent<PlayerStats>();
+                if (ps != null) ps.autoTrackRangeLimit = stage.autoTrackRangeLimit;
+            }
+        }
     }
 
     void Update()

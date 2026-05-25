@@ -60,6 +60,7 @@ public class BossBase : MonoBehaviour, IDamageable
             IsPhase2 = true;
             OnPhase2Entered?.Invoke();
             AudioManager.Instance?.PlaySFX(SfxId.BossPhase2);
+            // 카메라 효과 제거 (어지러움 + 마우스 조준 방해) — 사운드만 유지
             Debug.Log($"[Boss] {data.bossName} 페이즈 2 돌입!");
         }
 

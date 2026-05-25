@@ -91,6 +91,8 @@ public class SkillEffectApplier : MonoBehaviour
         if (!sonicPulse.enabled) sonicPulse.enabled = true;
         sonicPulse.range += s.rangeDelta;
         sonicPulse.cooldown = Mathf.Max(0.5f, sonicPulse.cooldown - s.cooldownDelta);
+        // knockbackEnabled 플래그가 SkillData에 켜져 있으면 활성 (Lv4 한정 보상)
+        if (s.knockbackEnabled) sonicPulse.knockbackEnabled = true;
     }
 
     void ApplySpikeBurst(SkillLevelStats s)
