@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: DrainTentacle
   m_EditorClassIdentifier: 
   skillName: DrainTentacle
-  description: "\uAC00\uC7A5 \uAC00\uAE4C\uC6B4 \uC801 \uCD94\uC801 + \uD761\uD608"
+  description: "\uAC00\uC7A5 \uAC00\uAE4C\uC6B4 \uC801 1\uCCB4 \uB77C\uC778 \uB370\uBBF8\uC9C0
+    + \uC785\uD78C \uD53C\uD574\uC758 10%\uB9CC\uD07C \uC790\uAC00 \uD68C\uBCF5.\nLv1~4
+    \uB204\uC801 \uACF5\uACA9\uB825 +6.\n\uC8FC\uC758: \uD761\uD608 \uBE44\uC728\uC740
+    \uB0AE\uC74C (10:1)."
   skillType: 0
   skillID: 9
   maxLevel: 4

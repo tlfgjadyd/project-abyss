@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AcceleratedMutation
   m_EditorClassIdentifier: 
   skillName: AcceleratedMutation
-  description: "\uAC00\uC18D\uBCC0\uC774"
+  description: "\uC774\uB3D9\uC18D\uB3C4 \uC601\uAD6C \uC99D\uAC00."
   skillType: 1
   skillID: 5
   maxLevel: 4

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2869726947320497536}
   - component: {fileID: 4243440644242571789}
   - component: {fileID: 4390230880763503137}
+  - component: {fileID: 2138331972914757159}
   m_Layer: 6
   m_Name: Segment2
   m_TagString: Untagged
@@ -135,6 +136,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageMultiplier: 1
   parentBoss: {fileID: 1698991830592120518}
+--- !u!50 &2138331972914757159
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783377880672531100}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &4177956351103701311
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,6 +448,7 @@ GameObject:
   - component: {fileID: 8328507662040872224}
   - component: {fileID: 1839965728048904557}
   - component: {fileID: 1590594100440064703}
+  - component: {fileID: 664270961882947948}
   m_Layer: 6
   m_Name: Segment4
   m_TagString: Untagged
@@ -543,6 +572,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageMultiplier: 0.7
   parentBoss: {fileID: 1698991830592120518}
+--- !u!50 &664270961882947948
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4824681071714044133}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &4964876200770629647
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,6 +611,7 @@ GameObject:
   - component: {fileID: 8364840309248216692}
   - component: {fileID: 68505893054413378}
   - component: {fileID: 8630599251806880936}
+  - component: {fileID: 1931285627315512734}
   m_Layer: 6
   m_Name: Segment0
   m_TagString: Untagged
@@ -678,6 +735,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageMultiplier: 1.3
   parentBoss: {fileID: 1698991830592120518}
+--- !u!50 &1931285627315512734
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4964876200770629647}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &7370480713819507462
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,6 +774,7 @@ GameObject:
   - component: {fileID: 5182000922823693794}
   - component: {fileID: 4345377657760524332}
   - component: {fileID: 8003939165062669382}
+  - component: {fileID: 1464422509426078006}
   m_Layer: 6
   m_Name: Segment3
   m_TagString: Untagged
@@ -813,6 +898,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageMultiplier: 0.85
   parentBoss: {fileID: 1698991830592120518}
+--- !u!50 &1464422509426078006
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7370480713819507462}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &8203023976689356746
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,6 +937,7 @@ GameObject:
   - component: {fileID: 1256919191242087971}
   - component: {fileID: 5290867876385593633}
   - component: {fileID: 4601587483937846449}
+  - component: {fileID: 1518565908587566888}
   m_Layer: 6
   m_Name: Segment1
   m_TagString: Untagged
@@ -948,3 +1061,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageMultiplier: 1.1
   parentBoss: {fileID: 1698991830592120518}
+--- !u!50 &1518565908587566888
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8203023976689356746}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4

@@ -28,6 +28,10 @@ public class EnemySuicideExplode : MonoBehaviour
     [Tooltip("플레이어/장애물 레이어 마스크 (피해 대상)")]
     [SerializeField] private LayerMask hitMask = ~0;
 
+    [Header("Behavior")]
+    [Tooltip("true일 경우 플레이어와 접촉 시 즉시 폭발 (경고 단계 스킵). Jellyfish용.")]
+    [SerializeField] private bool instantOnContact = false;
+
     private EnemyBase enemy;
     private SpriteRenderer sr;
     private Transform player;
@@ -61,7 +65,21 @@ public class EnemySuicideExplode : MonoBehaviour
         if (dist <= triggerRange)
         {
             armed = true;
-            StartCoroutine(SuicideRoutine());
+            if (instantOnContact)
+                Explode();
+            else
+                StartCoroutine(SuicideRoutine());
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if (armed) return;
+        if (!instantOnContact) return;
+        if (col.gameObject.CompareTag("Player"))
+        {
+            armed = true;
+            Explode();
         }
     }
 

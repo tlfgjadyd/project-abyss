@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Mutation_Mimicry
   m_EditorClassIdentifier: 
   mutationName: "\uC758\uD0DC \uAE30\uAD00"
-  description: 
+  description: "[\uC758\uD0DC \uAE30\uAD00]\n\uC774\uB3D9\uC18D\uB3C4 \xD72, \uACF5\uACA9\uB825
+    \xD70.5.\n60\uCD08\uB9C8\uB2E4 3\uCD08\uAC04 \uBB34\uC801."
   penaltyDescription: "HP \uD68C\uBCF5 \uC644\uC804 \uCC28\uB2E8"
   mutationID: 2

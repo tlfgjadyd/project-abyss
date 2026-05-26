@@ -11,9 +11,12 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9f1d721dd07a564a9d963246139ffba, type: 3}
   m_Name: CopySkill_VoidPierce
-  m_EditorClassIdentifier:
-  skillName: "공허 관통"
-  description: "직선 경로 다단 히트"
+  m_EditorClassIdentifier: 
+  skillName: "\uACF5\uD5C8 \uAD00\uD1B5"
+  description: "[\uACF5\uD5C8 \uAD00\uD1B5] (\uC7AC\uC124\uACC4)\n5\uCD08\uAC04 \uB9C8\uC6B0\uC2A4
+    \uBC29\uD5A5\uC73C\uB85C \uBE54 \uCC44\uB110\uB9C1. \uD68C\uC804 \uC18D\uB3C4
+    \uC81C\uD55C(180\uB3C4/\uCD08). \uB2E4\uB2E8 \uD788\uD2B8 \uB204\uC801.\n\uC5D0\uB108\uC9C0
+    100 / 3\uC2A4 \uC0B0\uAC08\uCE58"
   skillType: 0
   energyCost: 100
   copySkillID: 7

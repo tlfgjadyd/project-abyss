@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e452e9c86644be9478c35e80e6c483b1, type: 3}
   m_Name: EnemyData_Jellyfish
   m_EditorClassIdentifier: 
-  maxHp: 20
-  moveSpeed: 2.6
+  maxHp: 40
+  moveSpeed: 1.8
   contactDamage: 0
   contactCooldown: 1
   expAmount: 9

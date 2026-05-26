@@ -11,9 +11,11 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9f1d721dd07a564a9d963246139ffba, type: 3}
   m_Name: CopySkill_GlowFrenzy
-  m_EditorClassIdentifier:
-  skillName: "발광 폭주"
-  description: "주변 발광 노드 8개. 닿으면 폭발 + 넉백"
+  m_EditorClassIdentifier: 
+  skillName: "\uBC1C\uAD11 \uD3ED\uC8FC"
+  description: "[\uBC1C\uAD11 \uD3ED\uC8FC]\n\uC8FC\uBCC0 \uBC1C\uAD11 \uB178\uB4DC
+    8\uAC1C \uC0DD\uC131. \uC801\uC774 \uB2FF\uC73C\uBA74 \uD3ED\uBC1C + \uB109\uBC31.\n\uC5D0\uB108\uC9C0
+    120 / 3\uC2A4 \uC0B0\uAC08\uCE58"
   skillType: 0
   energyCost: 120
   copySkillID: 8

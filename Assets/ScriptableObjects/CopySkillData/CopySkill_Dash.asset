@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: CopySkill_Dash
   m_EditorClassIdentifier: 
   skillName: Dash
-  description: "\uB3CC\uACA9"
+  description: "[\uB3CC\uACA9]\n\uBC14\uB77C\uBCF4\uB294 \uBC29\uD5A5\uC73C\uB85C
+    \uC9E7\uC740 \uAC70\uB9AC \uC21C\uAC04 \uB3CC\uC9C4. \uC9E7\uC740 \uBB34\uC801.\n\uC5D0\uB108\uC9C0
+    60 / 1\uC2A4 \uC2E4\uD5D8\uC6A9 \uC2E4\uD5D8\uCCB4"
   skillType: 1
   energyCost: 60
   copySkillID: 2

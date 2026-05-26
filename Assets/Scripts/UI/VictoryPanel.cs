@@ -17,6 +17,7 @@ public class VictoryPanel : MonoBehaviour
     [SerializeField] private TMP_Text clearTimeText; // "클리어 시간: 12:34"
     [SerializeField] private TMP_Text cellsGainedText; // "획득 세포: +42"
     [SerializeField] private TMP_Text totalCellsText;  // "누적 세포: 87"
+    [SerializeField] private TMP_Text statsText;       // 추가 통계 (최종 레벨, 빌드 요약)
 
     [Header("Buttons")]
     [SerializeField] private Button mainMenuButton;
@@ -54,6 +55,31 @@ public class VictoryPanel : MonoBehaviour
         if (clearTimeText   != null) clearTimeText.text   = $"클리어 시간: {FormatTime(clearTime)}";
         if (cellsGainedText != null) cellsGainedText.text = $"획득 세포: +{runCells}";
         if (totalCellsText  != null) totalCellsText.text  = $"누적 세포: {MetaProgressData.TotalCells}";
+
+        // 추가 통계: 최종 레벨 + 빌드 요약 (보유 스킬 수 + 돌연변이 수)
+        if (statsText != null)
+        {
+            int finalLv = LevelManager.Instance != null ? LevelManager.Instance.CurrentLevel : 1;
+            int attackCount = 0, passiveCount = 0;
+            if (LevelManager.Instance != null)
+            {
+                foreach (var kv in LevelManager.Instance.GetSkillLevelsCopy())
+                {
+                    if (kv.Key == null || kv.Value <= 0) continue;
+                    if (kv.Key.skillType == SkillType.Attack) attackCount++;
+                    else passiveCount++;
+                }
+            }
+            int mutCount = MutationManager.Instance != null ? MutationManager.Instance.GetOwnedIDs().Count : 0;
+            int copyCount = 0;
+            if (CopySkillManager.Instance != null)
+                for (int i = 0; i < 3; i++)
+                    if (CopySkillManager.Instance.GetSlot(i) != null) copyCount++;
+
+            statsText.text = $"최종 레벨: <color=#FFD24A>{finalLv}</color>\n" +
+                             $"빌드: 공격 {attackCount} / 패시브 {passiveCount} / 카피 {copyCount}\n" +
+                             $"돌연변이: {mutCount}개 획득";
+        }
 
         gameObject.SetActive(true);
         Time.timeScale = 0f; // pause

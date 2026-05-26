@@ -11,9 +11,12 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9f1d721dd07a564a9d963246139ffba, type: 3}
   m_Name: CopySkill_BleedSwim
-  m_EditorClassIdentifier:
-  skillName: "절단 유영"
-  description: "고속 이동 + 궤적 출혈"
+  m_EditorClassIdentifier: 
+  skillName: "\uC808\uB2E8 \uC720\uC601"
+  description: "[\uC808\uB2E8 \uC720\uC601] (\uC7AC\uC124\uACC4)\n1.5\uCD08\uAC04
+    \uCD08\uACE0\uC18D \uC774\uB3D9 + \uBB34\uC801. \uBD80\uB52A\uD78C \uC801\uC5D0
+    \uCD9C\uD608 DoT (3\uCD08\uAC04 0.3\uCD08 \uAC04\uACA9 \uB204\uC801 \uD53C\uD574).\n\uC5D0\uB108\uC9C0
+    130 / 3\uC2A4 \uC0B0\uAC08\uCE58"
   skillType: 0
   energyCost: 130
   copySkillID: 9

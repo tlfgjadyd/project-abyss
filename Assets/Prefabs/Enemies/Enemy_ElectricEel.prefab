@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8781639577940556578}
   - component: {fileID: 3009732555186862195}
   - component: {fileID: -626054300959582969}
-  - component: {fileID: 6248247040041908059}
+  - component: {fileID: 7810755870725763790}
   m_Layer: 6
   m_Name: Enemy_ElectricEel
   m_TagString: Enemy
@@ -191,7 +191,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.21133333}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &6248247040041908059
+--- !u!114 &7810755870725763790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -200,10 +200,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7067148694784486748}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 907ac8f8be9b40b4c8dbb703cdaa4343, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bf482f47aa902e45b48108e7139a5d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1.5
-  damagePerSecond: 3
+  radius: 2
+  damagePerTick: 5
   tickInterval: 0.5
-  auraVisual: {fileID: 0}
+  boltCount: 5
+  color: {r: 0.5, g: 0.95, b: 1, a: 1}
+  lineWidth: 0.06
+  rotateSpeed: 90
+  flickerInterval: 0.1

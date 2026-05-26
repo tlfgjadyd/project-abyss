@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: CopySkill_PredatorCharge
   m_EditorClassIdentifier: 
   skillName: "\uD3EC\uC2DD \uCDA9\uB3CC"
-  description: "\uC9C1\uC120 \uB3CC\uC9C4, \uACBD\uB85C \uC801 \uB300\uD53C\uD574
-    + \uC2A4\uD134, \uB3CC\uC9C4 \uC911 \uBB34\uC801"
+  description: "[\uD3EC\uC2DD \uCDA9\uB3CC]\n\uC9C1\uC120 \uB3CC\uC9C4. \uACBD\uB85C\uC0C1\uC758
+    \uC801 \uB300\uD53C\uD574 + \uC2A4\uD134. \uB3CC\uC9C4 \uC911 \uBB34\uC801.\n\uC5D0\uB108\uC9C0
+    90 / 2\uC2A4 \uD5A5\uC720\uACE0\uB798"
   skillType: 0
   energyCost: 90
   copySkillID: 6

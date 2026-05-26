@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Mutation_Overload
   m_EditorClassIdentifier: 
   mutationName: "\uACFC\uBD80\uD654"
-  description: 
+  description: "[\uACFC\uBD80\uD654]\n\uACF5\uACA9\uB825 +20%, \uCD5C\uB300 HP -30%.\n\uD604\uC7AC
+    HP \uBE44\uC728 \uC720\uC9C0."
   penaltyDescription: "\uBC1B\uB294 \uD53C\uD574 +50%"
   mutationID: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NeuralAcceleration
   m_EditorClassIdentifier: 
   skillName: NeuralAcceleration
-  description: "\uC2E0\uACBD\uAC00\uC18D"
+  description: "\uBAA8\uB4E0 \uC2A4\uD0AC \uACF5\uACA9\uC18D\uB3C4 \uC99D\uAC00."
   skillType: 1
   skillID: 6
   maxLevel: 4

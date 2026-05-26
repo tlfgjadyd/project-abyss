@@ -9,7 +9,7 @@ public class MutationManager : MonoBehaviour
 
     [Header("Settings")]
     [Tooltip("돌연변이 선택이 뜨는 레벨 (오름차순으로 설정)")]
-    [SerializeField] private int[] triggerLevels = { 15, 25 };
+    [SerializeField] private int[] triggerLevels = { 14, 25 };
     [SerializeField] private MutationData[] mutationPool;
 
     [Header("Mimicry Organ — 정기 무적")]
@@ -23,6 +23,8 @@ public class MutationManager : MonoBehaviour
 
     private readonly HashSet<MutationID> activeMutations = new();
     private readonly Queue<MutationData[]> pendingOffers = new();
+    /// <summary>이미 발동한 trigger 레벨 — 씬 전환 시 PlayerProgressData.Restore가 OnLevelChanged를 재발행해도 중복 트리거 방지</summary>
+    private readonly HashSet<int> firedTriggerLevels = new();
     private bool sensoryCollapseActive = false;
 
     /// <summary>돌연변이 2장 제시 시 발동 (MutationPanel이 구독)</summary>
@@ -55,6 +57,8 @@ public class MutationManager : MonoBehaviour
     void OnLevelChanged(int level)
     {
         if (!System.Array.Exists(triggerLevels, t => t == level)) return;
+        // 같은 trigger 레벨이 두 번 발행되어도 1회만 처리 (씬 전환 Restore 중복 방지)
+        if (!firedTriggerLevels.Add(level)) return;
 
         var available = mutationPool
             .Where(m => !activeMutations.Contains(m.mutationID))

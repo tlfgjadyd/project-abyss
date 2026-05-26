@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: CopySkill_HealingFactor
   m_EditorClassIdentifier: 
   skillName: HealingFactor
-  description: "\uD790\uB9C1\uD329\uD130"
+  description: "[\uC7AC\uC0DD \uC778\uC790]\nHP\uB97C \uC989\uC2DC \uC77C\uC815\uB7C9
+    \uD68C\uBCF5.\n\uC5D0\uB108\uC9C0 30 / 1\uC2A4 \uC2E4\uD5D8\uC6A9 \uC2E4\uD5D8\uCCB4"
   skillType: 1
   energyCost: 30
   copySkillID: 3
