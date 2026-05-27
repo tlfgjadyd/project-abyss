@@ -115,9 +115,38 @@
    - 수정 방향 후보: ①공격력 ×0.5 → ×0.7 (패널티 완화) ②무적 60초 → 40초 (빈도 ↑) ③대시같은 능동 회피 추가
    - 패널티 작동 검증: `MutationManager.ApplyMimicryOrgan`이 `stats.attackPower *= 0.5f` 실행하는지 디버그 로그 추가
 
-### 2-2. 외부 피드백 (2차 빌드 전달 후, 작성 대기)
+### 2-2. 외부 피드백 (5/27, 2차 빌드 + 추가 개발자 정리)
 
-피드백 도착 시 이 절에 항목 추가. Day 57에서 일괄 반영.
+원문: `Summary/feedback/feedback_memo0527.md`
+
+5/26 피드백과 일부 중복 — 중복은 Day 50에서 일괄 처리. 신규 항목은 우선순위 따라 분배.
+
+#### UI (외부)
+- **HUD 라벨 위치 버그** (신규 — Day 49 라벨 부작용): 체력/에너지 라벨이 화면 밖, EXP 라벨이 슬라이더와 겹침. 슬라이더 좌측 (pivot=1) 배치가 화면 가장자리에 가까운 슬라이더에 부적절. **수정**: 라벨을 슬라이더 *위쪽* 작은 텍스트로 옮기거나, 슬라이더 우측으로
+- 카드 가독성 / 카피슬롯 / 튜토리얼 겹침 — 5/26과 동일
+
+#### 밸런스 (외부)
+- **발광기관 보호막 + 전기뱀장어 일렉트릭필드 상호작용 의심** (신규): 보호막이 안 사라지는 것 같음. 정확한 검증 어려움 (뱀장어 빨리 죽음). **확인 필요**: `PlayerStats.TakeDamage`의 `glowShieldActive` 분기가 `ElectricEelAura.damagePerTick` 호출에도 작동하는지. 코드상으로는 `stats.TakeDamage(...)`이므로 작동해야 함. 디버그 로그로 검증
+- **2스 보스 출현 5분으로** (현재 8분): StageData Stage2_Sea.bossSpawnTime 480→300, stageDuration도 540→360
+- **3스 일반몹 물량 ↑** (2스처럼): 이미 Day 48b에서 ×1.5 했지만 추가
+- **3스 일반몹 HP 상향**: 플레이어 평시 공격력 ~45 / 과부화 ~54 기준 2방에 피 약간 남는 수준. Anglerfish HP 52→**100**, GiantSquid HP 75→**120**
+- **3스 보스 출몰 4분** (현재 8분): bossSpawnTime 480→240
+- **3스 만렙 후 컨텐츠 부족** (보스 출몰 단축으로 일부 해결)
+- **4스 보스 출몰 4분**: bossSpawnTime 480→240
+- **4스 LaserSoldier 사거리 ×2**: EnemyLaserAttack.range 현재 값 ×2 + StopDistance 유지 (적이 멀리서도 위협)
+- 흡혈촉수 / 체력재생 — 5/26과 동일
+
+#### 콘솔 에러 (개발자 추가)
+- **VoidPierce 채널링 중 죽은 적의 HitEffect.PlayFlash 호출 실패**:
+  ```
+  Coroutine couldn't be started because the the game object 'Enemy_*(Clone)' is inactive!
+  HitEffect:PlayFlash → EnemyBase:TakeDamage → VoidPierceSkill:ApplyTick
+  ```
+- 원인: VoidPierce 0.15s 틱마다 BoxCast → 같은 collider가 죽은 후에도 한 tick은 검출 + TakeDamage 호출 → HitEffect.PlayFlash가 SetActive(false)된 GameObject에서 StartCoroutine 시도
+- **수정**: `Assets/Scripts/Enemy/HitEffect.cs` PlayFlash 시작에 `if (!gameObject.activeInHierarchy) return;` 1줄 추가
+
+#### 디자인 (개발자 추가)
+- **공허관통 재설계**: "산갈치의 긴 마디를 카피해 플레이어 사슬팔이 마디로 뻗어 전기톱처럼 갈아버리는" 원래 컨셉으로. 사거리 두 배 + 두께 ↑ + 파괴광선 느낌. 현재 LineRenderer 단순 빔 → sprite 체인 또는 파티클 트레일
 
 ---
 
@@ -207,24 +236,96 @@
   - 무적 주기 60s → **40s**, 무적 시간 3s 유지
   - OR 능동 회피 추가: ESC 같은 추가 입력으로 5초 쿨다운 짧은 대시 (작업량 ↑, 8주차 후반으로 미룰 수도)
 
-### 4-7. 검증
-- [ ] Play 모드로 4-1 ~ 4-3 시각 확인 (UI 가독성)
+### 4-7. HUD 라벨 위치 픽스 (5/27 외부)
+
+**문제**: Day 49에서 슬라이더 좌측(pivot.x=1, x = slider.x - 8)에 라벨을 두었는데, 슬라이더가 화면 가장자리에 있어 라벨이 화면 밖. EXP 슬라이더는 가로 전체라 라벨이 슬라이더 위에 겹침.
+
+- [ ] 4씬 HUD의 `HPSlider_Label`, `EnergySlider_Label`, `ExpSlider_Label` 위치 재배치
+- [ ] 안 A: **슬라이더 위쪽** 작은 텍스트 (anchoredPosition.y += sliderHeight + 4)
+- [ ] 안 B: 슬라이더 내부 좌측 텍스트로 변경 (Slider 자식으로 이동, 가운데 정렬)
+- [ ] 권장: **안 A** (sprite 도입 후 슬라이더 위 라벨이 자연스러움)
+
+### 4-8. VoidPierce 콘솔 에러 (5/27 개발자)
+
+- [ ] `Assets/Scripts/Enemy/HitEffect.cs` PlayFlash 시작에 활성 체크 1줄 추가
+  ```csharp
+  public void PlayFlash() {
+      if (sr == null) return;
+      if (!gameObject.activeInHierarchy) return; // ← 추가
+      ...
+  }
+  ```
+
+### 4-9. 발광기관 + 전기뱀장어 필드 검증 (5/27 외부)
+
+**의심**: 보호막이 일렉트릭 필드 데미지에 안 사라짐.
+
+- [ ] `PlayerStats.TakeDamage`에 디버그 로그 추가 (일시):
+  ```csharp
+  Debug.Log($"[TakeDamage] amount={amount} glowShield={glowShieldActive}");
+  ```
+- [ ] Stage2 진입 → 발광기관 4Lv → 전기뱀장어 필드 진입 → 첫 tick에서 shield 소모되는지 로그 확인
+- [ ] 만약 소모 안 되면 `ElectricEelAura`가 `stats.TakeDamage` 외 다른 경로로 데미지 입히는지 추적
+- [ ] 검증 후 디버그 로그 제거
+
+### 4-10. 보스 출몰 시간 단축 (5/27 외부, 피로감 호소)
+
+| 스테이지 | bossSpawnTime | stageDuration |
+|---------|--------------|--------------|
+| Stage1 | 480 → 그대로 (피드백 없음) | 540 |
+| Stage2 | 480 → **300** (5분) | 540 → 360 |
+| Stage3 | 480 → **240** (4분) | 540 → 300 |
+| Stage4 | 480 → **240** (4분) | 540 → 300 |
+
+- [ ] `Assets/ScriptableObjects/StageData/Stage{2,3,4}_*.asset` 수치 변경
+- [ ] 단축에 따른 EXP 곡선 영향 측정 (Day 56)
+
+### 4-11. 3스 일반몹 HP 상향 (5/27 외부)
+
+플레이어 평시 공격력 ~45 / 과부화 ~54 기준 2방에 피 약간 남게.
+
+- [ ] Anglerfish HP 52 → **100**
+- [ ] GiantSquid HP 75 → **120**
+- [ ] Jellyfish / BalloonEel는 그대로 (자폭 / 원거리)
+
+### 4-12. 4스 LaserSoldier 사거리 ×2 (5/27 외부)
+
+- [ ] `Assets/Scripts/Enemy/EnemyLaserAttack.cs`의 range 또는 `Enemy_LaserSoldier.prefab`의 EnemyLaserAttack.range 인스펙터 값 ×2
+- [ ] StopDistance도 같이 ×2 (적이 멀리서 정지 + 발사)
+
+### 4-13. 검증
+- [ ] Play 모드로 4-1 ~ 4-3, 4-7 시각 확인 (UI 가독성)
 - [ ] 흡혈촉수 1분 사용 → HP 회복량 ≤ 6 확인
 - [ ] 체력재생 Lv4 만렙 시 1분간 회복량 ≤ 45 (이전 90)
 - [ ] 의태기관 디버그 로그로 패널티 실 적용 확인
+- [ ] 4-8 콘솔 에러 사라짐 (VoidPierce 5초 채널링 중)
+- [ ] 4-9 발광기관 보호막 + 전기필드 정상 작동
+- [ ] 4-10 보스 등장 시간 체감 (피로감 ↓)
+- [ ] 4-11 3스 평시 2방, 과부화 시 2방에 피 조금 남는지
+- [ ] 4-12 4스 LaserSoldier가 화면 가장자리에서 위협
 
 ---
 
 ## 5. Day 51 - 에셋 도입 1차: 플레이어/일반 적 sprite
 
-### 5-1. 에셋 조달 전략
+### 5-1. 에셋 조달 전략 (확정)
 
-**선택지**:
-- **A) AI 이미지 생성** — 일관된 스타일 + 빠름. Stable Diffusion, DALL-E, Midjourney 등. 라이센스 확인 필수 (생성형 AI 결과물의 상업적 사용 가능 여부, 학교 제출이라 보통 OK)
-- **B) Unity Asset Store 무료** — 검증된 품질 + 저작권 안전. "free 2D sprite" 검색
-- **C) opengameart.org / itch.io** — CC0/CC-BY 자산 풍부
+**결정 사항** (2026-05-27):
+- 스타일: **2D 도트 (픽셀 아트)** — 축축·어둡·암울 분위기 + 시야 제한 컨셉과 정합
+- PPU: **32** (현재 카메라 ortho 6.5 기준 적정)
+- Filter Mode: **Point (no filter)**, Compression: None
+- Material: **Sprite-Lit-Default** (URP 2D Light 정합)
+- **단일 팩 우선** → 부족분 자유 조합 (sprite-ai.art / Kenny / itch.io)
+- 라이선스: 학교 제출용이라 완화 (CC0 우선, CC-BY 출처 표기도 생략 가능 — Steam 배포 시 보수적으로 재검토)
 
-**권장**: 일관성 위해 **A 또는 B 중 하나로 통일**. 두 출처 섞으면 스타일 충돌. 시간 절약 = B 추천.
+**출처 우선순위**:
+1. **Kenny.nl** (CC0) — UI 팩 RPG, 단일 팩 첫 후보
+2. **itch.io 도트 팩** — "16x16/32x32 horror/deep sea" 검색. 어두운 호러 톤 풍부
+3. **sprite-ai.art** — 부족한 적/보스/캐릭터 sprite 생성. 팔레트 매칭으로 통일감 보정
+4. **AI 생성 (Stable Diffusion 또는 sprite-ai.art)** — MainMenu 배경 1장 (좋은 무료 자산 없을 시)
+5. **game-icons.net** (CC-BY) — HUD 아이콘 (HP 하트/EXP 별/에너지 번개/세포)
+
+**카피 스킬 아이콘**: 8주차 보류 (텍스트 유지), 9주차 이월
 
 ### 5-2. 우선순위 sprite
 
@@ -267,8 +368,21 @@
   - 옵션 A: 같은 sprite (단순)
   - 옵션 B: head는 머리 sprite, segment 1~4는 body sprite (꼬리쪽 작아짐), segment 5는 꼬리 sprite (4종 sprite)
 
-### 6-3. 카피 스킬 시각 보강 (선택)
-- [ ] LineRenderer 빔/원 → 파티클 시스템 또는 sprite 기반 시각효과
+### 6-3. 공허관통 재설계 (5/27 외부) ★
+
+**원래 컨셉**: 산갈치의 긴 마디를 카피 → 플레이어 사슬팔이 마디로 뻗어 전기톱처럼 적을 갈아버림. 현재 단순 LineRenderer 빔이라 보는 맛 X.
+
+- [ ] `Assets/Scripts/Skills/VoidPierceSkill.cs`
+  - `length` 8 → **16** (사거리 ×2)
+  - `width` 1.2 → **2.0** (두께 ↑)
+  - LineRenderer → **sprite 체인** 또는 트레일/파티클로 교체
+- [ ] 시각: 마디 sprite (5~7개) 가 origin → end 방향으로 일렬 배치, 마디마다 회전/스케일 미세 차이로 살아있는 느낌
+  - 또는: 두꺼운 LineRenderer + 표면에 전기 파티클 흩뿌리기
+- [ ] 데미지 재밸런싱: 사거리/두께 ↑ → 누적 데미지 ↑. damageMultiplier 0.5 유지하되 hitTicks 누적은 그대로 (시야 확장 효과만 ↑)
+- [ ] 사거리 ↑에 따라 자동추적 사거리 제한 영향 — VoidPierce는 카피 스킬이라 시야 제한 영향 안 받음 (현재 시야 제한은 자동 추적 4종 한정)
+
+### 6-4. 카피 스킬 시각 보강 (선택)
+- [ ] 다른 카피 스킬도 sprite 기반 시각 검토 (Berserk, Dash, HealingFactor, Ultrasonic, DeepPressure, PredatorCharge, GlowFrenzy, BleedSwim)
 - [ ] Day 56 통합 정합 작업에서 함께 처리해도 됨
 
 ---
@@ -335,14 +449,55 @@
 
 ---
 
-## 10. Day 56 - 추가 밸런싱
+## 10. Day 56 - 추가 밸런싱 + 동적 스폰 패턴
 
-에셋 도입으로 체감 변화 가능. 재측정 + 조정.
+에셋 도입으로 체감 변화 가능. 재측정 + 조정. 추가로 **시간 곡선 스폰 시스템** 신설.
 
+### 10-1. 재측정
 - [ ] 풀 사이클 1회 측정 (각 스테이지 레벨/시간/사망 수)
 - [ ] Day 50 1차 너프(흡혈촉수/체력재생)가 너무 약하지 않은지
 - [ ] 의태기관 사용 비율 (다른 돌연변이 대비 선택률)
 - [ ] 신규 sprite 도입 후 적이 너무 작아 보이거나 큰 경우 collider/속도 재조정
+
+### 10-2. 동적 스폰 패턴 (★ 핵심 디자인 변경)
+
+**문제**: 현재 일정 강도 스폰 → 위기감 곡선 없음. 사용자 의견 "위기감 없이 지나가는 시간이 많다".
+
+**목표 곡선** (보스 출몰 시간 기준):
+```
+0~33%       : intensity 1.0 (평소 — 현재 수치)
+33~66%      : 1.0 → 1.3 선형 증가
+66~100%     : 1.3 → 1.8 가속 (보스 직전 물량 공세 — "위기")
+100%+ (보스): 1.3 (보스에 집중 위해 살짝 ↓)
+```
+
+**구현 (옵션 A 먼저, 동작 후 B로 리팩토링 옵션)**:
+- 옵션 A: `DifficultyManager`에 시간 비율 기반 곡선 코드 (단순)
+- 옵션 B: `[SerializeField] AnimationCurve intensityCurve;` 스테이지별 다른 곡선
+- 옵션 C: BossSpawner 이벤트 기반 (단순하지만 곡선 표현 떨어짐)
+
+**A안 작업 절차**:
+- [ ] `DifficultyManager.Update`에 `float elapsed`, `float bossSpawnTime` 참조
+- [ ] `float t = Mathf.Clamp01(elapsed / bossSpawnTime)`
+- [ ] intensity 계산:
+  ```csharp
+  float intensity;
+  if (t < 0.33f) intensity = 1f;
+  else if (t < 0.66f) intensity = Mathf.Lerp(1f, 1.3f, (t - 0.33f) / 0.33f);
+  else if (t < 1f)    intensity = Mathf.Lerp(1.3f, 1.8f, (t - 0.66f) / 0.34f);
+  else                intensity = 1.3f; // 보스전
+  ```
+- [ ] `CurrentMaxActiveScale = intensity`, `CurrentIntervalScale = 1f / intensity` (반비례)
+- [ ] BossSpawner.OnBossSpawned 구독 → 보스 등장 후 5~10s간 추가로 ×0.7 적용 (한숨 돌리기) 후 다시 ×1.3
+
+### 10-3. 위기감 신호 (선택)
+- [ ] 보스 등장 20s 전 HUD 경고 ("BOSS INCOMING") + 화면 가장자리 빨강 vignette
+- [ ] 위기 단계(66%+) 진입 시 BGM 변화 (사운드 자산 있을 때)
+
+### 10-4. 검증
+- [ ] 4스테이지 모두 보스 직전 30초가 명확히 어려움
+- [ ] 보스 등장 직후 한숨 돌릴 시간 있음
+- [ ] 보스전 중반부터 일반 적 다시 ↑ (Day 45 후속에서 결정된 동시 압박 유지)
 
 ---
 
@@ -405,10 +560,8 @@
 - 사운드(Day 54)는 시스템 변동 없음 → 다른 작업과 병렬 가능
 
 ### 14-2. 에셋 라이센스
-- AI 생성: 학교 포트폴리오엔 OK지만 Steam 배포 시 라이센스 확인 필수 (생성형 AI 결과물의 저작권 이슈 변동 중)
-- Unity Asset Store: 보통 게임에 임베드 가능, 재배포 금지 (인디 게임 표준 라이센스)
-- CC0: 가장 안전. 출처 표기도 선택
-- CC-BY: 크레딧 표기 필요
+- **학교 제출용으로 라이선스 완화** (사용자 결정 2026-05-27). CC-BY 출처 표기도 생략 가능
+- Steam 배포 결정 시 재검토 (AI 생성물 / CC-BY 출처 / Asset Store 재배포 등)
 
 ### 14-3. 밸런싱 패턴
 1차(Day 50) 단순 너프 → 측정 → 부족하면 2차(Day 56) 구조적 변경. 한 번에 큰 변화 X.
