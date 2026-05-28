@@ -526,7 +526,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3dbe411e5e704d64a9a040ef762c043a, type: 2}
   - {fileID: 11400000, guid: b3420edf25eb435499e6cd66ee18e3ef, type: 2}
   - {fileID: 11400000, guid: 1c558a24643062e4c97123c492cde09b, type: 2}
-  mimicryInvincibilityInterval: 60
+  mimicryInvincibilityInterval: 40
   mimicryInvincibilityDuration: 3
   sensoryStunChance: 0.05
   sensoryStunDuration: 0.5

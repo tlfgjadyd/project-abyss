@@ -1,8 +1,14 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// 가시 발사 — 주기적으로 8방향 직선 데미지 (BoxCast 8개).
 /// 발사체 prefab 없이 즉시 raycast 판정. 시각은 LineRenderer 8개 짧은 표시.
+///
+/// Day 50 리워크: 단순 데미지 → 유틸 강화.
+///   Lv1~4: 맞은 적에 둔화(이속 ×slowMultiplier, slowDuration초) 부여.
+///   Lv4  : 추가로 출혈 DoT 부여 (BleedSwim식). SkillEffectApplier가 bleedEnabled 활성.
 /// </summary>
 public class SpikeBurst : MonoBehaviour
 {
@@ -13,6 +19,25 @@ public class SpikeBurst : MonoBehaviour
     public float spikeWidth = 0.5f;
 
     [HideInInspector] public float damageMultiplier = 1f;
+
+    [Header("Slow (전 레벨)")]
+    [Tooltip("맞은 적 이동속도 배율 (0.6 = 60%)")]
+    public float slowMultiplier = 0.6f;
+    [Tooltip("둔화 지속 시간")]
+    public float slowDuration = 1.5f;
+
+    [Header("Bleed (Lv4)")]
+    [Tooltip("SkillEffectApplier가 Lv4에서 true로 설정")]
+    [HideInInspector] public bool bleedEnabled = false;
+    [Tooltip("출혈 지속 시간")]
+    public float bleedDuration = 3f;
+    [Tooltip("출혈 틱 간격")]
+    public float bleedTickInterval = 0.4f;
+    [Tooltip("1틱 데미지 = attackPower × 이 값")]
+    public float bleedDamageMultiplier = 0.25f;
+
+    // 현재 출혈 중인 적 (중복 부착 방지)
+    private readonly HashSet<EnemyBase> bleeding = new HashSet<EnemyBase>();
 
     [Header("Layer")]
     [SerializeField] private LayerMask enemyLayer;
@@ -48,6 +73,9 @@ public class SpikeBurst : MonoBehaviour
         float damage = stats.attackPower * damageMultiplier;
         Vector2 origin = transform.position;
 
+        // 이번 발사에서 둔화/출혈을 이미 부여한 적 (방향 중복 방지)
+        var debuffedThisBurst = new HashSet<EnemyBase>();
+
         for (int i = 0; i < spikeCount; i++)
         {
             float ang = (i / (float)spikeCount) * Mathf.PI * 2f;
@@ -59,9 +87,32 @@ public class SpikeBurst : MonoBehaviour
             {
                 if (rh.collider == null) continue;
                 rh.collider.GetComponent<IDamageable>()?.TakeDamage(damage);
+
+                var eb = rh.collider.GetComponent<EnemyBase>();
+                if (eb != null && !debuffedThisBurst.Contains(eb))
+                {
+                    debuffedThisBurst.Add(eb);
+                    eb.ApplySlow(slowMultiplier, slowDuration);
+                    if (bleedEnabled && !bleeding.Contains(eb))
+                        StartCoroutine(BleedDoT(eb, stats.attackPower * bleedDamageMultiplier));
+                }
             }
             SpawnSpikeVisual(origin, origin + dir * range);
         }
+    }
+
+    IEnumerator BleedDoT(EnemyBase target, float perTickDamage)
+    {
+        bleeding.Add(target);
+        float elapsed = 0f;
+        while (elapsed < bleedDuration && target != null && target.gameObject.activeInHierarchy)
+        {
+            yield return new WaitForSeconds(bleedTickInterval);
+            if (target == null || !target.gameObject.activeInHierarchy) break;
+            (target as IDamageable)?.TakeDamage(perTickDamage);
+            elapsed += bleedTickInterval;
+        }
+        if (target != null) bleeding.Remove(target);
     }
 
     void SpawnSpikeVisual(Vector2 a, Vector2 b)

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e452e9c86644be9478c35e80e6c483b1, type: 3}
   m_Name: EnemyData_GiantSquid
   m_EditorClassIdentifier: 
-  maxHp: 75
+  maxHp: 120
   moveSpeed: 6.9
   contactDamage: 12
   contactCooldown: 1

@@ -103,6 +103,8 @@ public class SkillEffectApplier : MonoBehaviour
         spikeBurst.range += s.rangeDelta;
         spikeBurst.cooldown = Mathf.Max(0.5f, spikeBurst.cooldown - s.cooldownDelta);
         spikeBurst.spikeCount += s.extraProjectiles;
+        // piercingEnabled 플래그를 Lv4 출혈 부여 트리거로 재사용 (SonicPulse knockbackEnabled 패턴)
+        if (s.piercingEnabled) spikeBurst.bleedEnabled = true;
     }
 
     void ApplyDrainTentacle(SkillLevelStats s)

@@ -16,7 +16,7 @@ public class CopySkillSlotUI : MonoBehaviour
     [Header("Visuals")]
     [Tooltip("슬롯 배경 (활성/비활성에 따라 색상 변경)")]
     [SerializeField] private Image background;
-    [SerializeField] private Color availableColor   = new Color(1f, 1f, 1f, 1f);
+    [SerializeField] private Color availableColor   = new Color(0.12f, 0.45f, 0.36f, 0.92f);
     [SerializeField] private Color unavailableColor = new Color(0.4f, 0.4f, 0.4f, 0.6f);
     [SerializeField] private Color emptyColor       = new Color(0.2f, 0.2f, 0.2f, 0.4f);
 

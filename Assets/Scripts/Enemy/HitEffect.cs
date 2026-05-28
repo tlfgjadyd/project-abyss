@@ -27,6 +27,8 @@ public class HitEffect : MonoBehaviour
     public void PlayFlash()
     {
         if (sr == null) return;
+        // 비활성 GameObject(죽은 적)에서 StartCoroutine 시도 방지 (VoidPierce 채널링 중 死亡 tick)
+        if (!gameObject.activeInHierarchy) return;
 
         // 이미 플래시 중이면 색상 복원 후 새로 시작 (이전 플래시의 flashColor가 캡처되지 않도록)
         if (flashCoroutine != null)

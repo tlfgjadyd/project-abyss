@@ -17,9 +17,9 @@ public class EnemyLaserAttack : MonoBehaviour
 
     [Header("거리")]
     [Tooltip("이 거리 안에 들어오면 조준 시작")]
-    [SerializeField] private float attackRange = 9f;
+    [SerializeField] private float attackRange = 18f;
     [Tooltip("적정 거리. EnemyAI가 참조하여 추적 시 정지")]
-    [SerializeField] private float stopDistance = 8f;
+    [SerializeField] private float stopDistance = 16f;
 
     [Header("Timing")]
     [Tooltip("조준 단계 지속 시간 (회피 시간)")]

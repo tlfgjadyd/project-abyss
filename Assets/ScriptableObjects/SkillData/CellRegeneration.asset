@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: CellRegeneration
   description: "HP \uC9C0\uC18D \uD68C\uBCF5 (\uC138\uD3EC \uC7AC\uC0DD).\nLv1~2:
-    \uCD5C\uB300 HP +10, \uD68C\uBCF5 +0.3/s (\uB204\uC801 0.6)\nLv3: \uCD5C\uB300
-    HP +15, \uD68C\uBCF5 +0.4 (\uB204\uC801 1.0)\nLv4: \uCD5C\uB300 HP +15, \uD68C\uBCF5
-    +0.5 (\uB204\uC801 1.5/s)"
+    \uCD5C\uB300 HP +10, \uD68C\uBCF5 +0.15/s (\uB204\uC801 0.3)\nLv3: \uCD5C\uB300
+    HP +15, \uD68C\uBCF5 +0.2 (\uB204\uC801 0.5)\nLv4: \uCD5C\uB300 HP +15, \uD68C\uBCF5
+    +0.25 (\uB204\uC801 0.75/s)"
   skillType: 1
   skillID: 4
   maxLevel: 4
@@ -26,7 +26,7 @@ MonoBehaviour:
     rangeDelta: 0
     moveSpeedDelta: 0
     maxHpDelta: 10
-    hpRegenDelta: 0.3
+    hpRegenDelta: 0.15
     knockbackEnabled: 0
     piercingEnabled: 0
     extraProjectiles: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
     rangeDelta: 0
     moveSpeedDelta: 0
     maxHpDelta: 10
-    hpRegenDelta: 0.3
+    hpRegenDelta: 0.15
     knockbackEnabled: 0
     piercingEnabled: 0
     extraProjectiles: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
     rangeDelta: 0
     moveSpeedDelta: 0
     maxHpDelta: 15
-    hpRegenDelta: 0.4
+    hpRegenDelta: 0.2
     knockbackEnabled: 0
     piercingEnabled: 0
     extraProjectiles: 0
@@ -59,7 +59,7 @@ MonoBehaviour:
     rangeDelta: 0
     moveSpeedDelta: 0
     maxHpDelta: 15
-    hpRegenDelta: 0.5
+    hpRegenDelta: 0.25
     knockbackEnabled: 0
     piercingEnabled: 0
     extraProjectiles: 0

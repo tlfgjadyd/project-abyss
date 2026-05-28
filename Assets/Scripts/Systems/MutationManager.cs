@@ -13,7 +13,7 @@ public class MutationManager : MonoBehaviour
     [SerializeField] private MutationData[] mutationPool;
 
     [Header("Mimicry Organ — 정기 무적")]
-    [SerializeField] private float mimicryInvincibilityInterval = 60f;
+    [SerializeField] private float mimicryInvincibilityInterval = 40f;
     [SerializeField] private float mimicryInvincibilityDuration = 3f;
 
     [Header("Sensory Collapse — 스킬 사용 시 스턴")]
@@ -27,7 +27,7 @@ public class MutationManager : MonoBehaviour
     private readonly HashSet<int> firedTriggerLevels = new();
     private bool sensoryCollapseActive = false;
 
-    /// <summary>돌연변이 2장 제시 시 발동 (MutationPanel이 구독)</summary>
+    /// <summary>돌연변이 최대 3장 제시 시 발동 (MutationPanel이 구독)</summary>
     public System.Action<MutationData[]> OnMutationOffered;
 
     void Awake()
@@ -71,7 +71,7 @@ public class MutationManager : MonoBehaviour
             (available[i], available[j]) = (available[j], available[i]);
         }
 
-        var offer = available.Take(2).ToArray();
+        var offer = available.Take(3).ToArray();
         if (offer.Length == 0) return;
 
         // 큐에 보관 — Playing 상태로 돌아올 때마다 1건씩 발동
@@ -184,16 +184,44 @@ public class MutationManager : MonoBehaviour
 
     IEnumerator MimicryInvincibilityRoutine(PlayerStats stats)
     {
+        // 무적 시각화 — 의태(주변에 녹아듦) 컨셉으로 무적 동안 플레이어 반투명.
+        var sr = stats.GetComponentInChildren<SpriteRenderer>();
+        float baseAlpha = sr != null ? sr.color.a : 1f;
+        const float invisAlpha = 0.45f;
+        const float fade = 0.15f;
+
         while (true)
         {
             yield return new WaitForSeconds(mimicryInvincibilityInterval);
             if (stats == null) yield break;
 
             stats.IsInvincible = true;
-            yield return new WaitForSeconds(mimicryInvincibilityDuration);
+            yield return FadeSpriteAlpha(sr, invisAlpha, fade);
+
+            // 페이드 인/아웃 시간을 제외한 나머지 무적 유지
+            yield return new WaitForSeconds(Mathf.Max(0f, mimicryInvincibilityDuration - 2f * fade));
             if (stats == null) yield break;
+
             stats.IsInvincible = false;
+            yield return FadeSpriteAlpha(sr, baseAlpha, fade);
         }
+    }
+
+    IEnumerator FadeSpriteAlpha(SpriteRenderer sr, float target, float dur)
+    {
+        if (sr == null) yield break;
+        Color c = sr.color;
+        float start = c.a;
+        float t = 0f;
+        while (t < dur)
+        {
+            t += Time.deltaTime;
+            c.a = Mathf.Lerp(start, target, t / dur);
+            sr.color = c;
+            yield return null;
+        }
+        c.a = target;
+        sr.color = c;
     }
 
     /// <summary>감각 붕괴 — 공격속도 ×2, 에너지 충전 ×1.5 / 스킬 사용 시 5~10% 확률 0.5초 스턴</summary>

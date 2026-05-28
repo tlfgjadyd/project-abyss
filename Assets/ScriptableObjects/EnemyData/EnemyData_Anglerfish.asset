@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e452e9c86644be9478c35e80e6c483b1, type: 3}
   m_Name: EnemyData_Anglerfish
   m_EditorClassIdentifier: 
-  maxHp: 52
+  maxHp: 100
   moveSpeed: 4.2
   contactDamage: 9
   contactCooldown: 1

@@ -9,7 +9,9 @@ public class DrainTentacle : MonoBehaviour
     [Header("Stats")]
     public float range = 5f;
     public float cooldown = 2f;
-    [Range(0f, 1f)] public float lifestealRatio = 0.1f;
+    [Range(0f, 1f)] public float lifestealRatio = 0.1f; // deprecated — lifestealFlat 사용
+    [Tooltip("1회 발동당 고정 회복량 (데미지 비례 대신 고정). 10회 = 1HP")]
+    public float lifestealFlat = 0.1f;
 
     [HideInInspector] public float damageMultiplier = 1f;
 
@@ -61,7 +63,7 @@ public class DrainTentacle : MonoBehaviour
 
         float damage = stats.attackPower * damageMultiplier;
         closest.GetComponent<IDamageable>()?.TakeDamage(damage);
-        stats.Heal(damage * lifestealRatio);
+        stats.Heal(lifestealFlat); // 고정 회복 (데미지 무관)
 
         SpawnVisual(transform.position, closest.transform.position);
     }

@@ -21,6 +21,6 @@ MonoBehaviour:
   pressureMovePenalty: 0
   pressureAttackPenalty: 0
   pressureExpBonus: 0
-  stageDuration: 360
-  bossSpawnTime: 300
+  stageDuration: 300
+  bossSpawnTime: 240
   nextStage: {fileID: 0}

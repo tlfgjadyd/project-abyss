@@ -71,7 +71,7 @@ public class PlayerStats : MonoBehaviour
     /// <summary>감각 붕괴 돌연변이 등에서 외부 설정. true 시 이동/공격 정지.</summary>
     public bool IsStunned { get; set; }
 
-    /// <summary>의태 기관 돌연변이 — true 시 모든 HP 회복 차단</summary>
+    /// <summary>HP 회복 차단 플래그. (현재 미사용 — 의태 기관 페널티는 공격력 ×0.5로 변경됨. 향후 디버프용 예약)</summary>
     [HideInInspector] public bool healingBlocked = false;
 
     /// <summary>발광 기관 패시브 — 활성 시 다음 1회 데미지 무효 후 비활성. GlowOrganSkill이 관리.</summary>

@@ -205,8 +205,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackInterval: 3
   damage: 12
-  attackRange: 9
-  stopDistance: 8
+  attackRange: 18
+  stopDistance: 16
   aimDuration: 1
   beamDuration: 0.1
   beamWidth: 0.4
