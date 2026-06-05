@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616f92b966a21df4589314081626c791, type: 3}
   m_Name: BionicExplosion
   m_EditorClassIdentifier: 
-  skillName: BionicExplosion
+  skillName: "\uC0DD\uCCB4 \uD3ED\uBC1C"
   description: "\uC790\uAE30 \uC8FC\uC704 \uAD11\uC5ED \uD3ED\uBC1C.\nLv1~2: \uC0AC\uAC70\uB9AC
     +0.2~0.3\nLv3: \uACF5\uACA9\uB825 +4\nLv4: 0.5\uCD08 \uC2A4\uD134 \uCD94\uAC00,
     \uC0AC\uAC70\uB9AC +0.5"

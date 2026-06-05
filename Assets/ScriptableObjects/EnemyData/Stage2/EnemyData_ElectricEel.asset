@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyData_ElectricEel
   m_EditorClassIdentifier: 
   maxHp: 95
-  moveSpeed: 3.8
+  moveSpeed: 3.3
   contactDamage: 6
   contactCooldown: 1
   expAmount: 6

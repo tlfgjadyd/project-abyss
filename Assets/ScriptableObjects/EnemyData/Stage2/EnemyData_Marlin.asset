@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyData_Marlin
   m_EditorClassIdentifier: 
   maxHp: 22
-  moveSpeed: 5.4
+  moveSpeed: 4.4
   contactDamage: 10
   contactCooldown: 1
   expAmount: 5

@@ -49,6 +49,10 @@ public class BossSpawner : MonoBehaviour
     {
         bossSpawned = true;
 
+        // 앵커형 곡선: 보스 등장과 함께 일반 적 스폰을 완화 모드로 (위기 절정 → 숨돌릴 틈)
+        if (DifficultyManager.Instance != null)
+            DifficultyManager.Instance.SetBossActive(true);
+
         // Day 45 후속: 보스 등장 후에도 일반 적 스폰 유지 (긴장감 강화).
         // 보스 처치 시 DespawnAll로 화면 정리만 수행.
 

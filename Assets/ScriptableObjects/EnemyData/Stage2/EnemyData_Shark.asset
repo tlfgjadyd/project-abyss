@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyData_Shark
   m_EditorClassIdentifier: 
   maxHp: 60
-  moveSpeed: 4.8
+  moveSpeed: 4
   contactDamage: 18
   contactCooldown: 1
   expAmount: 8

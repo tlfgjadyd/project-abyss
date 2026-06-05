@@ -26,6 +26,19 @@ public class CopySkillSlotUI : MonoBehaviour
 
     private const string EmptyName = "—";
 
+    void Awake()
+    {
+        // 긴 스킬명이 2줄로 줄바꿈되지 않도록 한 줄 유지 + 자동 축소 (피드백 UI-3)
+        if (skillNameText != null)
+        {
+            skillNameText.enableWordWrapping = false;
+            skillNameText.overflowMode = TMPro.TextOverflowModes.Overflow;
+            skillNameText.enableAutoSizing = true;
+            skillNameText.fontSizeMin = 10f;
+            skillNameText.fontSizeMax = skillNameText.fontSize;
+        }
+    }
+
     public void SetKeyLabel(string keyLabel)
     {
         if (keyText != null) keyText.text = keyLabel;

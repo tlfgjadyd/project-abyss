@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6948704047682978187}
   - component: {fileID: 1216776381598022422}
   - component: {fileID: 4883218559219391117}
-  - component: {fileID: 8270953637206614697}
   - component: {fileID: 2343352553783865711}
   - component: {fileID: 8736590283930680144}
   m_Layer: 6
@@ -132,7 +131,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 4723107735738678597, guid: 064193a1efd827f45ba61eb5e284ce54, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.58, g: 0.8, b: 0.82, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -142,20 +141,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8270953637206614697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8454685512197736215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7c04edaab2b38742a8b3d0e02a706c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flashDuration: 0.1
-  flashColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!95 &2343352553783865711
 Animator:
   serializedVersion: 5

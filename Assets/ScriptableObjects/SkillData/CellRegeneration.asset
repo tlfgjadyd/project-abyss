@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616f92b966a21df4589314081626c791, type: 3}
   m_Name: CellRegeneration
   m_EditorClassIdentifier: 
-  skillName: CellRegeneration
+  skillName: "\uC138\uD3EC \uC7AC\uC0DD"
   description: "HP \uC9C0\uC18D \uD68C\uBCF5 (\uC138\uD3EC \uC7AC\uC0DD).\nLv1~2:
     \uCD5C\uB300 HP +10, \uD68C\uBCF5 +0.15/s (\uB204\uC801 0.3)\nLv3: \uCD5C\uB300
     HP +15, \uD68C\uBCF5 +0.2 (\uB204\uC801 0.5)\nLv4: \uCD5C\uB300 HP +15, \uD68C\uBCF5

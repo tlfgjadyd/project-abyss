@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616f92b966a21df4589314081626c791, type: 3}
   m_Name: MagneticInduction
   m_EditorClassIdentifier: 
-  skillName: MagneticInduction
+  skillName: "\uC790\uAE30 \uC720\uB3C4"
   description: "\uACBD\uD5D8\uCE58 \uD761\uC778 \uBC94\uC704 \uC99D\uAC00.\nLv1~3:
     +20%\uC529 (\uB204\uC801 +60%)\nLv4: +40% (\uB204\uC801 \xD72.0)"
   skillType: 1

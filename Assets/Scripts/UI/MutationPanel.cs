@@ -9,6 +9,25 @@ public class MutationPanel : MonoBehaviour
         gameObject.SetActive(false);
         MutationManager.Instance.OnMutationOffered  += ShowPanel;
         GameManager.Instance.OnGameStateChanged     += OnStateChanged;
+
+        PrewarmGlyphs();
+    }
+
+    /// <summary>풀의 모든 돌연변이 텍스트 글리프를 폰트 아틀라스에 미리 구워 첫 표시 hitch 제거 (피드백 UI-4).</summary>
+    void PrewarmGlyphs()
+    {
+        var mm = MutationManager.Instance;
+        if (mm == null || mm.Pool == null || cards == null) return;
+
+        var sb = new System.Text.StringBuilder("패널티: 0123456789%+-×");
+        foreach (var m in mm.Pool)
+        {
+            if (m == null) continue;
+            sb.Append(m.mutationName).Append(m.description).Append(m.penaltyDescription);
+        }
+        string all = sb.ToString();
+        foreach (var c in cards)
+            if (c != null) c.PrewarmFont(all);
     }
 
     void OnDestroy()

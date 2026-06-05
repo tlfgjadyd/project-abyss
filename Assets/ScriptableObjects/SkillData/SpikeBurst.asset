@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616f92b966a21df4589314081626c791, type: 3}
   m_Name: SpikeBurst
   m_EditorClassIdentifier: 
-  skillName: SpikeBurst
-  description: "8\uBC29\uD5A5 \uAC00\uC2DC \uB3D9\uC2DC \uBC1C\uC0AC. \uB9DE\uC740 \uC801 \uB454\uD654(\uC774\uC18D -40%, 1.5s).\nLv1~2: \uC0AC\uAC70\uB9AC
-    +1, \uCFE8\uB2E4\uC6B4 -0.3s\nLv3: \uAC00\uC2DC +2 (10\uBC1C), \uACF5\uACA9\uB825
-    +2\nLv4: \uAC00\uC2DC +2 (12\uBC1C), \uCFE8\uB2E4\uC6B4 -0.5s + \uCD9C\uD608 \uBD80\uC5EC(3s)"
+  skillName: "\uAC00\uC2DC \uC0B0\uD0C4"
+  description: "8\uBC29\uD5A5 \uAC00\uC2DC \uB3D9\uC2DC \uBC1C\uC0AC. \uB9DE\uC740
+    \uC801 \uB454\uD654(\uC774\uC18D -40%, 1.5s).\nLv1~2: \uC0AC\uAC70\uB9AC +1,
+    \uCFE8\uB2E4\uC6B4 -0.3s\nLv3: \uAC00\uC2DC +2 (10\uBC1C), \uACF5\uACA9\uB825
+    +2\nLv4: \uAC00\uC2DC +2 (12\uBC1C), \uCFE8\uB2E4\uC6B4 -0.5s + \uCD9C\uD608
+    \uBD80\uC5EC(3s)"
   skillType: 0
   skillID: 8
   maxLevel: 4

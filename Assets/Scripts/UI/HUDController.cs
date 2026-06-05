@@ -32,6 +32,12 @@ public class HUDController : MonoBehaviour
 
     void Start()
     {
+        // 표시 전용 바 — 마우스 드래그/WASD로 값이 바뀌지 않도록 입력 차단 (피드백 UI-1)
+        DisableSliderInput(hpSlider);
+        DisableSliderInput(expSlider);
+        DisableSliderInput(energySlider);
+        DisableSliderInput(pressureSlider);
+
         // PlayerStats 이벤트 구독
         if (playerStats != null)
         {
@@ -49,7 +55,8 @@ public class HUDController : MonoBehaviour
             PressureSystem.Instance.OnPressureChanged += UpdatePressure;
 
         BioEnergyManager.Instance.OnEnergyInsufficient += OnEnergyInsufficient;
-        BossSpawner.OnBossSpawned += OnBossSpawned;
+        // BOSS INCOMING은 보스 스폰이 아니라 위기 구간 진입(보스 임박) 시점에 미리 표시
+        DifficultyManager.OnBossIncoming += OnBossIncoming;
 
         LevelManager.Instance.OnCellsChanged   += UpdateCells;
         LevelManager.Instance.OnMaxLevelReward += OnMaxLevelReward;
@@ -89,7 +96,18 @@ public class HUDController : MonoBehaviour
         if (PressureSystem.Instance != null)
             PressureSystem.Instance.OnPressureChanged -= UpdatePressure;
 
-        BossSpawner.OnBossSpawned -= OnBossSpawned;
+        DifficultyManager.OnBossIncoming -= OnBossIncoming;
+    }
+
+    // 표시 전용 슬라이더 입력 차단: 상호작용 끄고 레이캐스트 타겟도 제거
+    static void DisableSliderInput(Slider s)
+    {
+        if (s == null) return;
+        s.interactable = false;
+        var g = s.targetGraphic;
+        if (g != null) g.raycastTarget = false;
+        foreach (var img in s.GetComponentsInChildren<Image>(true))
+            img.raycastTarget = false;
     }
 
     // ── 업데이트 ────────────────────────────────
@@ -139,7 +157,7 @@ public class HUDController : MonoBehaviour
             StartCoroutine(ShowFeedbackText(energyInsufficientText, "에너지 부족!", 1.5f));
     }
 
-    void OnBossSpawned()
+    void OnBossIncoming()
     {
         if (bossWarningText != null)
             StartCoroutine(ShowFeedbackText(bossWarningText, "BOSS INCOMING!", 3f));

@@ -144,12 +144,12 @@ public class MutationManager : MonoBehaviour
         Debug.Log($"[Mutation] 과부화 — 공격력 {stats.attackPower:F1} / 최대HP {stats.maxHp:F1}");
     }
 
-    /// <summary>과성장 촉수 — 전 스킬 범위 ×1.5, 이동속도 -30%</summary>
+    /// <summary>과성장 촉수 — 전 스킬 범위 ×1.6, 이동속도 -15% (페널티 완화 + 사거리 체감 ↑)</summary>
     void ApplyOvergrownTentacle(PlayerStats stats, GameObject player)
     {
-        stats.moveSpeed *= 0.7f;
+        stats.moveSpeed *= 0.85f;
 
-        const float scale = 1.5f;
+        const float scale = 1.6f;
 
         player.GetComponent<PlayerCombat>()?.ScaleDetectionRadius(scale);
 
@@ -281,6 +281,9 @@ public class MutationManager : MonoBehaviour
     // ── 조회 ─────────────────────────────────────
 
     public bool HasMutation(MutationID id) => activeMutations.Contains(id);
+
+    /// <summary>돌연변이 풀 (UI 글리프 prewarm용).</summary>
+    public MutationData[] Pool => mutationPool;
 
     // ── PlayerProgressData 연동 (씬 전환 시 상태 복원) ───
 

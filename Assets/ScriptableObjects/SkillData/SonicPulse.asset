@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616f92b966a21df4589314081626c791, type: 3}
   m_Name: SonicPulse
   m_EditorClassIdentifier: 
-  skillName: SonicPulse
+  skillName: "\uC74C\uD30C \uD384\uC2A4"
   description: "\uC8FC\uC704 \uAD11\uC5ED \uC74C\uD30C \uD384\uC2A4 (\uCFE8\uB2E4\uC6B4
     5\uCD08).\nLv1~3: \uACF5\uACA9\uB825 +1, \uC0AC\uAC70\uB9AC/\uCFE8\uB2E4\uC6B4
     \uAC15\uD654\nLv4: \uC801 \uB109\uBC31 \uCD94\uAC00 (4Lv \uD55C\uC815 \uD6A8\uACFC)"

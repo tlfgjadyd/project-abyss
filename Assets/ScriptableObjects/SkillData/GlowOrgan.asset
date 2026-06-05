@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616f92b966a21df4589314081626c791, type: 3}
   m_Name: GlowOrgan
   m_EditorClassIdentifier: 
-  skillName: GlowOrgan
+  skillName: "\uBC1C\uAD11 \uAE30\uAD00"
   description: "\uC8FC\uAE30\uC801\uC73C\uB85C 1\uD68C \uD53C\uD574 \uD761\uC218
     \uBCF4\uD638\uB9C9 \uBC1C\uB3D9.\nLv1: \uCFE8\uB2E4\uC6B4 12\uCD08\nLv2~4: \uCFE8\uB2E4\uC6B4
     -2\uCD08\uC529 (12 \u2192 10 \u2192 8 \u2192 6\uCD08)"
