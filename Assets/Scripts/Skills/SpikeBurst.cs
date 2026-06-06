@@ -33,11 +33,8 @@ public class SpikeBurst : MonoBehaviour
     public float bleedDuration = 3f;
     [Tooltip("출혈 틱 간격")]
     public float bleedTickInterval = 0.4f;
-    [Tooltip("1틱 데미지 = attackPower × 이 값")]
+    [Tooltip("1스택 1틱 데미지 = attackPower × 이 값")]
     public float bleedDamageMultiplier = 0.25f;
-
-    // 현재 출혈 중인 적 (중복 부착 방지)
-    private readonly HashSet<EnemyBase> bleeding = new HashSet<EnemyBase>();
 
     [Header("Layer")]
     [SerializeField] private LayerMask enemyLayer;
@@ -73,8 +70,8 @@ public class SpikeBurst : MonoBehaviour
         float damage = stats.attackPower * damageMultiplier;
         Vector2 origin = transform.position;
 
-        // 이번 발사에서 둔화/출혈을 이미 부여한 적 (방향 중복 방지)
-        var debuffedThisBurst = new HashSet<EnemyBase>();
+        // 이번 발사에서 둔화/출혈을 이미 부여한 대상 (방향 중복 방지)
+        var debuffedThisBurst = new HashSet<IStatusReceiver>();
 
         for (int i = 0; i < spikeCount; i++)
         {
@@ -88,31 +85,18 @@ public class SpikeBurst : MonoBehaviour
                 if (rh.collider == null) continue;
                 rh.collider.GetComponent<IDamageable>()?.TakeDamage(damage);
 
-                var eb = rh.collider.GetComponent<EnemyBase>();
+                var eb = rh.collider.GetComponent<IStatusReceiver>();
                 if (eb != null && !debuffedThisBurst.Contains(eb))
                 {
                     debuffedThisBurst.Add(eb);
                     eb.ApplySlow(slowMultiplier, slowDuration);
-                    if (bleedEnabled && !bleeding.Contains(eb))
-                        StartCoroutine(BleedDoT(eb, stats.attackPower * bleedDamageMultiplier));
+                    if (bleedEnabled)
+                        eb.ApplyBleed(stats.attackPower * bleedDamageMultiplier, bleedDuration, bleedTickInterval,
+                                      EnemyStatusEffects.DefaultBleedMaxStacks);
                 }
             }
             SpawnSpikeVisual(origin, origin + dir * range);
         }
-    }
-
-    IEnumerator BleedDoT(EnemyBase target, float perTickDamage)
-    {
-        bleeding.Add(target);
-        float elapsed = 0f;
-        while (elapsed < bleedDuration && target != null && target.gameObject.activeInHierarchy)
-        {
-            yield return new WaitForSeconds(bleedTickInterval);
-            if (target == null || !target.gameObject.activeInHierarchy) break;
-            (target as IDamageable)?.TakeDamage(perTickDamage);
-            elapsed += bleedTickInterval;
-        }
-        if (target != null) bleeding.Remove(target);
     }
 
     void SpawnSpikeVisual(Vector2 a, Vector2 b)

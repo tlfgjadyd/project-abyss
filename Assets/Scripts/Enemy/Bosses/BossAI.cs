@@ -55,9 +55,9 @@ public class BossAI : MonoBehaviour
 
         if (boss.IsDead || player == null || isCharging) return;
 
-        float speed = boss.IsPhase2
+        float speed = (boss.IsPhase2
             ? boss.Data.moveSpeed * boss.Data.phase2SpeedMultiplier
-            : boss.Data.moveSpeed;
+            : boss.Data.moveSpeed) * boss.MoveSpeedMultiplier;
 
         Vector2 dir = ((Vector2)player.position - (Vector2)transform.position).normalized;
         rb.velocity = dir * speed;

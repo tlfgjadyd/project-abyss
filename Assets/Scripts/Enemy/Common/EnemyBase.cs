@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class EnemyBase : MonoBehaviour, IDamageable
+public class EnemyBase : MonoBehaviour, IStatusReceiver
 {
     [SerializeField] private EnemyData data;
 
@@ -24,6 +24,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
     public bool IsDead => isDead;
     private HitEffect hitEffect;
     private Animator animator;            // 있으면 Hurt/Attack/Death 트리거 호출
+    private EnemyStatusEffects status;    // 독/출혈 DoT (Awake에서 자동 부착)
     private Coroutine stunCoroutine;
     private Coroutine slowCoroutine;
     private Coroutine vulnerableCoroutine;
@@ -46,7 +47,22 @@ public class EnemyBase : MonoBehaviour, IDamageable
         rb.freezeRotation = true;
         hitEffect = GetComponent<HitEffect>();
         animator = GetComponent<Animator>();
+
+        // 통합 상태이상(독/출혈) 컴포넌트 자동 부착 — 프리팹 수정 불필요
+        status = GetComponent<EnemyStatusEffects>();
+        if (status == null) status = gameObject.AddComponent<EnemyStatusEffects>();
     }
+
+    public EnemyStatusEffects Status => status;
+
+    /// <summary>독 부여 (갱신형 + 재적용 즉발 보너스). EnemyStatusEffects로 위임.</summary>
+    public void ApplyPoison(float perTickDamage, float duration, float tickInterval, float reapplyBonusDamage)
+        => status?.ApplyPoison(perTickDamage, duration, tickInterval, reapplyBonusDamage);
+
+    /// <summary>출혈 부여 (누적 스택). EnemyStatusEffects로 위임.</summary>
+    public void ApplyBleed(float perStackTickDamage, float duration, float tickInterval,
+                           int maxStacks = EnemyStatusEffects.DefaultBleedMaxStacks)
+        => status?.ApplyBleed(perStackTickDamage, duration, tickInterval, maxStacks);
 
     /// <summary>Animator 트리거를 안전하게 호출 (해당 파라미터가 컨트롤러에 없으면 무시).</summary>
     void TriggerAnim(int hash)

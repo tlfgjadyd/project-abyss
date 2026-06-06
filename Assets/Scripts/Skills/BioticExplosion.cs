@@ -44,7 +44,7 @@ public class BioticExplosion : MonoBehaviour
         {
             hit.GetComponent<IDamageable>()?.TakeDamage(damage);
             if (stunDuration > 0f)
-                hit.GetComponent<EnemyBase>()?.Stun(stunDuration);
+                hit.GetComponent<IStatusReceiver>()?.Stun(stunDuration); // 보스는 Stun 면역(무시)
         }
         // 시각: 폭발 반경 원 페이드
         SpawnExplosionFx(transform.position, range);

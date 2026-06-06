@@ -240,6 +240,8 @@ public class MutationManager : MonoBehaviour
     void ApplyToxicOverload(PlayerStats stats, GameObject player)
     {
         // 효과: 독/감전 데미지 ×1.7
+        // damageMultiplier가 직접 데미지뿐 아니라 독 DoT(틱·재적용 보너스)에도 그대로 반영됨
+        // → "상태이상 추가 피해" TODO는 PoisonNeedle이 DoT 데미지 산정에 damageMultiplier를 쓰면서 자연 해소됨.
         var needle = player.GetComponent<PoisonNeedle>();
         if (needle != null) needle.damageMultiplier *= 1.7f;
         var electric = player.GetComponent<ElectricEngine>();
@@ -251,9 +253,7 @@ public class MutationManager : MonoBehaviour
         var explosion = player.GetComponent<BioticExplosion>();
         if (explosion != null) { explosion.damageMultiplier *= 0.7f; explosion.range *= 0.8f; }
 
-        // (※ "상태이상 추가 피해 +100%"는 dot/상태이상 시스템 도입 후 적용 — TODO)
-
-        Debug.Log("[Mutation] 독성 과부화 — 독/감전 ×1.7 / 물리 ×0.7, 범위 ×0.8");
+        Debug.Log("[Mutation] 독성 과부화 — 독/감전 ×1.7 (독 DoT 포함) / 물리 ×0.7, 범위 ×0.8");
     }
 
     // ── 감각 붕괴: 스킬 사용 hook ─────────────────

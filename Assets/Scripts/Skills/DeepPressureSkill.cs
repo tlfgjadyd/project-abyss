@@ -24,7 +24,7 @@ public class DeepPressureSkill : CopySkillBase
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius, enemyLayer);
         foreach (var hit in hits)
         {
-            var enemy = hit.GetComponent<EnemyBase>();
+            var enemy = hit.GetComponent<IStatusReceiver>();
             if (enemy == null) continue;
             enemy.ApplySlow(slowMultiplier, duration);
             enemy.ApplyVulnerability(vulnerabilityMultiplier, duration);

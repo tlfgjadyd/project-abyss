@@ -102,9 +102,18 @@
 
 **파일**: `Assets/Scripts/Enemy/Common/EnemyBase.cs`, `EnemyAI.cs`(이속 배율 적용 지점), `HitEffect.cs`, 스킬 컴포넌트들, `MutationManager.cs`(ToxicOverload).
 
-**결정사항 (시작 시 정할 것)**:
-- 시각화 방식: (a) 머리 위 아이콘 (b) 색 오라/틴트 (c) 파티클 — **권장 (a)+약한 (b)**, HitEffect 충돌 회피.
-- 중독 중첩 정책: 갱신(refresh) vs 누적(stack) vs 독립 인스턴스.
+**결정사항 (확정됨, 2026-06-05)**:
+- **시각화 = 머리 위 아이콘 + 약한 오라** (HitEffect 흰 플래시와 충돌 피하려 메인 SpriteRenderer.color 직접 사용 금지 → 자식 SpriteRenderer/Particle로 분리). 오라 진하기/아이콘으로 스택·종류 표현.
+- **독(Poison) = 갱신 + 재적용 보너스**:
+  - 첫 적용 → 일반 DoT(틱 데미지). 인스턴스 1개만 유지.
+  - 이미 중독 중 재적중 → 지속시간 **갱신(리셋)** + **즉발 보너스 데미지 1회**(중독 "터짐"). 틱 세기는 일정.
+  - 튜닝: 보너스 = `attackPower × k` or 고정값 (구현 시 결정).
+- **출혈(Bleed) = 누적(stack)**:
+  - 적중마다 스택 +1 → 틱 데미지 = `기본 × 스택수`. **최대 스택 캡(예: 5)**으로 무한 누적 방지.
+  - 지속시간은 스택 간 공유·갱신. 출혈 종료 시 스택 0.
+  - 스택 수를 오라 진하기/아이콘 숫자로 시각화.
+- **둔화(Slow) / 스턴(Stun) = 갱신**(가장 강한 값 유지 + 시간 리셋). 시작 시 변경 가능.
+- 라우팅: PoisonNeedle→Poison(+Lv별 강화), SpikeBurst 출혈→Bleed 스택/둔화→Slow, ElectricEngine 감전→Slow(or 신규 Shock), BioticExplosion→Stun(기존 IsStunned 흡수 검토), ToxicOverload 추가피해 TODO 해소.
 
 ### B. 스킬 VFX
 

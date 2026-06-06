@@ -9,6 +9,16 @@ public class PoisonNeedle : MonoBehaviour
     public int projectileCount = 1;     // Lv4: 3
     public bool isPiercing = false;     // Lv4
 
+    [Header("Poison DoT")]
+    [Tooltip("1틱 데미지 = attackPower × 이 값 × damageMultiplier")]
+    public float poisonTickRatio = 0.15f;
+    [Tooltip("중독 지속 시간")]
+    public float poisonDuration = 3f;
+    [Tooltip("독 틱 간격")]
+    public float poisonTickInterval = 0.5f;
+    [Tooltip("이미 중독 중 재적중 시 즉발 보너스 = attackPower × 이 값 × damageMultiplier (\"터짐\")")]
+    public float poisonReapplyBonusRatio = 0.5f;
+
     /// <summary>돌연변이 등에서 곱셈으로 적용. 기본 1.0</summary>
     [HideInInspector] public float damageMultiplier = 1f;
 
@@ -91,6 +101,15 @@ public class PoisonNeedle : MonoBehaviour
         proj.transform.position = transform.position;
         proj.damage = stats.attackPower * damageMultiplier;
         proj.isPiercing = isPiercing;
+
+        // 독 페이로드 — damageMultiplier(ToxicOverload ×1.7 포함)가 DoT에도 그대로 반영됨
+        float poisonBase = stats.attackPower * damageMultiplier;
+        proj.appliesPoison = true;
+        proj.poisonTickDamage = poisonBase * poisonTickRatio;
+        proj.poisonDuration = poisonDuration;
+        proj.poisonTickInterval = poisonTickInterval;
+        proj.poisonReapplyBonus = poisonBase * poisonReapplyBonusRatio;
+
         proj.Fire(direction);
         // 발사 시작점 작은 점 시각 (LineRenderer 8각형 mini)
         SpawnMuzzleFx(transform.position);

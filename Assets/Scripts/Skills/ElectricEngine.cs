@@ -9,6 +9,12 @@ public class ElectricEngine : MonoBehaviour
     public float chainDamageRatio = 0.6f;
     public int maxChainTargets = 3;
 
+    [Header("Shock (감전 둔화)")]
+    [Tooltip("감전된 적 이동속도 배율 (0.7 = 70%)")]
+    public float shockSlowMultiplier = 0.7f;
+    [Tooltip("감전 둔화 지속 시간")]
+    public float shockSlowDuration = 1f;
+
     /// <summary>돌연변이 등에서 곱셈으로 적용. 기본 1.0</summary>
     [HideInInspector] public float damageMultiplier = 1f;
 
@@ -60,8 +66,9 @@ public class ElectricEngine : MonoBehaviour
     {
         float baseDamage = stats.attackPower * damageMultiplier;
 
-        // 1차 피해 + 시각 (Player → primary Z호)
+        // 1차 피해 + 감전 둔화 + 시각 (Player → primary Z호)
         primary.GetComponent<IDamageable>()?.TakeDamage(baseDamage);
+        primary.GetComponent<IStatusReceiver>()?.ApplySlow(shockSlowMultiplier, shockSlowDuration);
         SpawnZigZag(transform.position, primary.position);
 
         // 연쇄 피해 (1차 대상 주변)
@@ -75,6 +82,7 @@ public class ElectricEngine : MonoBehaviour
             if (chainCount >= maxChainTargets) break;
 
             hit.GetComponent<IDamageable>()?.TakeDamage(chainDamage);
+            hit.GetComponent<IStatusReceiver>()?.ApplySlow(shockSlowMultiplier, shockSlowDuration);
             // 연쇄 시각 (primary → 보조 타겟)
             SpawnZigZag(primary.position, hit.transform.position);
             chainCount++;

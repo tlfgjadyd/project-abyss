@@ -8,6 +8,13 @@ public class Projectile : MonoBehaviour
     [HideInInspector] public float damage;
     [HideInInspector] public bool isPiercing;
 
+    // 독 페이로드 (PoisonNeedle이 발사 시 설정). 적중 시 EnemyBase.ApplyPoison 호출.
+    [HideInInspector] public bool appliesPoison;
+    [HideInInspector] public float poisonTickDamage;
+    [HideInInspector] public float poisonDuration;
+    [HideInInspector] public float poisonTickInterval;
+    [HideInInspector] public float poisonReapplyBonus;
+
     [SerializeField] private float speed = 8f;
     [SerializeField] private float lifetime = 3f;
     [SerializeField] private float hitKnockback = 2f;
@@ -34,6 +41,7 @@ public class Projectile : MonoBehaviour
         isReturned = false;
         hitEnemies.Clear();
         rb.velocity = Vector2.zero;
+        appliesPoison = false; // 풀 재사용 시 페이로드 초기화 (발사 시 다시 설정)
     }
 
     public void SetPool(IObjectPool<Projectile> pool) => this.pool = pool;
@@ -68,6 +76,9 @@ public class Projectile : MonoBehaviour
 
         damageable.TakeDamage(damage);
         col.GetComponent<Rigidbody2D>()?.AddForce(direction * hitKnockback, ForceMode2D.Impulse);
+
+        if (appliesPoison)
+            col.GetComponent<IStatusReceiver>()?.ApplyPoison(poisonTickDamage, poisonDuration, poisonTickInterval, poisonReapplyBonus);
 
         if (!isPiercing)
             Return();

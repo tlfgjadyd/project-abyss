@@ -60,7 +60,7 @@ public class BleedSwimSkill : CopySkillBase
         stats.moveSpeed = baseMoveSpeed * speedMultiplier;
 
         // 중복 부착 방지용 set (이번 가속 동안 1회만 DoT)
-        var bled = new HashSet<EnemyBase>();
+        var bled = new HashSet<IStatusReceiver>();
 
         float elapsed = 0f;
         while (elapsed < duration)
@@ -70,11 +70,12 @@ public class BleedSwimSkill : CopySkillBase
             foreach (var c in hits)
             {
                 if (c == null) continue;
-                var eb = c.GetComponent<EnemyBase>();
+                var eb = c.GetComponent<IStatusReceiver>();
                 if (eb == null || bled.Contains(eb)) continue;
                 bled.Add(eb);
-                // 출혈 DoT 부착
-                StartCoroutine(BleedDoT(eb, stats.attackPower * bleedDamageMultiplier));
+                // 출혈 DoT 부착 (통합 상태이상 시스템 — 스택 누적)
+                eb.ApplyBleed(stats.attackPower * bleedDamageMultiplier, bleedDuration, bleedTickInterval,
+                              EnemyStatusEffects.DefaultBleedMaxStacks);
             }
             elapsed += Time.deltaTime;
             yield return null;
@@ -83,18 +84,6 @@ public class BleedSwimSkill : CopySkillBase
         stats.moveSpeed = baseMoveSpeed;
         stats.IsInvincible = false;
         isSwimming = false;
-    }
-
-    IEnumerator BleedDoT(EnemyBase target, float perTickDamage)
-    {
-        float elapsed = 0f;
-        while (elapsed < bleedDuration && target != null && target.gameObject.activeInHierarchy)
-        {
-            yield return new WaitForSeconds(bleedTickInterval);
-            if (target == null || !target.gameObject.activeInHierarchy) yield break;
-            (target as IDamageable)?.TakeDamage(perTickDamage);
-            elapsed += bleedTickInterval;
-        }
     }
 
     void OnDrawGizmosSelected()
