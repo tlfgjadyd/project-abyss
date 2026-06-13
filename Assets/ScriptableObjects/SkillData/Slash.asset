@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Slash
   m_EditorClassIdentifier: 
   skillName: "\uD718\uB450\uB974\uAE30"
-  description: "\uC8FC\uBCC0 \uBD80\uCC44\uAF34(100\uB3C4) \uD718\uB450\uB974\uAE30
-    \uAD11\uC5ED \uACF5\uACA9.\nLv1~2: \uC0AC\uAC70\uB9AC +0.3\nLv3: \uACF5\uACA9\uC18D\uB3C4
-    +30%\nLv4: \uC801 \uB109\uBC31 \uCD94\uAC00"
+  description: "\uC8FC\uBCC0\uC744 \uBD80\uCC44\uAF34(100\xB0)\uB85C \uD718\uB450\uB974\uB294
+    \uAD11\uC5ED \uC790\uB3D9\uACF5\uACA9.\n\uCD5C\uC885 \uB808\uBCA8\uC5D0\uC11C
+    \uC801 \uB109\uBC31."
   skillType: 0
   skillID: 0
   maxLevel: 4

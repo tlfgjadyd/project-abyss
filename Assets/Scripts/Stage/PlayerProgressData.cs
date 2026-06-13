@@ -116,8 +116,11 @@ public class PlayerProgressData : MonoBehaviour
     {
         // 1. 스킬 효과 재적용 (LevelManager.SetState 안에서 OnSkillSelected 발행 → SkillEffectApplier가 누적)
         //    이 시점에 maxHp, attackPower 등이 base 위에 += delta로 누적됨.
+        //    SetState는 OnLevelChanged도 재발행하므로, 이미 지난 돌연변이 트리거가 재발동하지 않도록 억제.
+        if (MutationManager.Instance != null) MutationManager.Instance.SuppressTriggers = true;
         if (LevelManager.Instance != null)
             LevelManager.Instance.SetState(currentLevel, currentExp, expToNextLevel, skillLevels, currentCells);
+        if (MutationManager.Instance != null) MutationManager.Instance.SuppressTriggers = false;
 
         // 2. 돌연변이 효과 재적용 (스킬으로 강화된 stats 위에 곱셈 변환)
         if (MutationManager.Instance != null && ownedMutationIDs.Count > 0)

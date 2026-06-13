@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NeuralAcceleration
   m_EditorClassIdentifier: 
   skillName: "\uC2E0\uACBD \uAC00\uC18D"
-  description: "\uBAA8\uB4E0 \uC2A4\uD0AC \uACF5\uACA9\uC18D\uB3C4 \uC99D\uAC00."
+  description: "\uBAA8\uB4E0 \uC2A4\uD0AC\uC758 \uACF5\uACA9 \uC18D\uB3C4\uB97C \uB192\uC778\uB2E4."
   skillType: 1
   skillID: 6
   maxLevel: 4
@@ -52,9 +52,9 @@ MonoBehaviour:
     cooldownDelta: 0
     stunDurationDelta: 0
   - attackPowerDelta: 0
-    attackSpeedDelta: 0
+    attackSpeedDelta: 0.4
     rangeDelta: 0
-    moveSpeedDelta: 0.4
+    moveSpeedDelta: 0
     maxHpDelta: 0
     hpRegenDelta: 0
     knockbackEnabled: 0

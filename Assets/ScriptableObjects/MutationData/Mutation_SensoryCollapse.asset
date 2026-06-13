@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: Mutation_SensoryCollapse
   m_EditorClassIdentifier: 
   mutationName: "\uAC10\uAC01 \uBD95\uAD34"
-  description: "[\uAC10\uAC01 \uBD95\uAD34]\n\uACF5\uACA9\uC18D\uB3C4 \xD71.5, \uC5D0\uB108\uC9C0
-    \uCDA9\uC804 \xD71.25.\n\uC2A4\uD0AC \uC0AC\uC6A9 \uC2DC 5% \uD655\uB960 0.5\uCD08
-    \uC2A4\uD134 (\uC790\uAE30 \uC790\uC2E0)."
-  penaltyDescription: "\uC2A4\uD0AC \uC0AC\uC6A9 \uC2DC 5~10% \uD655\uB960\uB85C
-    0.5\uCD08\uAC04 \uC2A4\uD134"
+  description: "[\uAC10\uAC01 \uBD95\uAD34]\n\uACF5\uACA9 \uC18D\uB3C4 \xD71.5, \uC0DD\uCCB4
+    \uC5D0\uB108\uC9C0 \uCDA9\uC804 \uC18D\uB3C4 \xD71.25."
+  penaltyDescription: "\uC2A4\uD0AC \uC0AC\uC6A9 \uC2DC 5% \uD655\uB960\uB85C 0.5\uCD08\uAC04
+    \uC2A4\uD134"
   mutationID: 3

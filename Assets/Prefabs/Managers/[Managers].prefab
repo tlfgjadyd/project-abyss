@@ -50,6 +50,10 @@ MonoBehaviour:
   damageMultiplierPeak: 1.5
   intervalMultiplierPeak: 0.4
   maxActiveMultiplierPeak: 2
+  crisisLeadTime: 30
+  crisisSpawnBoost: 1.3
+  bossActiveSpawnFactor: 0.7
+  globalIntensityScale: 1
 --- !u!1 &1132248708700107509
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,7 +530,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3dbe411e5e704d64a9a040ef762c043a, type: 2}
   - {fileID: 11400000, guid: b3420edf25eb435499e6cd66ee18e3ef, type: 2}
   - {fileID: 11400000, guid: 1c558a24643062e4c97123c492cde09b, type: 2}
-  mimicryInvincibilityInterval: 40
+  mimicryInvincibilityInterval: 15
   mimicryInvincibilityDuration: 3
+  mimicryBurstAttackMultiplier: 4
   sensoryStunChance: 0.05
   sensoryStunDuration: 0.5

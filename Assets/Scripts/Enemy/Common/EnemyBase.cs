@@ -40,6 +40,9 @@ public class EnemyBase : MonoBehaviour, IStatusReceiver
 
     public System.Action<EnemyBase> OnDeath;
 
+    /// <summary>적이 죽을 때마다 발행되는 전역 이벤트 (가속변이 Lv4 처치 가속 등). 구독자는 OnDestroy에서 해제할 것.</summary>
+    public static System.Action OnAnyEnemyKilled;
+
     void Awake()
     {
         var rb = GetComponent<Rigidbody2D>();
@@ -194,6 +197,7 @@ public class EnemyBase : MonoBehaviour, IStatusReceiver
         ExpOrbPool.Instance?.Spawn(transform.position, data.expAmount);
         BioEnergyManager.Instance?.AddEnergy(data.energyDrop);
         AudioManager.Instance?.PlaySFX(SfxId.EnemyDeath);
+        OnAnyEnemyKilled?.Invoke();
 
         // 사망 폭발 시각 — Sprite 색상 기반
         var sr = GetComponentInChildren<SpriteRenderer>();

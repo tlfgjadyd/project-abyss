@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: AcceleratedMutation
   m_EditorClassIdentifier: 
   skillName: "\uAC00\uC18D \uBCC0\uC774"
-  description: "\uC774\uB3D9\uC18D\uB3C4 \uC601\uAD6C \uC99D\uAC00."
+  description: "\uC774\uB3D9 \uC18D\uB3C4\uB97C \uC601\uAD6C\uD788 \uB192\uC778\uB2E4.\n\uCD5C\uC885
+    \uB808\uBCA8\uC5D0\uC11C \uC801 \uCC98\uCE58 \uC2DC \uC21C\uAC04 \uAC00\uC18D."
   skillType: 1
   skillID: 5
   maxLevel: 4
@@ -21,7 +22,7 @@ MonoBehaviour:
   - attackPowerDelta: 0
     attackSpeedDelta: 0
     rangeDelta: 0
-    moveSpeedDelta: 0.5
+    moveSpeedDelta: 0.3
     maxHpDelta: 0
     hpRegenDelta: 0
     knockbackEnabled: 0
@@ -32,7 +33,7 @@ MonoBehaviour:
   - attackPowerDelta: 0
     attackSpeedDelta: 0
     rangeDelta: 0
-    moveSpeedDelta: 0.5
+    moveSpeedDelta: 0.3
     maxHpDelta: 0
     hpRegenDelta: 0
     knockbackEnabled: 0
@@ -43,7 +44,7 @@ MonoBehaviour:
   - attackPowerDelta: 0
     attackSpeedDelta: 0
     rangeDelta: 0
-    moveSpeedDelta: 0.5
+    moveSpeedDelta: 0.3
     maxHpDelta: 0
     hpRegenDelta: 0
     knockbackEnabled: 0

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: CopySkill_Berserk
   m_EditorClassIdentifier: 
   skillName: "\uAD11\uD3ED\uD654"
-  description: "[\uAD11\uD3ED\uD654]\n\uACF5\uACA9\uB825 +50%, \uACF5\uACA9\uC18D\uB3C4
-    +30%\uB97C \uC77C\uC815 \uC2DC\uAC04 \uC720\uC9C0.\n\uC5D0\uB108\uC9C0 50 / 1\uC2A4
-    \uC2E4\uD5D8\uC6A9 \uC2E4\uD5D8\uCCB4"
+  description: "[\uAD11\uD3ED\uD654]\n5\uCD08 \uB3D9\uC548 \uACF5\uACA9\uB825 +50%,
+    \uC774\uB3D9 \uC18D\uB3C4 +3, \uACF5\uACA9 \uC18D\uB3C4 +0.5.\n\uC7AC\uBC1C\uB3D9
+    \uC2DC \uC9C0\uC18D\uC2DC\uAC04\uC774 \uAC31\uC2E0\uB41C\uB2E4."
   skillType: 0
   energyCost: 50
   copySkillID: 1

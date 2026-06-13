@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1585988712280791422}
   - component: {fileID: 6688382535772758887}
   - component: {fileID: 5488703592647309124}
+  - component: {fileID: 9003918051565798303}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Enemy
@@ -30,7 +31,7 @@ RectTransform:
   m_GameObject: {fileID: 3411236384779318912}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.07790507}
-  m_LocalScale: {x: 0.5, y: 0.9, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -81,6 +82,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 0
   isPiercing: 0
+  appliesPoison: 0
+  poisonTickDamage: 0
+  poisonDuration: 0
+  poisonTickInterval: 0
+  poisonReapplyBonus: 0
   speed: 8
   lifetime: 3
   hitKnockback: 2
@@ -118,7 +124,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.45
 --- !u!222 &6688382535772758887
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -167,9 +173,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 0.4825448, g: 0.014239941, b: 0.6037736, a: 1}
+  m_SortingOrder: 10
+  m_Sprite: {fileID: 1769853743, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -179,3 +185,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &9003918051565798303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3411236384779318912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05dacf9b0894d8a49abbc4b75ed0c7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frames:
+  - {fileID: 1769853743, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: -1683119794, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: -313199460, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: 1294565805, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: -102374397, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: 1825951746, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: -188206407, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: -1056818890, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  fps: 14

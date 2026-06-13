@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 // Player 오브젝트에 부착. LevelManager의 OnSkillSelected 이벤트를 수신해 실제 스탯에 반영.
@@ -56,6 +57,8 @@ public class SkillEffectApplier : MonoBehaviour
     {
         if (LevelManager.Instance != null)
             LevelManager.Instance.OnSkillSelected -= Apply;
+        if (accelBurstEnabled)
+            EnemyBase.OnAnyEnemyKilled -= OnEnemyKilledAccel;
     }
 
     void Apply(SkillData skill, int newLevel)
@@ -68,16 +71,16 @@ public class SkillEffectApplier : MonoBehaviour
         {
             case SkillID.Slash:          ApplySlash(s);          break;
             case SkillID.CellRegen:      ApplyCellRegen(s);      break;
-            case SkillID.AccelMutation:  ApplyAccelMutation(s);  break;
+            case SkillID.AccelMutation:  ApplyAccelMutation(s, newLevel);  break;
             case SkillID.NeuralAccel:    ApplyNeuralAccel(s);    break;
             case SkillID.PoisonNeedle:    ApplyPoisonNeedle(s);    break;
             case SkillID.BioticExplosion: ApplyBioticExplosion(s); break;
-            case SkillID.ElectricEngine:  ApplyElectricEngine(s);  break;
+            case SkillID.ElectricEngine:  ApplyElectricEngine(s, newLevel);  break;
             // Day 45 신규
             case SkillID.SonicPulse:        ApplySonicPulse(s);     break;
             case SkillID.SpikeBurst:        ApplySpikeBurst(s);     break;
-            case SkillID.DrainTentacle:     ApplyDrainTentacle(s);  break;
-            case SkillID.MagneticInduction: ApplyMagnetic(s);       break;
+            case SkillID.DrainTentacle:     ApplyDrainTentacle(s, newLevel);  break;
+            case SkillID.MagneticInduction: ApplyMagnetic(s, newLevel);       break;
             case SkillID.GlowOrgan:         ApplyGlowOrgan(s);      break;
         }
     }
@@ -107,21 +110,26 @@ public class SkillEffectApplier : MonoBehaviour
         if (s.piercingEnabled) spikeBurst.bleedEnabled = true;
     }
 
-    void ApplyDrainTentacle(SkillLevelStats s)
+    void ApplyDrainTentacle(SkillLevelStats s, int level)
     {
         stats.attackPower += s.attackPowerDelta;
         if (drainTentacle == null) return;
         if (!drainTentacle.enabled) drainTentacle.enabled = true;
         drainTentacle.range += s.rangeDelta;
         drainTentacle.cooldown = Mathf.Max(0.3f, drainTentacle.cooldown - s.cooldownDelta);
+        // 흡혈량 레벨 비례 (Lv1 0.1 ~ Lv4 0.4), Lv4 출혈 부여
+        drainTentacle.lifestealFlat = 0.1f * level;
+        if (level >= 4) drainTentacle.bleedEnabled = true;
     }
 
-    void ApplyMagnetic(SkillLevelStats s)
+    void ApplyMagnetic(SkillLevelStats s, int level)
     {
         if (magnetic == null) return;
         if (!magnetic.enabled) magnetic.enabled = true;
         // moveSpeedDelta 슬롯을 흡인 범위 배율 증분으로 재사용 (Lv마다 +0.2 정도)
         stats.magneticRangeMultiplier += s.moveSpeedDelta;
+        // Lv4 — 주기적 전체 흡인 활성
+        if (level >= 4) magnetic.EnableVacuum();
     }
 
     void ApplyGlowOrgan(SkillLevelStats s)
@@ -157,9 +165,40 @@ public class SkillEffectApplier : MonoBehaviour
         stats.OnHpChanged?.Invoke(stats.currentHp, stats.maxHp);
     }
 
-    void ApplyAccelMutation(SkillLevelStats s)
+    void ApplyAccelMutation(SkillLevelStats s, int level)
     {
         stats.moveSpeed += s.moveSpeedDelta;
+        // Lv4 — 적 처치 시 순간 가속 (2초간 +1)
+        if (level >= 4 && !accelBurstEnabled)
+        {
+            accelBurstEnabled = true;
+            EnemyBase.OnAnyEnemyKilled += OnEnemyKilledAccel;
+        }
+    }
+
+    // ── 가속변이 Lv4: 처치 시 순간 가속 ──
+    const float AccelBurstSpeed = 1f;
+    const float AccelBurstDuration = 2f;
+    private bool accelBurstEnabled;
+    private bool accelBurstActive;
+    private float accelBurstEndTime;
+
+    void OnEnemyKilledAccel()
+    {
+        accelBurstEndTime = Time.time + AccelBurstDuration;
+        if (!accelBurstActive)
+        {
+            accelBurstActive = true;
+            stats.moveSpeed += AccelBurstSpeed;
+            StartCoroutine(AccelBurstRoutine());
+        }
+    }
+
+    IEnumerator AccelBurstRoutine()
+    {
+        while (Time.time < accelBurstEndTime) yield return null;
+        if (stats != null) stats.moveSpeed -= AccelBurstSpeed;
+        accelBurstActive = false;
     }
 
     void ApplyNeuralAccel(SkillLevelStats s)
@@ -189,7 +228,7 @@ public class SkillEffectApplier : MonoBehaviour
         bioticExplosion.stunDuration += s.stunDurationDelta;
     }
 
-    void ApplyElectricEngine(SkillLevelStats s)
+    void ApplyElectricEngine(SkillLevelStats s, int level)
     {
         stats.attackPower += s.attackPowerDelta;
         stats.attackSpeed += s.attackSpeedDelta;
@@ -197,5 +236,7 @@ public class SkillEffectApplier : MonoBehaviour
 
         if (!electricEngine.enabled) electricEngine.enabled = true;
         electricEngine.chainRadius += s.rangeDelta;
+        // Lv4 — 사망 시 감전 필드 생성
+        if (level >= 4) electricEngine.fieldEnabled = true;
     }
 }

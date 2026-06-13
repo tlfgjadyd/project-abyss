@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mutation_Tentacle
   m_EditorClassIdentifier: 
   mutationName: "\uACFC\uC131\uC7A5 \uCD09\uC218"
-  description: "[\uACFC\uC131\uC7A5 \uCD09\uC218]\n\uC804 \uC2A4\uD0AC \uC0AC\uAC70\uB9AC
-    \xD71.6, \uC774\uB3D9\uC18D\uB3C4 -15%."
-  penaltyDescription: "\uC774\uB3D9\uC18D\uB3C4 -15%"
+  description: "[\uACFC\uC131\uC7A5 \uCD09\uC218]\n\uBAA8\uB4E0 \uC2A4\uD0AC\uC758
+    \uBC94\uC704\xB7\uC0AC\uAC70\uB9AC\uAC00 \xD71.6\uC73C\uB85C \uC99D\uAC00\uD55C\uB2E4."
+  penaltyDescription: "\uC774\uB3D9 \uC18D\uB3C4 -15%"
   mutationID: 1

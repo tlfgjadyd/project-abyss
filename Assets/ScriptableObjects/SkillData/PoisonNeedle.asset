@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: PoisonNeedle
   m_EditorClassIdentifier: 
   skillName: "\uB3C5\uCE68"
-  description: "\uAC00\uC7A5 \uAC00\uAE4C\uC6B4 \uC801 \uC790\uB3D9 \uCD94\uC801
-    \uBC1C\uC0AC.\nLv1: \uACF5\uACA9\uB825 +1\nLv2~3: \uCFE8\uB2E4\uC6B4 -0.15s,
-    \uACF5\uACA9\uB825 +3\nLv4: \uBC1C\uC0AC\uCCB4 +1, \uAD00\uD1B5 \uCD94\uAC00"
+  description: "\uAC00\uC7A5 \uAC00\uAE4C\uC6B4 \uC801\uC744 \uCD94\uC801\uD574 \uC911\uB3C5\uC2DC\uD0A8\uB2E4.\n\uCD5C\uC885
+    \uB808\uBCA8\uC5D0\uC11C 2\uAC08\uB798 \uBC1C\uC0AC\xB7\uAD00\uD1B5."
   skillType: 0
   skillID: 1
   maxLevel: 4

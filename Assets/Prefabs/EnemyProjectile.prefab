@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2063300721322454508}
   - component: {fileID: 3423615917238087232}
   - component: {fileID: 3241907663819099558}
+  - component: {fileID: 2753322302608866531}
   m_Layer: 0
   m_Name: EnemyProjectile
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,9 +76,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 1, g: 0.4, b: 0.2, a: 1}
+  m_SortingOrder: 10
+  m_Sprite: {fileID: 2103328770, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -148,7 +149,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.21133333}
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.19999999
 --- !u!114 &3241907663819099558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,3 +165,25 @@ MonoBehaviour:
   damage: 0
   speed: 6
   lifetime: 4
+--- !u!114 &2753322302608866531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5212269326732089835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05dacf9b0894d8a49abbc4b75ed0c7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frames:
+  - {fileID: 2103328770, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: 2032125774, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: -291964227, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: 814461877, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: 789671676, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: -628134198, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: -1614777839, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  - {fileID: -830392121, guid: ec6aef8fd9a1ef648a5036e2ef6a0741, type: 3}
+  fps: 14

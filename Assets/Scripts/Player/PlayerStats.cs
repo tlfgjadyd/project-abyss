@@ -14,6 +14,9 @@ public class PlayerStats : MonoBehaviour
     [Tooltip("자기 유도 패시브 — ExpOrb 흡인 범위 배율. 기본 1f")]
     public float magneticRangeMultiplier = 1f;
 
+    [Tooltip("출혈 DoT 데미지 배율 (독성 과부화 돌연변이가 ×1.7). 기본 1f")]
+    public float bleedDamageMultiplier = 1f;
+
     [Header("Stage")]
     [Tooltip("자동 추적 스킬 사거리 상한. 0 = 무제한. StageManager가 씬 시작 시 StageData에서 설정")]
     [HideInInspector] public float autoTrackRangeLimit = 0f;

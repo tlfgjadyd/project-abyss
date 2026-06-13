@@ -61,6 +61,28 @@ public class EnemyStatusEffects : MonoBehaviour
         if (bleedCo != null)  { StopCoroutine(bleedCo);  bleedCo = null; }
         IsPoisoned = false;
         bleedStacks = 0;
+        elecAccum = 0f;
+        elecLastTick = 0f;
+    }
+
+    // ── 감전 필드 누적(전기기관 Lv4) ──
+    // 필드↔필드를 연속 이동하면 누적 유지, 모든 필드 밖으로 나가면(틱 간격 초과) 리셋.
+    private float elecAccum;
+    private float elecLastTick;
+
+    /// <summary>감전 필드가 1틱마다 호출. 누적 데미지가 임계치 도달 시 기절(보스는 면역).</summary>
+    public void AddElectricFieldTick(float dmg, float tickInterval, float stunThreshold, float stunDuration)
+    {
+        if (host == null || host.IsDead) return;
+        // 마지막 틱과 간격이 너무 벌어졌으면(모든 필드 밖으로 나갔다 재진입) 리셋
+        if (Time.time - elecLastTick > tickInterval * 1.5f) elecAccum = 0f;
+        elecLastTick = Time.time;
+        elecAccum += dmg;
+        if (elecAccum >= stunThreshold)
+        {
+            host.Stun(stunDuration);
+            elecAccum = 0f;
+        }
     }
 
     // ── 독: 갱신 + 재적용 즉발 보너스 ────────────────
@@ -68,7 +90,7 @@ public class EnemyStatusEffects : MonoBehaviour
     /// <param name="reapplyBonusDamage">이미 중독 중 재적용 시 즉발 1회 보너스 데미지.</param>
     public void ApplyPoison(float perTickDamage, float duration, float tickInterval, float reapplyBonusDamage)
     {
-        if (host == null || host.IsDead) return;
+        if (host == null || host.IsDead || !isActiveAndEnabled) return;
 
         if (IsPoisoned)
         {
@@ -98,7 +120,7 @@ public class EnemyStatusEffects : MonoBehaviour
     /// <param name="perStackTickDamage">스택 1당 1틱 데미지 (이미 attackPower·배율 적용된 값).</param>
     public void ApplyBleed(float perStackTickDamage, float duration, float tickInterval, int maxStacks)
     {
-        if (host == null || host.IsDead) return;
+        if (host == null || host.IsDead || !isActiveAndEnabled) return;
 
         bleedPerStackTick = perStackTickDamage;
         bleedTickInterval = tickInterval;

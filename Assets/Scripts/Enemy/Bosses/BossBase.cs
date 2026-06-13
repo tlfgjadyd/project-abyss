@@ -123,7 +123,7 @@ public class BossBase : MonoBehaviour, IStatusReceiver
     /// <summary>둔화 — 감속폭을 저항만큼 약화 (multiplier 0.7, 저항 0.5 → 실효 0.85).</summary>
     public void ApplySlow(float multiplier, float duration)
     {
-        if (IsDead) return;
+        if (IsDead || !isActiveAndEnabled) return;
         float effective = 1f - (1f - multiplier) * (1f - debuffResistance);
         if (slowCoroutine != null) StopCoroutine(slowCoroutine);
         slowCoroutine = StartCoroutine(SlowRoutine(effective, duration));
@@ -140,7 +140,7 @@ public class BossBase : MonoBehaviour, IStatusReceiver
     /// <summary>취약 — 증가폭을 저항만큼 약화 (multiplier 1.5, 저항 0.5 → 실효 1.25).</summary>
     public void ApplyVulnerability(float multiplier, float duration)
     {
-        if (IsDead) return;
+        if (IsDead || !isActiveAndEnabled) return;
         float effective = 1f + (multiplier - 1f) * (1f - debuffResistance);
         if (vulnerableCoroutine != null) StopCoroutine(vulnerableCoroutine);
         vulnerableCoroutine = StartCoroutine(VulnerabilityRoutine(effective, duration));

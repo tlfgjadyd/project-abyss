@@ -36,7 +36,11 @@ public class EnemyProjectile : MonoBehaviour
 
     public void Fire(Vector2 dir)
     {
-        rb.velocity = dir.normalized * speed;
+        Vector2 n = dir.normalized;
+        rb.velocity = n * speed;
+        // 탄 sprite는 +x(가로)로 긴 타원 → 진행 방향으로 회전 (위/아래로 쏠 때 눕지 않도록)
+        float ang = Mathf.Atan2(n.y, n.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, ang);
     }
 
     void Update()
